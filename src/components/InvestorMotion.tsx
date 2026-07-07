@@ -215,7 +215,6 @@ export default function InvestorMotion() {
             </div>
             <div className="scale-cycle-layout" aria-label="Point-first expansion cycle">
               <div className="scale-cycle-orbit">
-                <div className="scale-cycle-runner" aria-hidden="true" />
                 <svg className="scale-cycle-lines" viewBox="0 0 420 420" aria-hidden="true">
                   {cycleSegments.map((segment, index) => (
                     <path

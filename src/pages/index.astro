@@ -6308,12 +6308,24 @@ const pilotMetrics = [
   @media (max-width: 760px) {
     .story-pin {
       width: min(100% - 28px, 1460px);
-      padding: 64px 0 38px;
+      min-height: max(360svh, 2400px);
+      padding: 0;
     }
 
     .story-pin-inner {
+      position: sticky;
+      top: 0;
       display: grid;
-      gap: 24px;
+      align-content: start;
+      gap: clamp(12px, 2.6vh, 20px);
+      min-height: 100svh;
+      padding-block: clamp(88px, 11vh, 104px) 14px;
+    }
+
+    @supports (min-height: 100dvh) {
+      .story-pin-inner {
+        min-height: 100dvh;
+      }
     }
 
     .story-copy {
@@ -6322,7 +6334,8 @@ const pilotMetrics = [
     }
 
     .story-copy h2 {
-      font-size: clamp(2rem, 9vw, 3rem);
+      font-size: clamp(1.9rem, 8.2vw, 2.7rem);
+      line-height: 0.94;
     }
 
     .story-stage {
@@ -6332,6 +6345,8 @@ const pilotMetrics = [
     }
 
     .flow-device {
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 8px;
       overflow: visible;
       padding: 0;
     }
@@ -6349,9 +6364,9 @@ const pilotMetrics = [
 
     .flow-board {
       grid-template-columns: 1fr;
-      grid-template-rows: auto;
-      gap: 12px;
-      height: 482px;
+      grid-template-rows: minmax(0, 1fr);
+      gap: 0;
+      height: clamp(330px, 46vh, 390px);
       min-height: auto;
       overflow: visible;
       border-radius: 0;
@@ -6375,10 +6390,11 @@ const pilotMetrics = [
       grid-column: 1;
       grid-row: 1;
       grid-template-columns: 1fr;
-      grid-template-rows: 36px 432px;
-      gap: 14px;
-      height: 482px;
+      grid-template-rows: 26px minmax(0, 1fr);
+      gap: 8px;
+      height: 100%;
       min-height: auto;
+      overflow: visible;
     }
 
     .flow-transfer::before {
@@ -6390,9 +6406,10 @@ const pilotMetrics = [
     }
 
     .flow-transfer-head {
-      align-items: start;
-      display: grid;
+      align-items: center;
+      display: flex;
       gap: 8px;
+      height: 26px;
     }
 
     .flow-transfer-head strong {
@@ -6432,66 +6449,90 @@ const pilotMetrics = [
     }
 
     .flow-fiche-stack {
-      height: 432px;
+      height: 100%;
+      min-height: 0;
     }
 
     .flow-stack-sheet {
-      border-radius: 20px;
+      border-radius: 18px;
+      box-shadow:
+        0 18px 34px rgba(35, 61, 77, 0.08),
+        inset 0 -5px 0 rgba(254, 127, 45, 0.13);
     }
 
     .flow-parcel-card {
-      grid-template-rows: 12px 64px 62px 132px 64px;
-      gap: 10px;
-      height: 432px;
+      grid-template-rows: 10px auto auto auto auto;
+      align-content: space-between;
+      gap: 8px;
+      height: 100%;
       min-height: 0;
-      border-radius: 20px;
-      padding: 18px;
+      border-radius: 18px;
+      padding: 14px;
       transform: translate3d(0, var(--flow-card-drop), 0) rotateZ(var(--flow-card-rotate));
     }
 
     .flow-parcel-card > strong {
-      font-size: clamp(2.2rem, 13vw, 3.6rem);
-      line-height: 0.88;
+      font-size: clamp(1.85rem, 9.6vw, 2.95rem);
+      line-height: 0.86;
     }
 
     .flow-parcel-card p {
       max-width: 100%;
-      font-size: 0.92rem;
-      line-height: 1.32;
-      -webkit-line-clamp: 3;
+      font-size: 0.82rem;
+      line-height: 1.25;
+      -webkit-line-clamp: 2;
     }
 
     .flow-card-details {
-      grid-template-columns: 1fr;
-      height: 132px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+      height: auto;
+      min-height: 58px;
     }
 
     .flow-card-details div {
-      min-height: 38px;
-      padding: 8px 10px;
+      min-height: 58px;
+      padding: 7px 6px 7px 8px;
+    }
+
+    .flow-card-details span {
+      font-size: 0.5rem;
     }
 
     .flow-card-details b {
-      font-size: 0.7rem;
+      font-size: 0.56rem;
+      line-height: 1.05;
     }
 
     .flow-seal-strip {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 132px;
-      gap: 8px;
+      grid-template-columns: minmax(0, 1fr) 112px;
+      gap: 7px;
       padding-top: 0;
     }
 
+    .flow-seal-track {
+      gap: 6px;
+    }
+
+    .flow-seal-track i {
+      height: 5px;
+    }
+
+    .flow-seal-track b {
+      font-size: 0.56rem;
+    }
+
     .flow-card-status {
-      grid-template-columns: 26px minmax(0, 1fr);
-      min-height: 56px;
-      border-radius: 13px;
-      padding: 8px;
+      grid-template-columns: 24px minmax(0, 1fr);
+      min-height: 48px;
+      border-radius: 12px;
+      padding: 7px;
     }
 
     .flow-status-icon {
-      width: 26px;
-      height: 26px;
+      width: 24px;
+      height: 24px;
       border-radius: 9px;
     }
 
@@ -6501,11 +6542,11 @@ const pilotMetrics = [
     }
 
     .flow-status-copy strong {
-      font-size: 0.58rem;
+      font-size: 0.54rem;
     }
 
     .flow-status-copy em {
-      font-size: 0.48rem;
+      font-size: 0.46rem;
     }
 
     .flow-stamp-rail {
@@ -6608,6 +6649,69 @@ const pilotMetrics = [
     .flow-ledger {
       grid-template-columns: 1fr;
       display: none;
+    }
+  }
+
+  @media (max-width: 760px) and (max-height: 760px) {
+    .story-pin-inner {
+      gap: 10px;
+      padding-block: 84px 10px;
+    }
+
+    .story-copy .eyebrow {
+      display: none;
+    }
+
+    .story-copy h2 {
+      font-size: clamp(1.72rem, 7.8vw, 2.18rem);
+    }
+
+    .flow-head {
+      display: none;
+    }
+
+    .flow-board {
+      height: clamp(280px, 43vh, 320px);
+    }
+
+    .flow-parcel-card {
+      gap: 7px;
+      padding: 12px;
+    }
+
+    .flow-parcel-card > strong {
+      font-size: clamp(1.58rem, 8.4vw, 2.35rem);
+    }
+
+    .flow-parcel-card p {
+      font-size: 0.76rem;
+      line-height: 1.2;
+    }
+
+    .flow-card-details {
+      min-height: 50px;
+    }
+
+    .flow-card-details div {
+      min-height: 50px;
+      padding: 6px;
+    }
+
+    .flow-card-details span {
+      font-size: 0.46rem;
+    }
+
+    .flow-card-details b {
+      font-size: 0.5rem;
+    }
+
+    .flow-seal-strip {
+      grid-template-columns: minmax(0, 1fr) 104px;
+    }
+
+    .flow-card-status {
+      min-height: 42px;
+      padding: 6px;
     }
   }
 
@@ -9382,11 +9486,14 @@ const pilotMetrics = [
 
   .concept-pin {
     position: relative;
-    overflow: clip;
+    min-height: max(420svh, 3300px);
+    overflow: visible;
     padding-block: 0;
   }
 
   .concept-pin-inner {
+    position: sticky;
+    top: 0;
     display: grid;
     grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1fr);
     gap: clamp(28px, 6vw, 86px);
@@ -9807,7 +9914,7 @@ const pilotMetrics = [
   @media (max-width: 900px) {
     .concept-pin {
       display: block;
-      min-height: 0;
+      min-height: max(410svh, 2800px);
     }
 
     .route-system-section {
@@ -9816,7 +9923,15 @@ const pilotMetrics = [
 
     .concept-pin-inner {
       grid-template-columns: 1fr;
-      min-height: auto;
+      min-height: 100svh;
+      gap: clamp(16px, 4vw, 24px);
+      padding-block: clamp(76px, 9vh, 92px) 18px;
+    }
+
+    @supports (min-height: 100dvh) {
+      .concept-pin-inner {
+        min-height: 100dvh;
+      }
     }
 
     .concept-copy {
@@ -9831,72 +9946,185 @@ const pilotMetrics = [
     }
 
     .project-carousel {
-      overflow: visible;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      box-shadow: none;
-      backdrop-filter: none;
+      overflow: hidden;
+      border: 1px solid rgba(35, 61, 77, 0.12);
+      border-radius: 22px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.38)),
+        rgba(255, 255, 255, 0.5);
+      box-shadow: 0 22px 70px rgba(35, 61, 77, 0.1);
+      backdrop-filter: blur(18px);
     }
 
     .project-carousel::before {
-      display: none;
+      display: block;
     }
 
     .project-card-track {
-      display: grid;
-      gap: 12px;
+      display: flex;
+      gap: 0;
       min-height: 0;
-      transform: none !important;
     }
 
     .project-stage-card {
       position: relative;
       inset: auto;
-      grid-template-rows: auto auto;
-      gap: 18px;
+      flex: 0 0 100%;
+      grid-template-rows: minmax(112px, 0.74fr) auto;
+      gap: 10px;
       min-width: 0;
-      min-height: 300px;
-      border: 1px solid rgba(35, 61, 77, 0.12);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.52);
-      padding: 22px;
+      min-height: clamp(330px, 88vw, 370px);
+      padding: clamp(18px, 5vw, 24px);
       visibility: visible !important;
-      opacity: 1 !important;
+    }
+
+    .project-stage-card:not(.is-active) {
+      opacity: 0.58;
     }
 
     .project-stage-visual {
       justify-self: end;
-      width: 150px;
-      max-width: 42%;
-      min-height: 92px;
+      width: clamp(112px, 33vw, 136px);
+      max-width: 38%;
+      min-height: 70px;
       opacity: 0.88;
     }
 
     .stage-icon-main {
-      width: 66px;
-      height: 66px;
-      border-radius: 18px;
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
     }
 
     .stage-icon-chip,
     .stage-icon-status {
-      width: 32px;
-      height: 32px;
-      border-radius: 11px;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
     }
 
     .project-stage-body {
+      grid-template-rows: auto auto auto auto auto auto;
       min-height: 0;
+    }
+
+    .project-stage-body > p:first-of-type {
+      margin-top: 10px;
+      font-size: 0.68rem;
     }
 
     .project-stage-body h3 {
       min-height: 0;
-      font-size: clamp(1.55rem, 7vw, 2.4rem);
+      margin-top: 8px;
+      font-size: clamp(1.48rem, 6.2vw, 2rem);
+      line-height: 0.98;
+    }
+
+    .project-stage-line {
+      width: min(300px, 76%);
+      margin: 14px 0;
     }
 
     .project-stage-body > p:last-of-type {
       min-height: 0;
+      font-size: 0.88rem;
+      line-height: 1.38;
+    }
+
+    .project-stage-body > strong {
+      margin-top: 14px;
+      padding: 7px 9px;
+      font-size: 0.66rem;
+    }
+  }
+
+  @media (max-width: 900px) and (max-height: 760px) {
+    .concept-pin-inner {
+      gap: 10px;
+      padding-block: 96px 10px;
+    }
+
+    .concept-copy .eyebrow {
+      display: none;
+    }
+
+    .concept-copy h2 {
+      margin-top: 0;
+      font-size: clamp(1.95rem, 9.6vw, 2.35rem);
+      line-height: 0.92;
+    }
+
+    .concept-copy > p:not(.eyebrow) {
+      margin-top: 12px;
+      font-size: 0.92rem;
+      line-height: 1.36;
+    }
+
+    .project-progress {
+      margin-top: 14px;
+    }
+
+    .project-progress-track {
+      margin-top: 10px;
+    }
+
+    .project-markers {
+      margin-top: 8px;
+    }
+
+    .project-stage-card {
+      grid-template-rows: minmax(44px, 0.38fr) auto;
+      gap: 8px;
+      min-height: clamp(250px, 40vh, 280px);
+      padding: 16px;
+    }
+
+    .project-stage-visual {
+      width: clamp(94px, 28vw, 112px);
+      min-height: 46px;
+    }
+
+    .stage-icon-main {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+    }
+
+    .stage-icon-chip,
+    .stage-icon-status {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+    }
+
+    .project-tag {
+      padding: 6px 8px;
+      font-size: 0.64rem;
+    }
+
+    .project-stage-body > p:first-of-type {
+      margin-top: 7px;
+      font-size: 0.64rem;
+    }
+
+    .project-stage-body h3 {
+      margin-top: 6px;
+      font-size: clamp(1.34rem, 5.7vw, 1.72rem);
+    }
+
+    .project-stage-line {
+      margin: 10px 0;
+    }
+
+    .project-stage-body > p:last-of-type {
+      font-size: 0.78rem;
+      line-height: 1.26;
+    }
+
+    .project-stage-body > strong {
+      margin-top: 10px;
+      padding: 6px 8px;
+      font-size: 0.6rem;
     }
   }
 
@@ -10076,43 +10304,6 @@ const pilotMetrics = [
     width: 100%;
     height: 100%;
     overflow: visible;
-  }
-
-  .scale-cycle-runner {
-    position: absolute;
-    inset: 8.7%;
-    z-index: 1;
-    border: 1px solid rgba(35, 61, 77, 0.07);
-    border-top-color: rgba(254, 127, 45, 0.56);
-    border-right-color: rgba(254, 127, 45, 0.2);
-    border-radius: 999px;
-    pointer-events: none;
-    animation: scaleOrbitSpin 7.8s linear infinite;
-    will-change: transform;
-  }
-
-  .scale-cycle-runner::before {
-    position: absolute;
-    top: -5px;
-    left: 50%;
-    width: 11px;
-    height: 11px;
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    border-radius: 999px;
-    background: var(--orange);
-    box-shadow:
-      0 0 0 8px rgba(254, 127, 45, 0.11),
-      0 10px 20px rgba(254, 127, 45, 0.22);
-    content: "";
-    transform: translateX(-50%);
-  }
-
-  .scale-cycle-runner::after {
-    position: absolute;
-    inset: 15%;
-    border: 1px dashed rgba(254, 127, 45, 0.16);
-    border-radius: inherit;
-    content: "";
   }
 
   .scale-cycle-base,
@@ -10423,12 +10614,6 @@ const pilotMetrics = [
     100% {
       opacity: 0;
       transform: scale(1.12);
-    }
-  }
-
-  @keyframes scaleOrbitSpin {
-    to {
-      transform: rotate(1turn);
     }
   }
 

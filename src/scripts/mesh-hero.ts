@@ -930,24 +930,17 @@ if (!reduceMotion) {
       const clamped = Math.max(0, Math.min(1, progress));
       const position = clamped * (projectCards.length - 1);
       const index = Math.min(projectCards.length - 1, Math.round(position));
-      const stacked = window.matchMedia("(max-width: 900px)").matches;
 
       concept.style.setProperty("--project-progress", String(clamped));
       if (projectCurrent) projectCurrent.textContent = String(index + 1).padStart(2, "0");
+
+      if (activeProjectIndex === index) return;
+      activeProjectIndex = index;
 
       projectCards.forEach((card, cardIndex) => {
         card.classList.toggle("is-active", cardIndex === index);
       });
       projectMarkers.forEach((marker, markerIndex) => marker.classList.toggle("is-active", markerIndex === index));
-
-      if (stacked) {
-        activeProjectIndex = index;
-        gsap.set(projectTrack, { clearProps: "transform" });
-        return;
-      }
-
-      if (activeProjectIndex === index) return;
-      activeProjectIndex = index;
 
       gsap.to(projectTrack, {
         xPercent: -100 * index,
@@ -963,10 +956,8 @@ if (!reduceMotion) {
       const trigger = ScrollTrigger.create({
         trigger: concept,
         start: "top top",
-        end: () => `+=${Math.max(window.innerHeight * 2.8, projectCards.length * 520)}`,
-        pin: true,
+        end: "bottom bottom",
         scrub: 0.55,
-        anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => setProjectProgress(self.progress),
         onRefresh: (self) => setProjectProgress(self.progress),
@@ -983,13 +974,19 @@ if (!reduceMotion) {
       setProjectProgress(0);
       const trigger = ScrollTrigger.create({
         trigger: concept,
-        start: "top 72%",
-        end: "bottom 42%",
-        scrub: 0.35,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.45,
+        invalidateOnRefresh: true,
         onUpdate: (self) => setProjectProgress(self.progress),
+        onRefresh: (self) => setProjectProgress(self.progress),
       });
 
-      return () => trigger.kill();
+      return () => {
+        trigger.kill();
+        activeProjectIndex = -1;
+        gsap.set(projectTrack, { clearProps: "transform" });
+      };
     });
   }
 
@@ -1256,9 +1253,9 @@ if (!reduceMotion) {
       stage.style.setProperty("--flow-progress", `${clampedProgress}`);
       stage.style.setProperty("--flow-card-drop", "0px");
       stage.style.setProperty("--flow-card-rotate", "0deg");
-      setFlowSheet("one", sheetOne, 12, 10, 0.984, 0.988, -0.22, -0.18);
-      setFlowSheet("two", sheetTwo, 24, 20, 0.962, 0.97, 0.16, 0.14);
-      setFlowSheet("three", sheetThree, 36, 30, 0.94, 0.952, -0.1, -0.08);
+      setFlowSheet("one", sheetOne, 12, 12, 0.984, 0.982, -0.22, -0.2);
+      setFlowSheet("two", sheetTwo, 24, 24, 0.962, 0.964, 0.16, 0.14);
+      setFlowSheet("three", sheetThree, 36, 34, 0.94, 0.946, -0.1, -0.08);
     };
 
     setStoryClasses(0);
@@ -1268,22 +1265,45 @@ if (!reduceMotion) {
 
     const media = gsap.matchMedia();
     media.add("(min-width: 901px)", () => {
-        ScrollTrigger.create({
-          trigger: story,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 0.6,
-          onUpdate: (self) => setStoryProgress(self.progress),
-        });
+      const trigger = ScrollTrigger.create({
+        trigger: story,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.6,
+        onUpdate: (self) => setStoryProgress(self.progress),
+        onRefresh: (self) => setStoryProgress(self.progress),
+      });
+
+      return () => trigger.kill();
     });
-    media.add("(max-width: 900px)", () => {
-        ScrollTrigger.create({
-          trigger: story,
-          start: "top 70%",
-          end: "bottom 40%",
-          scrub: 0.4,
-          onUpdate: (self) => setStoryProgress(self.progress),
-        });
+    media.add("(min-width: 761px) and (max-width: 900px)", () => {
+      const trigger = ScrollTrigger.create({
+        trigger: story,
+        start: "top top",
+        end: () => `+=${Math.max(window.innerHeight * 2.55, steps.length * 360)}`,
+        pin: true,
+        scrub: 0.45,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setStoryProgress(self.progress),
+        onRefresh: (self) => setStoryProgress(self.progress),
+      });
+
+      return () => trigger.kill();
+    });
+
+    media.add("(max-width: 760px)", () => {
+      const trigger = ScrollTrigger.create({
+        trigger: story,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 0.45,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => setStoryProgress(self.progress),
+        onRefresh: (self) => setStoryProgress(self.progress),
+      });
+
+      return () => trigger.kill();
     });
   }
 
