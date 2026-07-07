@@ -5,8 +5,10 @@ import {
   BadgeCheck,
   Bike,
   ClipboardCheck,
+  ChevronDown,
   ListTree,
   MapPinned,
+  Menu,
   Network,
   Package as PackageIcon,
   ReceiptText,
@@ -15,6 +17,7 @@ import {
   ShoppingBag,
   Store,
   Waypoints,
+  X,
 } from "@lucide/astro";
 
 const projectStages = [
@@ -113,9 +116,9 @@ const pilotMetrics = [
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="MtaaLink is a low-capex courier network for Nairobi, built with local shops, independent riders, offline-ready parcel codes, and auditable route economics."
+      content="BebaRun is a low-capex courier network for Nairobi, built with local shops, independent riders, offline-ready parcel codes, and auditable route economics."
     />
-    <title>MtaaLink | Courier grid for Nairobi</title>
+    <title>BebaRun | Courier grid for Nairobi</title>
   </head>
   <body>
     <div class="cursor-dot" aria-hidden="true"></div>
@@ -124,27 +127,42 @@ const pilotMetrics = [
     <main>
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="ambient-sheen" aria-hidden="true"></div>
-        <nav class="topbar" aria-label="Primary navigation">
-          <a class="brand magnetic" href="#top" aria-label="MtaaLink home">
-            <svg class="brand-mark" viewBox="0 0 72 72" aria-hidden="true">
-              <path class="mark-frame" d="M36 5 67 23v26L36 67 5 49V23L36 5Z" />
-              <path class="mark-route" d="M19 47 31 36 41 40 53 25" />
-              <circle cx="19" cy="47" r="4" />
-              <circle cx="31" cy="36" r="4" />
-              <circle cx="41" cy="40" r="4" />
-              <circle cx="53" cy="25" r="4" />
-              <circle class="mark-center" cx="36" cy="23" r="3" />
-              <circle class="mark-center" cx="20" cy="26" r="3" />
-              <circle class="mark-center" cx="52" cy="49" r="3" />
+        <nav class="topbar" aria-label="Primary navigation" data-topbar>
+          <a class="brand magnetic" href="#top" aria-label="BebaRun home">
+            <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
+              <path
+                class="mark-bag"
+                fill-rule="evenodd"
+                d="M25 29h13v-3c0-5.5 4.5-10 10-10s10 4.5 10 10v3h13c5 0 9 4 9 9v28c0 5-4 9-9 9H25c-5 0-9-4-9-9V38c0-5 4-9 9-9Zm20 0h6v-3c0-1.7-1.3-3-3-3s-3 1.3-3 3v3Z"
+              />
+              <text class="mark-letter" x="48" y="52" text-anchor="middle" dominant-baseline="central">B</text>
             </svg>
-            <span>MtaaLink</span>
+            <span class="brand-wordmark">BebaRun</span>
           </a>
 
-          <div class="nav-links">
-            <a class="magnetic" href="#concept">Concept</a>
-            <a class="magnetic" href="#story">Flow</a>
-            <a class="magnetic" href="#economics">Economics</a>
-            <a class="magnetic" href="#lead">Lead</a>
+          <button
+            class="nav-toggle"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-controls="topbar-menu"
+            aria-expanded="false"
+            data-nav-toggle
+          >
+            <Menu class="nav-toggle-icon nav-toggle-open" aria-hidden="true" />
+            <X class="nav-toggle-icon nav-toggle-close" aria-hidden="true" />
+          </button>
+
+          <div class="topbar-menu" id="topbar-menu" data-nav-menu>
+            <div class="nav-links">
+              <a class="magnetic" href="#concept">Network</a>
+              <a class="magnetic" href="#story">Flow</a>
+              <a class="magnetic" href="#economics">Economics</a>
+              <a class="magnetic" href="#pilot">Pilot</a>
+            </div>
+            <a class="topbar-cta magnetic" href="#lead">
+              <span class="topbar-cta-full">Pilot deck</span>
+              <span class="topbar-cta-short">Deck</span>
+            </a>
           </div>
         </nav>
 
@@ -164,7 +182,7 @@ const pilotMetrics = [
               </span>
             </h1>
             <p class="hero-lede">
-              MtaaLink turns local shops into parcel points and lets independent riders move sealed bags across Nairobi.
+              BebaRun turns local shops into parcel points and lets independent riders move sealed bags across Nairobi.
               Short marker codes, fixed customer quotes, and auditable route economics.
             </p>
             <div class="hero-actions" aria-label="Primary actions">
@@ -661,7 +679,7 @@ const pilotMetrics = [
         </div>
       </section>
 
-      <InvestorMotion client:visible />
+      <InvestorMotion client:load />
 
       <section class="section economics" id="economics">
         <div class="section-heading simple-heading reveal">
@@ -790,40 +808,69 @@ const pilotMetrics = [
         <div class="pilot-system reveal" data-pilot-system>
           <div class="pilot-console">
             <div class="pilot-console-head">
-              <span><Route class="pilot-icon" /> Corridor pilot</span>
+              <span><Route class="pilot-icon" /> Live corridor</span>
               <strong data-pilot-window>Week 01</strong>
             </div>
 
             <div class="pilot-map-panel" aria-label="Pilot corridor preview">
-              <svg class="pilot-corridor-svg" viewBox="0 0 620 320" aria-hidden="true">
-                <path class="pilot-road" d="M70 230 C148 160 220 188 292 130 S438 84 548 132"></path>
-                <path class="pilot-road-active" d="M70 230 C148 160 220 188 292 130 S438 84 548 132"></path>
-              </svg>
-              <button class="pilot-point is-active" type="button" data-pilot-point="0" style="--x: 10%; --y: 66%;">
-                <Store class="pilot-point-icon" />
-                <span>Shop ring</span>
-              </button>
-              <button class="pilot-point" type="button" data-pilot-point="1" style="--x: 36%; --y: 48%;">
-                <ShoppingBag class="pilot-point-icon" />
-                <span>Sort bags</span>
-              </button>
-              <button class="pilot-point" type="button" data-pilot-point="2" style="--x: 63%; --y: 28%;">
-                <Bike class="pilot-point-icon" />
-                <span>Rider market</span>
-              </button>
-              <button class="pilot-point" type="button" data-pilot-point="3" style="--x: 82%; --y: 42%;">
-                <BadgeCheck class="pilot-point-icon" />
-                <span>Ledger</span>
-              </button>
-              <div class="pilot-rider" aria-hidden="true">
-                <Bike class="pilot-rider-icon" />
-                <span data-pilot-rider-label>R2</span>
+              <div class="pilot-map-status">
+                <span>One route, four gates</span>
+                <strong>P1 -> P4</strong>
+              </div>
+              <div class="pilot-corridor-rail">
+                <div class="pilot-rail-line" aria-hidden="true"><span></span></div>
+                <button class="pilot-point is-active" type="button" data-pilot-point="0">
+                  <span class="pilot-step-code">01</span>
+                  <Store class="pilot-point-icon" />
+                  <strong>Shop ring</strong>
+                  <em>5-8 points</em>
+                </button>
+                <button class="pilot-point" type="button" data-pilot-point="1">
+                  <span class="pilot-step-code">02</span>
+                  <ShoppingBag class="pilot-point-icon" />
+                  <strong>Sort bags</strong>
+                  <em>8 directions</em>
+                </button>
+                <button class="pilot-point" type="button" data-pilot-point="2">
+                  <span class="pilot-step-code">03</span>
+                  <Bike class="pilot-point-icon" />
+                  <strong>Rider market</strong>
+                  <em>live bid</em>
+                </button>
+                <button class="pilot-point" type="button" data-pilot-point="3">
+                  <span class="pilot-step-code">04</span>
+                  <BadgeCheck class="pilot-point-icon" />
+                  <strong>Ledger</strong>
+                  <em>audit gate</em>
+                </button>
+                <div class="pilot-rider" aria-hidden="true">
+                  <Bike class="pilot-rider-icon" />
+                  <span data-pilot-rider-label>R2</span>
+                </div>
+              </div>
+              <div class="pilot-map-note">
+                <span>No expansion until this corridor repeats without manual dispatch.</span>
+              </div>
+            </div>
+
+            <div class="pilot-console-foot" aria-label="Corridor operating rules">
+              <div>
+                <span>Scope</span>
+                <strong>1 corridor</strong>
+              </div>
+              <div>
+                <span>Proof window</span>
+                <strong>4 weeks</strong>
+              </div>
+              <div>
+                <span>Scale rule</span>
+                <strong>ledger first</strong>
               </div>
             </div>
           </div>
 
           <div class="pilot-control-panel">
-            <div>
+            <div class="pilot-focus-card">
               <p class="eyebrow">Pilot focus</p>
               <h3 data-pilot-title>Recruit a tight shop ring</h3>
               <p data-pilot-copy>
@@ -832,10 +879,10 @@ const pilotMetrics = [
             </div>
 
             <div class="pilot-tabs" role="tablist" aria-label="Pilot stage">
-              <button class="is-active" type="button" data-pilot-tab="0">Shop ring</button>
-              <button type="button" data-pilot-tab="1">Sort bags</button>
-              <button type="button" data-pilot-tab="2">Rider market</button>
-              <button type="button" data-pilot-tab="3">Ledger</button>
+              <button class="is-active" type="button" data-pilot-tab="0"><span>01</span><strong>Shop ring</strong></button>
+              <button type="button" data-pilot-tab="1"><span>02</span><strong>Sort bags</strong></button>
+              <button type="button" data-pilot-tab="2"><span>03</span><strong>Rider market</strong></button>
+              <button type="button" data-pilot-tab="3"><span>04</span><strong>Ledger</strong></button>
             </div>
 
             <div class="pilot-signal-grid" aria-label="Pilot metrics">
@@ -860,7 +907,7 @@ const pilotMetrics = [
         <div class="lead-panel reveal" data-lead-panel>
           <div class="lead-copy">
             <p class="eyebrow">Contact route</p>
-            <h2 id="lead-title" data-lead-title>Choose the right MtaaLink conversation.</h2>
+            <h2 id="lead-title" data-lead-title>Choose the right BebaRun conversation.</h2>
             <p data-lead-copy>
               Investors can request the deck. Operators, shop owners, riders, and partners can route their interest to the
               right pilot lane.
@@ -895,16 +942,29 @@ const pilotMetrics = [
               Email
               <input name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
             </label>
-            <label>
+            <div class="lead-form-field lead-type-field">
               <span data-lead-type-label>Investor type</span>
-              <select name="type" required data-lead-type>
+              <select class="lead-native-select" name="type" data-lead-type aria-hidden="true" tabindex="-1">
                 <option value="">Select one</option>
                 <option>Angel investor</option>
                 <option>VC / fund</option>
                 <option>Strategic partner</option>
                 <option>Operator / advisor</option>
               </select>
-            </label>
+              <div class="lead-custom-select" data-lead-select>
+                <button
+                  class="lead-select-trigger"
+                  type="button"
+                  aria-haspopup="listbox"
+                  aria-expanded="false"
+                  data-lead-select-trigger
+                >
+                  <span data-lead-select-value>Select one</span>
+                  <ChevronDown class="lead-select-icon" aria-hidden="true" />
+                </button>
+                <div class="lead-select-menu" role="listbox" data-lead-select-menu></div>
+              </div>
+            </div>
             <label>
               <span data-lead-message-label>What should we send?</span>
               <textarea
@@ -924,9 +984,16 @@ const pilotMetrics = [
     <footer class="site-footer">
       <div class="footer-inner">
         <div class="footer-brand">
-          <a class="brand" href="#top" aria-label="MtaaLink home">
-            <span>Mtaa</span>
-            <strong>Link</strong>
+          <a class="brand" href="#top" aria-label="BebaRun home">
+            <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
+              <path
+                class="mark-bag"
+                fill-rule="evenodd"
+                d="M25 29h13v-3c0-5.5 4.5-10 10-10s10 4.5 10 10v3h13c5 0 9 4 9 9v28c0 5-4 9-9 9H25c-5 0-9-4-9-9V38c0-5 4-9 9-9Zm20 0h6v-3c0-1.7-1.3-3-3-3s-3 1.3-3 3v3Z"
+              />
+              <text class="mark-letter" x="48" y="52" text-anchor="middle" dominant-baseline="central">B</text>
+            </svg>
+            <span class="brand-wordmark">BebaRun</span>
           </a>
           <p>
             A shop-first courier mesh for sealed bags, local riders, fixed sender quotes, and audit-ready route economics.
@@ -1090,6 +1157,11 @@ const pilotMetrics = [
       border-color: var(--orange);
       background: rgba(254, 127, 45, 0.08);
     }
+
+    .cursor-dot.is-hidden,
+    .cursor-ring.is-hidden {
+      opacity: 0;
+    }
   }
 
   .hero,
@@ -1135,39 +1207,45 @@ const pilotMetrics = [
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 7px;
+    min-height: 42px;
     color: var(--black);
-    font-size: 1.08rem;
-    font-weight: 900;
+    font-size: 1.05rem;
+    font-weight: 1000;
     letter-spacing: 0;
+    text-decoration: none;
   }
 
   .brand-mark {
-    width: 46px;
-    height: 46px;
+    display: block;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    overflow: visible;
+    transform: translateY(-0.5px);
   }
 
-  .mark-frame {
-    fill: var(--white);
-    stroke: var(--navy);
-    stroke-width: 3;
-  }
-
-  .mark-route {
-    fill: none;
-    stroke: var(--orange);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 6;
-  }
-
-  .brand-mark circle {
+  .mark-bag {
     fill: var(--black);
   }
 
-  .brand-mark .mark-center {
-    fill: var(--navy);
-    opacity: 0.64;
+  .mark-letter {
+    fill: var(--white);
+    font-family:
+      "Arial Black", "Aptos Display", Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+      sans-serif;
+    font-size: 24px;
+    font-weight: 950;
+    letter-spacing: 0;
+  }
+
+  .brand-wordmark {
+    display: inline-block;
+    color: var(--black);
+    font-weight: 1000;
+    line-height: 0.92;
+    letter-spacing: 0.025em;
+    transform: translateY(0);
   }
 
   .nav-links {
@@ -2433,6 +2511,14 @@ const pilotMetrics = [
     font-weight: 900;
   }
 
+  .lead-form-field {
+    display: grid;
+    gap: 7px;
+    color: var(--navy);
+    font-size: 0.84rem;
+    font-weight: 900;
+  }
+
   .lead-form input,
   .lead-form select,
   .lead-form textarea {
@@ -2585,8 +2671,8 @@ const pilotMetrics = [
     }
 
     .brand-mark {
-      width: 42px;
-      height: 42px;
+      width: 34px;
+      height: 34px;
     }
 
     .hero-grid {
@@ -3588,7 +3674,8 @@ const pilotMetrics = [
     color: var(--white);
   }
 
-  .lead-form label {
+  .lead-form label,
+  .lead-form-field {
     color: rgba(255, 255, 255, 0.82);
   }
 
@@ -3623,31 +3710,32 @@ const pilotMetrics = [
 
   .pilot-system {
     display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(340px, 0.62fr);
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(340px, 0.56fr);
+    gap: clamp(14px, 2vw, 20px);
     margin-top: clamp(34px, 5vw, 56px);
   }
 
   .pilot-console,
   .pilot-control-panel {
-    border: 1px solid rgba(35, 61, 77, 0.12);
-    border-radius: 30px;
+    border: 1px solid rgba(35, 61, 77, 0.09);
+    border-radius: 24px;
     background:
-      linear-gradient(145deg, rgba(255, 255, 255, 0.84), rgba(234, 236, 240, 0.54)),
-      rgba(255, 255, 255, 0.68);
-    box-shadow: 0 28px 90px rgba(35, 61, 77, 0.12);
+      linear-gradient(145deg, rgba(255, 255, 255, 0.9), rgba(244, 246, 248, 0.56)),
+      rgba(255, 255, 255, 0.72);
+    box-shadow: 0 22px 64px rgba(35, 61, 77, 0.07);
     backdrop-filter: blur(18px);
   }
 
   .pilot-console {
+    position: relative;
     display: grid;
-    grid-template-rows: auto minmax(420px, 1fr);
-    gap: 16px;
+    grid-template-rows: auto minmax(440px, 1fr) auto;
+    gap: 18px;
+    overflow: hidden;
     padding: clamp(18px, 2.4vw, 28px);
   }
 
-  .pilot-console-head,
-  .pilot-control-panel .eyebrow {
+  .pilot-console-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3682,103 +3770,208 @@ const pilotMetrics = [
 
   .pilot-map-panel {
     position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(260px, 1fr) auto;
+    gap: 18px;
     overflow: hidden;
-    border: 1px solid rgba(35, 61, 77, 0.1);
-    border-radius: 24px;
+    min-width: 0;
+    min-height: 380px;
+    border-top: 1px solid rgba(35, 61, 77, 0.08);
+    border-bottom: 1px solid rgba(35, 61, 77, 0.08);
+    border-radius: 0;
     background:
-      linear-gradient(90deg, rgba(35, 61, 77, 0.055) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(35, 61, 77, 0.055) 1px, transparent 1px),
-      radial-gradient(circle at 18% 76%, rgba(254, 127, 45, 0.08), transparent 34%),
-      rgba(255, 255, 255, 0.58);
-    background-size: 42px 42px, 42px 42px, auto, auto;
+      linear-gradient(90deg, rgba(35, 61, 77, 0.04) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(35, 61, 77, 0.04) 1px, transparent 1px),
+      rgba(255, 255, 255, 0.3);
+    background-size: 42px 42px, 42px 42px, auto;
   }
 
-  .pilot-corridor-svg {
+  .pilot-map-status,
+  .pilot-map-note {
+    position: relative;
+    z-index: 4;
+    display: inline-grid;
+    gap: 5px;
+    width: max-content;
+    max-width: min(100%, 320px);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.76);
+    padding: 10px 12px;
+    box-shadow: 0 12px 30px rgba(35, 61, 77, 0.07);
+  }
+
+  .pilot-map-status {
+    align-self: start;
+    justify-self: start;
+  }
+
+  .pilot-map-note {
+    align-self: end;
+    justify-self: end;
+    max-width: 300px;
+  }
+
+  .pilot-map-status span,
+  .pilot-map-note span,
+  .pilot-console-foot span {
+    color: rgba(35, 61, 77, 0.56);
+    font-size: 0.62rem;
+    font-weight: 900;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .pilot-map-note span {
+    overflow-wrap: anywhere;
+  }
+
+  .pilot-map-status strong,
+  .pilot-console-foot strong {
+    color: var(--black);
+    font-size: 0.84rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .pilot-corridor-rail {
+    position: relative;
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    align-content: center;
+    justify-self: stretch;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 250px;
+    overflow: hidden;
+    padding: 22px 0 72px;
+  }
+
+  .pilot-rail-line {
     position: absolute;
-    inset: 10%;
-    width: 80%;
-    height: 80%;
+    z-index: 1;
+    top: calc(50% - 36px);
+    right: 12.5%;
+    left: 12.5%;
+    height: 9px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(35, 61, 77, 0.11);
   }
 
-  .pilot-road,
-  .pilot-road-active {
-    fill: none;
-    stroke-linecap: round;
-    stroke-width: 18;
-  }
-
-  .pilot-road {
-    stroke: rgba(35, 61, 77, 0.12);
-  }
-
-  .pilot-road-active {
-    stroke: var(--orange);
-    stroke-dasharray: 520;
-    stroke-dashoffset: calc(520 - (var(--pilot-progress, 0.18) * 520));
-    transition: stroke-dashoffset 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  .pilot-rail-line span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--orange);
+    transform: scaleX(var(--pilot-progress, 0));
+    transform-origin: left center;
+    transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .pilot-point {
-    position: absolute;
-    top: var(--y);
-    left: var(--x);
-    display: inline-grid;
-    grid-template-columns: 32px auto;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-rows: 24px 46px auto auto;
+    justify-items: center;
     gap: 8px;
-    align-items: center;
-    border: 1px solid rgba(35, 61, 77, 0.12);
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.86);
+    min-width: 0;
+    border: 0;
+    background: transparent;
     color: var(--navy);
-    padding: 9px 10px 9px 8px;
+    padding: 0 4px;
     font: inherit;
-    font-size: 0.76rem;
-    font-weight: 900;
-    text-align: left;
-    box-shadow: 0 16px 44px rgba(35, 61, 77, 0.12);
+    text-align: center;
     cursor: pointer;
-    transform: translate(-50%, -50%);
-    transition:
-      background 180ms ease,
-      border-color 180ms ease,
-      transform 180ms ease;
+    transition: transform 180ms ease;
   }
 
   .pilot-point:hover,
   .pilot-point.is-active {
-    border-color: rgba(254, 127, 45, 0.38);
-    background: rgba(254, 127, 45, 0.14);
-    transform: translate(-50%, -50%) translateY(-3px);
+    transform: translateY(-3px);
+  }
+
+  .pilot-step-code {
+    display: grid;
+    width: 34px;
+    height: 24px;
+    place-items: center;
+    border-radius: 999px;
+    background: #fff;
+    color: rgba(35, 61, 77, 0.58);
+    font-size: 0.62rem;
+    font-weight: 950;
+    line-height: 1;
   }
 
   .pilot-point-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 11px;
-    background: rgba(255, 255, 255, 0.7);
+    width: 46px;
+    height: 46px;
+    border: 1px solid rgba(35, 61, 77, 0.08);
+    border-radius: 15px;
+    background: #fff;
     color: var(--black);
-    padding: 7px;
+    padding: 11px;
+    box-shadow: 0 14px 32px rgba(35, 61, 77, 0.1);
+    transition:
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .pilot-point strong {
+    font-size: 0.76rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .pilot-point em {
+    color: rgba(35, 61, 77, 0.58);
+    font-size: 0.62rem;
+    font-style: normal;
+    font-weight: 850;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .pilot-point.is-active .pilot-step-code,
+  .pilot-point.is-active .pilot-point-icon {
+    background: #ffe6d5;
+    color: var(--black);
+  }
+
+  .pilot-point.is-active .pilot-point-icon {
+    border-color: rgba(254, 127, 45, 0.32);
+    transform: translateY(-2px);
   }
 
   .pilot-rider {
     position: absolute;
-    top: var(--pilot-rider-y, 66%);
-    left: var(--pilot-rider-x, 12%);
+    z-index: 4;
+    bottom: 18px;
+    left: var(--pilot-marker-x, 12.5%);
     display: inline-grid;
     grid-template-columns: 34px auto;
     gap: 7px;
     align-items: center;
     border-radius: 999px;
-    background: var(--black);
+    background: rgba(5, 5, 5, 0.94);
     color: var(--white);
     padding: 6px 11px 6px 6px;
     font-size: 0.72rem;
     font-weight: 950;
-    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.2);
-    transform: translate(-50%, -50%);
+    box-shadow: none;
+    transform: translateX(-50%);
     transition:
-      top 420ms cubic-bezier(0.22, 1, 0.36, 1),
-      left 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      left 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   .pilot-rider-icon {
@@ -3790,16 +3983,50 @@ const pilotMetrics = [
     padding: 7px;
   }
 
+  .pilot-console-foot {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    overflow: hidden;
+    border: 1px solid rgba(35, 61, 77, 0.08);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.48);
+  }
+
+  .pilot-console-foot div {
+    display: grid;
+    gap: 6px;
+    min-height: 82px;
+    align-content: center;
+    padding: 14px;
+  }
+
+  .pilot-console-foot div + div {
+    border-left: 1px solid rgba(35, 61, 77, 0.08);
+  }
+
   .pilot-control-panel {
     display: grid;
-    align-content: space-between;
-    gap: 22px;
+    grid-template-rows: 260px auto auto;
+    align-content: start;
+    gap: 18px;
     padding: clamp(20px, 2.6vw, 32px);
+  }
+
+  .pilot-focus-card {
+    box-sizing: border-box;
+    display: grid;
+    gap: 0;
+    height: 260px;
+    min-height: 0;
+    align-content: start;
+    border-bottom: 1px solid rgba(35, 61, 77, 0.08);
+    padding-bottom: 20px;
   }
 
   .pilot-control-panel h3 {
     margin-top: 14px;
-    font-size: clamp(2rem, 4vw, 3.35rem);
+    font-size: clamp(2rem, 3.4vw, 3.2rem);
     line-height: 0.94;
   }
 
@@ -3813,11 +4040,11 @@ const pilotMetrics = [
 
   .pilot-tabs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 0;
+    border-top: 1px solid rgba(35, 61, 77, 0.08);
+    border-bottom: 1px solid rgba(35, 61, 77, 0.08);
   }
 
-  .pilot-tabs button,
   .lead-switch button {
     min-height: 42px;
     border: 1px solid rgba(35, 61, 77, 0.12);
@@ -3835,18 +4062,77 @@ const pilotMetrics = [
       color 180ms ease;
   }
 
-  .pilot-tabs button.is-active,
   .lead-switch button.is-active {
     border-color: rgba(254, 127, 45, 0.42);
     background: var(--orange);
     color: var(--black);
   }
 
+  .pilot-tabs button {
+    position: relative;
+    display: grid;
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    min-height: 58px;
+    border: 0;
+    background: transparent;
+    color: var(--navy);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .pilot-tabs button + button {
+    border-top: 1px solid rgba(35, 61, 77, 0.08);
+  }
+
+  .pilot-tabs button::before {
+    position: absolute;
+    top: 12px;
+    bottom: 12px;
+    left: 0;
+    width: 3px;
+    border-radius: 999px;
+    background: rgba(254, 127, 45, 0);
+    content: "";
+  }
+
+  .pilot-tabs button span {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(35, 61, 77, 0.07);
+    font-size: 0.68rem;
+    font-weight: 950;
+  }
+
+  .pilot-tabs button strong {
+    font-size: 0.78rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .pilot-tabs button.is-active {
+    color: var(--black);
+  }
+
+  .pilot-tabs button.is-active::before {
+    background: rgba(254, 127, 45, 0.78);
+  }
+
+  .pilot-tabs button.is-active span {
+    background: rgba(254, 127, 45, 0.16);
+  }
+
   .pilot-signal-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     overflow: hidden;
-    border: 1px solid rgba(35, 61, 77, 0.1);
+    border: 1px solid rgba(35, 61, 77, 0.08);
     border-radius: 18px;
     background: rgba(255, 255, 255, 0.56);
   }
@@ -3860,7 +4146,7 @@ const pilotMetrics = [
   }
 
   .pilot-signal-grid div + div {
-    border-left: 1px solid rgba(35, 61, 77, 0.1);
+    border-left: 1px solid rgba(35, 61, 77, 0.08);
   }
 
   .pilot-signal-grid span {
@@ -3879,6 +4165,8 @@ const pilotMetrics = [
   .lead-panel {
     position: relative;
     grid-template-columns: minmax(0, 0.76fr) minmax(340px, 0.7fr);
+    align-items: start;
+    min-height: 768px;
     background:
       radial-gradient(circle at 16% 18%, rgba(254, 127, 45, 0.22), transparent 34%),
       linear-gradient(145deg, #050505, #12191d 58%, #241206);
@@ -3886,7 +4174,16 @@ const pilotMetrics = [
 
   .lead-copy {
     display: grid;
+    min-height: 652px;
     align-content: start;
+  }
+
+  .lead-panel h2 {
+    min-height: 356px;
+  }
+
+  .lead-copy > [data-lead-copy] {
+    min-height: 52px;
   }
 
   .lead-switch {
@@ -3938,6 +4235,8 @@ const pilotMetrics = [
 
   .lead-form {
     position: relative;
+    min-height: 652px;
+    align-content: start;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 24px;
     background: rgba(255, 255, 255, 0.06);
@@ -3946,6 +4245,131 @@ const pilotMetrics = [
 
   .lead-form select option {
     color: var(--black);
+  }
+
+  .lead-form .lead-native-select {
+    position: absolute;
+    box-sizing: border-box;
+    width: 1px;
+    height: 1px;
+    min-height: 0;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .lead-custom-select {
+    position: relative;
+    z-index: 8;
+  }
+
+  .lead-select-trigger {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 18px;
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    min-height: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.88);
+    padding: 0 14px;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      box-shadow 180ms ease;
+  }
+
+  .lead-select-trigger:hover,
+  .lead-custom-select.is-open .lead-select-trigger {
+    border-color: rgba(254, 127, 45, 0.42);
+    background: rgba(255, 255, 255, 0.12);
+  }
+
+  .lead-custom-select.has-error .lead-select-trigger {
+    border-color: rgba(254, 127, 45, 0.74);
+    box-shadow: 0 0 0 4px rgba(254, 127, 45, 0.12);
+  }
+
+  .lead-select-trigger span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .lead-select-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--orange);
+    transition: transform 180ms ease;
+  }
+
+  .lead-custom-select.is-open .lead-select-icon {
+    transform: rotate(180deg);
+  }
+
+  .lead-select-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    left: 0;
+    z-index: 20;
+    display: grid;
+    gap: 4px;
+    max-height: 216px;
+    overflow: auto;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 18px;
+    background: #10171c;
+    padding: 6px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.28);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .lead-custom-select.is-open .lead-select-menu {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+
+  .lead-select-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 40px;
+    border: 0;
+    border-radius: 12px;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.78);
+    padding: 0 10px;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .lead-select-option:hover,
+  .lead-select-option.is-selected {
+    background: rgba(254, 127, 45, 0.14);
+    color: var(--white);
+  }
+
+  .lead-select-option.is-selected::after {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--orange);
+    content: "";
   }
 
   .site-footer {
@@ -4046,14 +4470,93 @@ const pilotMetrics = [
       border-radius: 22px;
     }
 
-    .pilot-system,
     .lead-panel,
     .footer-inner {
       grid-template-columns: 1fr;
     }
 
+    .pilot-system {
+      grid-template-columns: minmax(0, 1fr) minmax(230px, 0.42fr);
+      gap: 12px;
+    }
+
     .pilot-console {
-      grid-template-rows: auto minmax(360px, 1fr);
+      grid-template-rows: auto auto auto;
+    }
+
+    .pilot-control-panel {
+      align-self: start;
+      grid-template-rows: 238px auto auto;
+      gap: 12px;
+      padding: 18px;
+    }
+
+    .pilot-focus-card {
+      height: 238px;
+      min-height: 0;
+      padding-bottom: 14px;
+    }
+
+    .pilot-control-panel h3 {
+      margin-top: 10px;
+      font-size: clamp(1.42rem, 3.4vw, 2.2rem);
+      line-height: 0.96;
+    }
+
+    .pilot-control-panel p:not(.eyebrow) {
+      margin-top: 12px;
+      font-size: 0.88rem;
+      line-height: 1.42;
+    }
+
+    .pilot-tabs button {
+      min-height: 48px;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    .pilot-tabs button span {
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+    }
+
+    .pilot-tabs button strong {
+      font-size: 0.7rem;
+    }
+
+    .pilot-signal-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .lead-panel {
+      min-height: 1019px;
+    }
+
+    .lead-copy {
+      min-height: 364px;
+    }
+
+    .lead-panel h2 {
+      min-height: 94px;
+    }
+
+    .lead-copy > [data-lead-copy] {
+      min-height: 26px;
+    }
+
+    .lead-form {
+      min-height: 519px;
+    }
+
+    .pilot-signal-grid div {
+      min-height: 58px;
+      padding: 12px 14px;
+    }
+
+    .pilot-signal-grid div + div {
+      border-top: 1px solid rgba(35, 61, 77, 0.08);
+      border-left: 0;
     }
 
     .footer-status {
@@ -4108,34 +4611,160 @@ const pilotMetrics = [
     }
 
     .pilot-map-panel {
-      min-height: 360px;
+      grid-template-rows: auto auto auto;
+      gap: 14px;
+      min-height: auto;
+    }
+
+    .pilot-map-note {
+      box-sizing: border-box;
+      justify-self: stretch;
+      width: 100%;
+      max-width: none;
+    }
+
+    .pilot-corridor-rail {
+      box-sizing: border-box;
+      grid-template-columns: 1fr;
+      gap: 0;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+      min-height: 316px;
+      padding: 6px 88px 12px 0;
+    }
+
+    .pilot-rail-line {
+      top: 42px;
+      bottom: 42px;
+      left: 55px;
+      width: 8px;
+      height: auto;
+      right: auto;
+    }
+
+    .pilot-rail-line span {
+      transform: scaleY(var(--pilot-progress, 0));
+      transform-origin: center top;
     }
 
     .pilot-point {
-      grid-template-columns: 30px;
-      justify-items: center;
-      padding: 8px;
+      display: grid;
+      grid-template-columns: 28px 42px minmax(0, 1fr);
+      grid-template-rows: auto auto;
+      min-height: 72px;
+      align-items: center;
+      justify-items: start;
+      gap: 3px 10px;
+      padding: 0;
+      text-align: left;
+      transform: none;
     }
 
-    .pilot-point span {
-      display: none;
+    .pilot-point:hover,
+    .pilot-point.is-active {
+      transform: none;
+    }
+
+    .pilot-step-code {
+      grid-row: 1 / span 2;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      font-size: 0.58rem;
+    }
+
+    .pilot-point-icon {
+      grid-row: 1 / span 2;
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .pilot-point strong {
+      font-size: 0.72rem;
+    }
+
+    .pilot-point em {
+      font-size: 0.58rem;
     }
 
     .pilot-rider {
-      grid-template-columns: 30px auto;
+      top: 22px;
+      right: 8px;
+      bottom: auto;
+      left: auto;
+      grid-template-columns: 28px auto;
       font-size: 0.66rem;
+      transform: translateY(calc(var(--pilot-index, 0) * 72px));
+      transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .pilot-rider-icon {
-      width: 30px;
-      height: 30px;
+      width: 28px;
+      height: 28px;
     }
 
-    .pilot-tabs,
+    .pilot-console-foot {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .pilot-console-foot div {
+      min-height: 58px;
+      padding: 10px 8px;
+    }
+
+    .pilot-console-foot div + div {
+      border-top: 0;
+      border-left: 1px solid rgba(35, 61, 77, 0.08);
+    }
+
+    .pilot-console-foot span {
+      font-size: 0.5rem;
+    }
+
+    .pilot-console-foot strong {
+      font-size: 0.66rem;
+      line-height: 1.05;
+    }
+
+    .pilot-focus-card {
+      min-height: 0;
+      padding-bottom: 14px;
+    }
+
+    .pilot-tabs {
+      display: none;
+    }
+
+    .pilot-system,
     .pilot-signal-grid,
     .lead-switch,
     .lead-summary {
       grid-template-columns: 1fr;
+    }
+
+    .pilot-control-panel {
+      grid-template-rows: 198px auto;
+      gap: 12px;
+      padding: 16px;
+    }
+
+    .pilot-focus-card {
+      height: 198px;
+      min-height: 0;
+    }
+
+    .pilot-control-panel h3 {
+      margin-top: 10px;
+      font-size: clamp(1.65rem, 8vw, 2.35rem);
+    }
+
+    .pilot-control-panel p:not(.eyebrow) {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      line-height: 1.42;
     }
 
     .pilot-signal-grid div + div {
@@ -4144,7 +4773,24 @@ const pilotMetrics = [
     }
 
     .lead-form {
+      min-height: 506px;
       padding: 16px;
+    }
+
+    .lead-panel {
+      min-height: 1364px;
+    }
+
+    .lead-copy {
+      min-height: 782px;
+    }
+
+    .lead-panel h2 {
+      min-height: 216px;
+    }
+
+    .lead-copy > [data-lead-copy] {
+      min-height: 78px;
     }
 
     .footer-inner {
@@ -7394,9 +8040,39 @@ const pilotMetrics = [
       justify-items: stretch;
     }
 
+    .hero-copy {
+      max-width: min(100%, 360px);
+    }
+
+    .hero-copy > .eyebrow {
+      max-width: 31ch;
+      margin-right: auto;
+      margin-left: auto;
+      line-height: 1.15;
+      white-space: normal;
+    }
+
     .hero-copy h1 {
-      font-size: clamp(2.28rem, 10vw, 2.74rem);
+      max-width: 100%;
+      font-size: clamp(2rem, 8.6vw, 2.42rem);
       line-height: 0.94;
+    }
+
+    .hero-title-line {
+      overflow: visible;
+    }
+
+    .hero-actions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: min(100%, 300px);
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    .hero-actions .button {
+      width: auto;
+      min-width: 0;
     }
 
     .route-lab {
@@ -7615,6 +8291,488 @@ const pilotMetrics = [
     .lab-readout strong,
     .lab-readout em {
       font-size: 0.68rem;
+    }
+  }
+  /* Final pinned navigation */
+  .hero {
+    padding-top: clamp(98px, 7vw, 112px);
+  }
+
+  .topbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    z-index: 90;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    width: min(1160px, calc(100% - 32px));
+    height: 66px;
+    margin: 0 auto;
+    border: 1px solid rgba(35, 61, 77, 0.12);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.78);
+    box-shadow:
+      0 18px 54px rgba(35, 61, 77, 0.08),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    gap: 24px;
+    padding: 9px 11px 9px 18px;
+    overflow: visible;
+    backdrop-filter: blur(22px) saturate(1.1);
+    transition:
+      width 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      height 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      padding 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      gap 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-radius 260ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 220ms ease,
+      border-color 220ms ease,
+      box-shadow 220ms ease;
+  }
+
+  .topbar.is-scrolled {
+    width: min(640px, calc(100% - 32px));
+    height: 56px;
+    border-color: rgba(35, 61, 77, 0.13);
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.58);
+    box-shadow:
+      0 12px 34px rgba(35, 61, 77, 0.11),
+      inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    gap: 16px;
+    padding: 7px 8px 7px 15px;
+    backdrop-filter: blur(26px) saturate(1.16);
+  }
+
+  @media (min-width: 761px) {
+    .topbar.is-scrolled:hover,
+    .topbar.is-scrolled:focus-within {
+      width: min(1160px, calc(100% - 32px));
+      height: 66px;
+      border-color: rgba(35, 61, 77, 0.14);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow:
+        0 16px 48px rgba(35, 61, 77, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.88);
+      gap: 24px;
+      padding: 9px 11px 9px 18px;
+      backdrop-filter: blur(24px) saturate(1.12);
+    }
+
+    .topbar.is-scrolled:hover .topbar-menu,
+    .topbar.is-scrolled:focus-within .topbar-menu {
+      gap: 22px;
+    }
+
+    .topbar.is-scrolled:hover .nav-links,
+    .topbar.is-scrolled:focus-within .nav-links {
+      max-width: 360px;
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+  }
+
+  .topbar .brand {
+    display: inline-grid;
+    grid-template-columns: 38px auto;
+    align-items: center;
+    justify-self: start;
+    height: 48px;
+    min-height: 0;
+    min-width: 0;
+    gap: 4px;
+    padding: 0;
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  .topbar .brand-mark {
+    display: block;
+    width: 44px;
+    height: 44px;
+    align-self: center;
+    justify-self: center;
+    transform: translateY(-2px);
+  }
+
+  .topbar .mark-letter {
+    font-size: 24px;
+    transform: none;
+  }
+
+  .topbar .brand-wordmark {
+    align-self: center;
+    color: var(--black);
+    font-size: 1.32rem;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: 0;
+    transform: none;
+    white-space: nowrap;
+  }
+
+  .topbar-menu {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-width: 0;
+    gap: 22px;
+    transition: gap 220ms ease;
+  }
+
+  .topbar.is-scrolled .topbar-menu {
+    gap: 0;
+  }
+
+  .topbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    height: auto;
+    min-width: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    padding: 0;
+    backdrop-filter: none;
+    max-width: 360px;
+    overflow: hidden;
+    opacity: 1;
+    visibility: visible;
+    transition:
+      max-width 220ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 150ms ease,
+      visibility 150ms ease;
+  }
+
+  .topbar.is-scrolled .nav-links {
+    max-width: 0;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .topbar .nav-links a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    border-radius: 8px;
+    padding: 0 13px;
+    color: rgba(35, 61, 77, 0.76);
+    font-size: 0.83rem;
+    font-weight: 760;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color 160ms ease,
+      color 160ms ease;
+  }
+
+  .topbar .nav-links a::after {
+    position: absolute;
+    right: 13px;
+    bottom: 8px;
+    left: 13px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--orange);
+    content: "";
+    opacity: 0;
+    transition: opacity 160ms ease;
+  }
+
+  .topbar .nav-links a:hover,
+  .topbar .nav-links a:focus-visible {
+    background: rgba(35, 61, 77, 0.055);
+    color: var(--black);
+  }
+
+  .topbar .nav-links a.is-active {
+    color: var(--black);
+  }
+
+  .topbar .nav-links a.is-active::after {
+    opacity: 1;
+  }
+
+  .topbar-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 42px;
+    border: 1px solid #0f1317 !important;
+    border-radius: 8px;
+    background: #0f1317 !important;
+    color: var(--white) !important;
+    padding: 0 17px;
+    box-shadow:
+      0 10px 24px rgba(16, 20, 24, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    font-size: 0.82rem;
+    font-weight: 880;
+    line-height: 1;
+    text-decoration: none;
+    white-space: nowrap;
+    transition:
+      background-color 160ms ease,
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .topbar-cta:hover,
+  .topbar-cta:focus-visible {
+    border-color: #1d252c !important;
+    background: #1d252c !important;
+    box-shadow:
+      0 12px 28px rgba(16, 20, 24, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+
+  .topbar-cta-short {
+    display: none;
+  }
+
+  .nav-toggle {
+    display: none;
+  }
+
+  .topbar .brand:focus-visible,
+  .topbar .nav-links a:focus-visible,
+  .topbar-cta:focus-visible,
+  .nav-toggle:focus-visible {
+    outline: 2px solid rgba(254, 127, 45, 0.72);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 760px) {
+    .hero {
+      padding-top: 92px;
+    }
+
+    .cursor-dot,
+    .cursor-ring {
+      display: none !important;
+    }
+
+    .topbar {
+      top: 10px;
+      right: 10px;
+      left: 10px;
+      grid-template-columns: minmax(0, 1fr) 42px;
+      width: calc(100vw - 20px);
+      max-width: calc(100vw - 20px);
+      height: 64px;
+      border-radius: 16px;
+      gap: 12px;
+      padding: 9px 10px 9px 14px;
+    }
+
+    .topbar.is-scrolled {
+      width: min(310px, calc(100vw - 20px));
+      height: 56px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.6);
+      gap: 8px;
+      padding: 7px 8px 7px 12px;
+    }
+
+    .topbar .brand {
+      grid-template-columns: 36px auto;
+      height: 46px;
+      gap: 5px;
+      overflow: hidden;
+    }
+
+    .topbar .brand-mark {
+      width: 40px;
+      height: 40px;
+    }
+
+    .topbar.is-scrolled .brand {
+      grid-template-columns: 32px auto;
+      height: 40px;
+      gap: 4px;
+    }
+
+    .topbar.is-scrolled .brand-mark {
+      width: 34px;
+      height: 34px;
+    }
+
+    .topbar .mark-letter {
+      font-size: 24px;
+    }
+
+    .topbar .brand-wordmark {
+      min-width: 0;
+      overflow: hidden;
+      font-size: 1.16rem;
+      text-overflow: ellipsis;
+    }
+
+    .topbar.is-scrolled .brand-wordmark {
+      font-size: 0.96rem;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(35, 61, 77, 0.16);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      color: var(--black);
+      padding: 0;
+      transition:
+        background-color 160ms ease,
+        border-color 160ms ease;
+    }
+
+    .nav-toggle:hover,
+    .nav-toggle:focus-visible {
+      border-color: rgba(35, 61, 77, 0.26);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .nav-toggle-icon {
+      width: 20px;
+      height: 20px;
+      stroke-width: 2.2;
+    }
+
+    .nav-toggle-close {
+      display: none;
+    }
+
+    .topbar.is-menu-open .nav-toggle-open {
+      display: none;
+    }
+
+    .topbar.is-menu-open .nav-toggle-close {
+      display: block;
+    }
+
+    .topbar.is-scrolled .nav-toggle {
+      width: 40px;
+      height: 40px;
+    }
+
+    .topbar-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      left: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+      border: 1px solid rgba(35, 61, 77, 0.12);
+      border-radius: 16px;
+      z-index: 2;
+      background: #fff;
+      box-shadow:
+        0 18px 45px rgba(35, 61, 77, 0.13),
+        inset 0 1px 0 rgba(255, 255, 255, 0.94);
+      padding: 9px;
+      opacity: 0;
+      pointer-events: none;
+      visibility: hidden;
+      backdrop-filter: blur(20px) saturate(1.08);
+      transition:
+        opacity 160ms ease,
+        visibility 160ms ease;
+    }
+
+    .topbar.is-menu-open .topbar-menu {
+      opacity: 1 !important;
+      pointer-events: auto;
+      visibility: visible !important;
+    }
+
+    .topbar.is-scrolled.is-menu-open {
+      width: calc(100vw - 20px);
+    }
+
+    .topbar .nav-links {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2px;
+      width: 100%;
+      height: auto;
+      max-width: none;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+    }
+
+    .topbar.is-menu-open .nav-links {
+      max-width: none;
+      overflow: visible;
+      opacity: 1;
+      pointer-events: auto;
+      visibility: visible;
+    }
+
+    .topbar .nav-links a {
+      justify-content: flex-start;
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      padding: 0 12px;
+      font-size: 0.9rem;
+      color: rgba(35, 61, 77, 0.84);
+    }
+
+    .topbar .nav-links a::after {
+      top: 14px;
+      right: 12px;
+      bottom: auto;
+      left: auto;
+      width: 6px;
+      height: 6px;
+    }
+
+    .topbar-cta {
+      width: 100%;
+      height: 44px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      background: #0f1317 !important;
+      border-color: #0f1317 !important;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .topbar {
+      grid-template-columns: minmax(0, 1fr) 40px;
+      padding-left: 12px;
+    }
+
+    .topbar .brand {
+      grid-template-columns: 34px auto;
+      gap: 5px;
+    }
+
+    .topbar .brand-mark {
+      width: 38px;
+      height: 38px;
+    }
+
+    .topbar .brand-wordmark {
+      font-size: 0.95rem;
+    }
+
+    .nav-toggle {
+      width: 40px;
+      height: 40px;
     }
   }
 </style>
@@ -8008,7 +9166,6 @@ const pilotMetrics = [
       transform: translateY(112%);
     }
 
-    .hero .topbar,
     .hero .hero-copy > .eyebrow,
     .hero .hero-lede,
     .hero .hero-actions,
@@ -8734,9 +9891,47 @@ const pilotMetrics = [
   .scale-cycle-lines {
     position: absolute;
     inset: 0;
+    z-index: 0;
     width: 100%;
     height: 100%;
     overflow: visible;
+  }
+
+  .scale-cycle-runner {
+    position: absolute;
+    inset: 8.7%;
+    z-index: 1;
+    border: 1px solid rgba(35, 61, 77, 0.07);
+    border-top-color: rgba(254, 127, 45, 0.56);
+    border-right-color: rgba(254, 127, 45, 0.2);
+    border-radius: 999px;
+    pointer-events: none;
+    animation: scaleOrbitSpin 7.8s linear infinite;
+    will-change: transform;
+  }
+
+  .scale-cycle-runner::before {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    width: 11px;
+    height: 11px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    border-radius: 999px;
+    background: var(--orange);
+    box-shadow:
+      0 0 0 8px rgba(254, 127, 45, 0.11),
+      0 10px 20px rgba(254, 127, 45, 0.22);
+    content: "";
+    transform: translateX(-50%);
+  }
+
+  .scale-cycle-runner::after {
+    position: absolute;
+    inset: 15%;
+    border: 1px dashed rgba(254, 127, 45, 0.16);
+    border-radius: inherit;
+    content: "";
   }
 
   .scale-cycle-base,
@@ -8760,6 +9955,10 @@ const pilotMetrics = [
     will-change: stroke-dashoffset, stroke-dasharray;
   }
 
+  .scale-cycle-live.is-loading {
+    animation: scaleLiveGlow 1.45s ease-in-out infinite;
+  }
+
   .scale-cycle-spoke {
     stroke: rgba(35, 61, 77, 0.08);
     stroke-dasharray: 4 10;
@@ -8770,6 +9969,7 @@ const pilotMetrics = [
     position: absolute;
     top: 50%;
     left: 50%;
+    z-index: 3;
     display: grid;
     width: 150px;
     min-height: 114px;
@@ -8902,7 +10102,7 @@ const pilotMetrics = [
 
   .scale-cycle-node.is-active::after {
     border-color: rgba(254, 127, 45, 0.24);
-    animation: none;
+    animation: scaleNodeFocus 1.45s ease-out infinite;
     opacity: 1;
   }
 
@@ -9042,6 +10242,23 @@ const pilotMetrics = [
     100% {
       opacity: 0;
       transform: scale(1.12);
+    }
+  }
+
+  @keyframes scaleOrbitSpin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  @keyframes scaleLiveGlow {
+    0%,
+    100% {
+      filter: drop-shadow(0 5px 8px rgba(254, 127, 45, 0.14));
+    }
+
+    50% {
+      filter: drop-shadow(0 8px 16px rgba(254, 127, 45, 0.26));
     }
   }
 

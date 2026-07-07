@@ -6,6 +6,72 @@ import "lenis/dist/lenis.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const topbar = document.querySelector<HTMLElement>("[data-topbar]");
+
+if (topbar) {
+  const navLinks = Array.from(topbar.querySelectorAll<HTMLAnchorElement>(".nav-links a[href^='#']"));
+  const navToggle = topbar.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+  const navTargets = navLinks
+    .map((link) => {
+      const section = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+      return section ? { link, section } : null;
+    })
+    .filter((item): item is { link: HTMLAnchorElement; section: HTMLElement } => Boolean(item));
+
+  const setMenuOpen = (isOpen: boolean) => {
+    topbar.classList.toggle("is-menu-open", isOpen);
+    navToggle?.setAttribute("aria-expanded", String(isOpen));
+    navToggle?.setAttribute("aria-label", isOpen ? "Close navigation menu" : "Open navigation menu");
+  };
+
+  const updateTopbar = () => {
+    const scrollY = window.scrollY;
+    const scrollRange = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const scrollProgress = Math.min(1, Math.max(0, scrollY / scrollRange));
+    const activeY = scrollY + window.innerHeight * 0.32;
+    let activeLink: HTMLAnchorElement | null = null;
+
+    for (const { link, section } of navTargets) {
+      if (section.offsetTop <= activeY) {
+        activeLink = link;
+      }
+    }
+
+    topbar.classList.toggle("is-scrolled", scrollY > 18);
+    topbar.style.setProperty("--nav-progress", scrollProgress.toFixed(3));
+    navLinks.forEach((link) => link.classList.toggle("is-active", link === activeLink));
+  };
+
+  let topbarFrame = 0;
+  const queueTopbarUpdate = () => {
+    if (topbarFrame) return;
+    topbarFrame = window.requestAnimationFrame(() => {
+      topbarFrame = 0;
+      updateTopbar();
+    });
+  };
+
+  updateTopbar();
+  window.addEventListener("scroll", queueTopbarUpdate, { passive: true });
+  window.addEventListener("resize", queueTopbarUpdate, { passive: true });
+
+  navToggle?.addEventListener("click", () => {
+    setMenuOpen(!topbar.classList.contains("is-menu-open"));
+  });
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", () => setMenuOpen(false));
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenuOpen(false);
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (target instanceof Node && !topbar.contains(target)) setMenuOpen(false);
+  });
+}
 
 if (!reduceMotion) {
   const lenis = new Lenis({
@@ -44,8 +110,22 @@ if (dot && ring && window.matchMedia("(pointer: fine)").matches) {
   });
 
   document.querySelectorAll<HTMLElement>(".magnetic, a, button, input, select, textarea").forEach((element) => {
-    element.addEventListener("mouseenter", () => ring.classList.add("is-active"));
+    const isTopbarControl = Boolean(element.closest(".topbar"));
+
+    element.addEventListener("mouseenter", () => {
+      if (!isTopbarControl) ring.classList.add("is-active");
+    });
     element.addEventListener("mouseleave", () => ring.classList.remove("is-active"));
+  });
+
+  topbar?.addEventListener("mouseenter", () => {
+    dot.classList.add("is-hidden");
+    ring.classList.add("is-hidden");
+  });
+
+  topbar?.addEventListener("mouseleave", () => {
+    dot.classList.remove("is-hidden");
+    ring.classList.remove("is-hidden");
   });
 }
 
@@ -791,7 +871,7 @@ if (routeLab) {
 
 if (!reduceMotion) {
   const heroWords = gsap.utils.toArray<HTMLElement>("[data-hero-word]");
-  const heroAfterWords = gsap.utils.toArray<HTMLElement>(".topbar, .hero-copy > .eyebrow, .hero-lede, .hero-actions");
+  const heroAfterWords = gsap.utils.toArray<HTMLElement>(".hero-copy > .eyebrow, .hero-lede, .hero-actions");
 
   gsap
     .timeline({ defaults: { ease: "power3.out" } })
@@ -1249,9 +1329,9 @@ if (pilotSystem) {
       target: "5-8 points",
       measure: "first pickup",
       gate: "no depot needed",
-      progress: 0.2,
-      riderX: "14%",
-      riderY: "66%",
+      progress: 0,
+      markerX: "12.5%",
+      stepIndex: 0,
       rider: "R0",
     },
     {
@@ -1261,9 +1341,9 @@ if (pilotSystem) {
       target: "8 directions",
       measure: "bag accuracy",
       gate: "counts conserved",
-      progress: 0.45,
-      riderX: "38%",
-      riderY: "48%",
+      progress: 0.333,
+      markerX: "37.5%",
+      stepIndex: 1,
       rider: "B4",
     },
     {
@@ -1273,9 +1353,9 @@ if (pilotSystem) {
       target: "live bags",
       measure: "time to move",
       gate: "R2 assigned",
-      progress: 0.72,
-      riderX: "64%",
-      riderY: "30%",
+      progress: 0.667,
+      markerX: "62.5%",
+      stepIndex: 2,
       rider: "R2",
     },
     {
@@ -1286,8 +1366,8 @@ if (pilotSystem) {
       measure: "ledger audit",
       gate: "scale ready",
       progress: 1,
-      riderX: "83%",
-      riderY: "42%",
+      markerX: "87.5%",
+      stepIndex: 3,
       rider: "OK",
     },
   ];
@@ -1297,8 +1377,8 @@ if (pilotSystem) {
     pilotTabs.forEach((tab, tabIndex) => tab.classList.toggle("is-active", tabIndex === index));
     pilotPoints.forEach((point, pointIndex) => point.classList.toggle("is-active", pointIndex === index));
     pilotMap?.style.setProperty("--pilot-progress", String(state.progress));
-    pilotMap?.style.setProperty("--pilot-rider-x", state.riderX);
-    pilotMap?.style.setProperty("--pilot-rider-y", state.riderY);
+    pilotMap?.style.setProperty("--pilot-marker-x", state.markerX);
+    pilotMap?.style.setProperty("--pilot-index", String(state.stepIndex));
     if (pilotTitle) pilotTitle.textContent = state.title;
     if (pilotCopy) pilotCopy.textContent = state.copy;
     if (pilotWindow) pilotWindow.textContent = state.window;
@@ -1324,7 +1404,7 @@ const leadPanel = document.querySelector<HTMLElement>("[data-lead-panel]");
 const leadConfigs = {
   investor: {
     audience: "Investor",
-    title: "Choose the right MtaaLink conversation.",
+    title: "Choose the right BebaRun conversation.",
     copy: "Investors can request the deck, pilot economics, and route ledger model for the first corridor.",
     lane: "Investor deck",
     reply: "deck + pilot economics",
@@ -1332,7 +1412,7 @@ const leadConfigs = {
     messageLabel: "What should we send?",
     placeholder: "Deck, pilot model, technical appendix...",
     submit: "Prepare investor request",
-    subject: "MtaaLink investor lead",
+    subject: "BebaRun investor lead",
     options: ["Angel investor", "VC / fund", "Strategic investor", "Operator / advisor"],
   },
   shop: {
@@ -1345,7 +1425,7 @@ const leadConfigs = {
     messageLabel: "What kind of point could you run?",
     placeholder: "Location, daily parcel volume, staff availability...",
     submit: "Prepare shop request",
-    subject: "MtaaLink shop pilot lead",
+    subject: "BebaRun shop pilot lead",
     options: ["Convenience shop", "Restaurant", "Pharmacy", "Service counter"],
   },
   rider: {
@@ -1358,7 +1438,7 @@ const leadConfigs = {
     messageLabel: "Where do you usually ride?",
     placeholder: "Neighborhoods, vehicle type, working hours...",
     submit: "Prepare rider request",
-    subject: "MtaaLink rider lead",
+    subject: "BebaRun rider lead",
     options: ["Motorbike rider", "Bicycle rider", "Courier team", "Dispatcher"],
   },
   partner: {
@@ -1371,7 +1451,7 @@ const leadConfigs = {
     messageLabel: "What should we discuss?",
     placeholder: "Operations, wallets, compliance, city rollout...",
     submit: "Prepare partner request",
-    subject: "MtaaLink partner lead",
+    subject: "BebaRun partner lead",
     options: ["Operations partner", "Wallet / payments", "City partner", "Brand / merchant network"],
   },
 };
@@ -1386,10 +1466,60 @@ if (leadPanel && leadForm) {
   const leadReply = leadPanel.querySelector<HTMLElement>("[data-lead-reply]");
   const leadAudience = leadPanel.querySelector<HTMLInputElement>("[data-lead-audience]");
   const leadType = leadPanel.querySelector<HTMLSelectElement>("[data-lead-type]");
+  const leadSelect = leadPanel.querySelector<HTMLElement>("[data-lead-select]");
+  const leadSelectTrigger = leadPanel.querySelector<HTMLButtonElement>("[data-lead-select-trigger]");
+  const leadSelectValue = leadPanel.querySelector<HTMLElement>("[data-lead-select-value]");
+  const leadSelectMenu = leadPanel.querySelector<HTMLElement>("[data-lead-select-menu]");
   const leadTypeLabel = leadPanel.querySelector<HTMLElement>("[data-lead-type-label]");
   const leadMessageLabel = leadPanel.querySelector<HTMLElement>("[data-lead-message-label]");
   const leadMessage = leadPanel.querySelector<HTMLTextAreaElement>("[data-lead-message]");
   const leadSubmit = leadPanel.querySelector<HTMLButtonElement>("[data-lead-submit]");
+
+  const closeLeadSelect = () => {
+    leadSelect?.classList.remove("is-open");
+    leadSelectTrigger?.setAttribute("aria-expanded", "false");
+  };
+
+  const setLeadTypeValue = (value: string) => {
+    if (leadType) leadType.value = value;
+    if (leadSelectValue) leadSelectValue.textContent = value || "Select one";
+    leadSelect?.classList.toggle("has-value", Boolean(value));
+    leadSelect?.classList.remove("has-error");
+    leadSelectMenu
+      ?.querySelectorAll<HTMLButtonElement>("[data-lead-select-option]")
+      .forEach((option) => {
+        const selected = option.dataset.leadSelectOption === value;
+        option.classList.toggle("is-selected", selected);
+        option.setAttribute("aria-selected", String(selected));
+      });
+  };
+
+  const renderLeadTypeOptions = (options: string[]) => {
+    if (leadType) {
+      leadType.replaceChildren(new Option("Select one", ""), ...options.map((option) => new Option(option, option)));
+    }
+
+    if (leadSelectMenu) {
+      leadSelectMenu.replaceChildren();
+      options.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "lead-select-option";
+        button.dataset.leadSelectOption = option;
+        button.setAttribute("role", "option");
+        button.setAttribute("aria-selected", "false");
+        button.textContent = option;
+        button.addEventListener("click", () => {
+          setLeadTypeValue(option);
+          closeLeadSelect();
+          leadSelectTrigger?.focus();
+        });
+        leadSelectMenu.append(button);
+      });
+    }
+
+    setLeadTypeValue("");
+  };
 
   const setLead = (key: keyof typeof leadConfigs) => {
     const config = leadConfigs[key];
@@ -1400,12 +1530,7 @@ if (leadPanel && leadForm) {
     if (leadLane) leadLane.textContent = config.lane;
     if (leadReply) leadReply.textContent = config.reply;
     if (leadAudience) leadAudience.value = config.audience;
-    if (leadType) {
-      leadType.innerHTML = [
-        `<option value="">Select one</option>`,
-        ...config.options.map((option) => `<option>${option}</option>`),
-      ].join("");
-    }
+    renderLeadTypeOptions(config.options);
     if (leadTypeLabel) leadTypeLabel.textContent = config.typeLabel;
     if (leadMessageLabel) leadMessageLabel.textContent = config.messageLabel;
     if (leadMessage) leadMessage.placeholder = config.placeholder;
@@ -1418,6 +1543,38 @@ if (leadPanel && leadForm) {
       setLead(key);
     });
   });
+
+  leadSelectTrigger?.addEventListener("click", () => {
+    const isOpen = leadSelect?.classList.contains("is-open");
+    if (isOpen) {
+      closeLeadSelect();
+      return;
+    }
+    leadSelect?.classList.add("is-open");
+    leadSelectTrigger.setAttribute("aria-expanded", "true");
+  });
+
+  leadSelectTrigger?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeLeadSelect();
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      leadSelect?.classList.add("is-open");
+      leadSelectTrigger.setAttribute("aria-expanded", "true");
+      leadSelectMenu?.querySelector<HTMLButtonElement>("[data-lead-select-option]")?.focus();
+    }
+  });
+
+  leadSelectMenu?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeLeadSelect();
+      leadSelectTrigger?.focus();
+    }
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!leadSelect?.contains(event.target as Node)) closeLeadSelect();
+  });
+
   setLead("investor");
 }
 
@@ -1431,6 +1588,14 @@ if (leadForm && status) {
     const audience = String(data.get("audience") || leadConfigs[activeLeadKey].audience);
     const message = String(data.get("message") || "");
     const config = leadConfigs[activeLeadKey];
+
+    if (!type) {
+      status.textContent = "Choose a lead type before sending.";
+      leadPanel?.querySelector<HTMLElement>("[data-lead-select]")?.classList.add("has-error");
+      leadPanel?.querySelector<HTMLButtonElement>("[data-lead-select-trigger]")?.focus();
+      return;
+    }
+
     const body = [
       `Name: ${name}`,
       `Email: ${email}`,
@@ -1441,6 +1606,6 @@ if (leadForm && status) {
     ].join("\n");
 
     status.textContent = "Opening your email client with the request.";
-    window.location.href = `mailto:investors@mtaalink.co?subject=${encodeURIComponent(config.subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:hello@bebarun.com?subject=${encodeURIComponent(config.subject)}&body=${encodeURIComponent(body)}`;
   });
 }

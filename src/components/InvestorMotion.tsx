@@ -215,6 +215,7 @@ export default function InvestorMotion() {
             </div>
             <div className="scale-cycle-layout" aria-label="Point-first expansion cycle">
               <div className="scale-cycle-orbit">
+                <div className="scale-cycle-runner" aria-hidden="true" />
                 <svg className="scale-cycle-lines" viewBox="0 0 420 420" aria-hidden="true">
                   {cycleSegments.map((segment, index) => (
                     <path
@@ -252,7 +253,7 @@ export default function InvestorMotion() {
                   <path className="scale-cycle-spoke" d="M210 210 L64 156" />
                 </svg>
                 <div className="scale-cycle-core">
-                  <span>MtaaLink mesh</span>
+                  <span>BebaRun mesh</span>
                   <strong>point-first</strong>
                   <small>{activeCycle.label}{" -> "}{nextCycle.label}</small>
                 </div>
@@ -286,7 +287,7 @@ export default function InvestorMotion() {
             <div className="scale-compare">
               <div className="scale-compare-head">
                 <span>Expansion logic</span>
-                <strong>MtaaLink vs depot-first</strong>
+                <strong>BebaRun vs depot-first</strong>
               </div>
               <div className="scale-compare-grid">
                 {compareRows.map(([label, mesh, depot]) => (
