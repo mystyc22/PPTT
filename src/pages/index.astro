@@ -191,7 +191,18 @@ const pilotMetrics = [
             </div>
           </div>
 
-          <div class="hero-empty" aria-hidden="true"></div>
+          <div class="hero-visual" aria-hidden="true">
+            <span class="hero-person-frame"></span>
+            <img
+              class="hero-people"
+              src="/images/hero-delivery-people.png"
+              width="928"
+              height="1096"
+              alt=""
+              loading="eager"
+              decoding="async"
+            />
+          </div>
         </div>
 
         <div class="hero-strip" aria-label="Concept summary">
@@ -1302,10 +1313,6 @@ const pilotMetrics = [
 
   .hero-copy {
     max-width: 760px;
-  }
-
-  .hero-empty {
-    min-height: clamp(320px, 38vw, 520px);
   }
 
   .eyebrow {
@@ -6985,8 +6992,12 @@ const pilotMetrics = [
   }
 
   .route-system-section {
+    position: relative;
+    z-index: 2;
     width: min(1360px, calc(100% - 32px));
     margin-inline: auto;
+    margin-top: clamp(220px, 32vh, 360px);
+    background: transparent;
     padding-block: clamp(76px, 9vw, 126px);
   }
 
@@ -8078,10 +8089,6 @@ const pilotMetrics = [
       justify-content: center;
     }
 
-    .hero-empty {
-      display: none;
-    }
-
     .route-lab {
       width: min(100%, 860px);
       justify-self: center;
@@ -8374,7 +8381,68 @@ const pilotMetrics = [
   }
   /* Final pinned navigation */
   .hero {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
     padding-top: clamp(98px, 7vw, 112px);
+  }
+
+  @supports (height: 100dvh) {
+    .hero {
+      min-height: 100dvh;
+    }
+  }
+
+  .hero-visual {
+    position: relative;
+    isolation: isolate;
+    justify-self: end;
+    width: min(100%, 600px);
+    aspect-ratio: 928 / 1096;
+    min-height: 0;
+  }
+
+  .hero .hero-strip {
+    display: none;
+  }
+
+  .hero-person-frame {
+    position: absolute;
+    top: 30%;
+    left: 27%;
+    z-index: 1;
+    display: block;
+    width: 43%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--orange);
+    box-shadow:
+      0 32px 72px rgba(254, 127, 45, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+  }
+
+  .hero-person-frame::after {
+    position: absolute;
+    inset: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: calc(var(--radius) - 2px);
+    content: "";
+    pointer-events: none;
+  }
+
+  .hero-people {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
+    filter: drop-shadow(0 24px 30px rgba(35, 61, 77, 0.22));
   }
 
   .topbar {
@@ -8629,6 +8697,14 @@ const pilotMetrics = [
     outline-offset: 3px;
   }
 
+  @media (max-width: 1180px) {
+    .hero-visual {
+      justify-self: center;
+      width: min(100%, 620px);
+      margin-top: -12px;
+    }
+  }
+
   @media (max-width: 760px) {
     .hero {
       padding-top: 92px;
@@ -8826,6 +8902,20 @@ const pilotMetrics = [
       font-size: 0.9rem;
       background: #0f1317 !important;
       border-color: #0f1317 !important;
+    }
+
+    .hero-visual {
+      width: 100%;
+      max-width: 340px;
+      margin-top: 4px;
+    }
+
+    .hero-person-frame {
+      width: 50%;
+    }
+
+    .hero-person-frame::after {
+      inset: 8px;
     }
   }
 
@@ -9293,7 +9383,7 @@ const pilotMetrics = [
   .concept-pin {
     position: relative;
     overflow: clip;
-    padding-block: clamp(74px, 9vw, 124px);
+    padding-block: 0;
   }
 
   .concept-pin-inner {
@@ -9301,7 +9391,15 @@ const pilotMetrics = [
     grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1fr);
     gap: clamp(28px, 6vw, 86px);
     align-items: center;
-    min-height: min(760px, 100svh);
+    width: 100%;
+    min-height: 100svh;
+    padding-block: clamp(92px, 10vh, 132px);
+  }
+
+  @supports (min-height: 100dvh) {
+    .concept-pin-inner {
+      min-height: 100dvh;
+    }
   }
 
   .concept-copy h2 {
@@ -9707,6 +9805,15 @@ const pilotMetrics = [
   }
 
   @media (max-width: 900px) {
+    .concept-pin {
+      display: block;
+      min-height: 0;
+    }
+
+    .route-system-section {
+      margin-top: clamp(64px, 12vh, 104px);
+    }
+
     .concept-pin-inner {
       grid-template-columns: 1fr;
       min-height: auto;
