@@ -893,16 +893,6 @@ if (!reduceMotion) {
       "-=0.04",
     )
     .to(
-      ".route-lab",
-      {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.68,
-      },
-      "-=0.18",
-    )
-    .to(
       ".hero-strip",
       {
         autoAlpha: 1,

@@ -191,6 +191,104 @@ const pilotMetrics = [
             </div>
           </div>
 
+          <div class="hero-empty" aria-hidden="true"></div>
+        </div>
+
+        <div class="hero-strip" aria-label="Concept summary">
+          <div><strong>0</strong><span>central warehouses</span></div>
+          <div><strong>8</strong><span>directions per point</span></div>
+          <div><strong>50 KES</strong><span>hub-fee logic</span></div>
+          <div><strong>Offline</strong><span>marker and NFC ready</span></div>
+        </div>
+      </section>
+
+      <section class="section concept concept-pin" id="concept" aria-labelledby="concept-title">
+        <div class="concept-pin-inner">
+          <div class="concept-copy reveal">
+            <p class="eyebrow">Operating thesis</p>
+            <h2 id="concept-title">Start with shops and riders, not a warehouse.</h2>
+            <p>
+              The pilot should prove the mesh in small, auditable moves: add points, sort sealed bags,
+              dispatch riders, then scale only where density is real.
+            </p>
+
+            <div class="project-progress" aria-hidden="true">
+              <div class="project-progress-head">
+                <span data-project-current>01</span>
+                <strong>Project stages</strong>
+                <span>{projectStages.length.toString().padStart(2, "0")}</span>
+              </div>
+              <div class="project-progress-track">
+                <i data-project-progress></i>
+              </div>
+              <div class="project-markers">
+                {projectStages.map((stage, index) => (
+                  <span class:list={[index === 0 && "is-active"]} data-project-marker={index}>
+                    {stage.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="project-carousel reveal" aria-label="Project stages">
+            <div class="project-card-track" data-project-track>
+              {projectStages.map((stage, index) => (
+                <article class:list={["project-stage-card", index === 0 && "is-active"]} data-project-stage={index}>
+                  <div class:list={["project-stage-visual", `is-${stage.visual}`]} aria-hidden="true">
+                    <span class="stage-icon-chip chip-a">
+                      {stage.visual === "shops" && <MapPinned class="project-stage-lucide" />}
+                      {stage.visual === "sort" && <ShoppingBag class="project-stage-lucide" />}
+                      {stage.visual === "riders" && <Route class="project-stage-lucide" />}
+                      {stage.visual === "ledger" && <ScanLine class="project-stage-lucide" />}
+                      {stage.visual === "mesh" && <Waypoints class="project-stage-lucide" />}
+                    </span>
+                    <span class="stage-icon-main">
+                      {stage.visual === "shops" && <Store class="project-stage-lucide" />}
+                      {stage.visual === "sort" && <ListTree class="project-stage-lucide" />}
+                      {stage.visual === "riders" && <Bike class="project-stage-lucide" />}
+                      {stage.visual === "ledger" && <ClipboardCheck class="project-stage-lucide" />}
+                      {stage.visual === "mesh" && <Network class="project-stage-lucide" />}
+                    </span>
+                    <span class="stage-icon-chip chip-b">
+                      {stage.visual === "shops" && <ShoppingBag class="project-stage-lucide" />}
+                      {stage.visual === "sort" && <ArrowRightLeft class="project-stage-lucide" />}
+                      {stage.visual === "riders" && <ShoppingBag class="project-stage-lucide" />}
+                      {stage.visual === "ledger" && <ReceiptText class="project-stage-lucide" />}
+                      {stage.visual === "mesh" && <Store class="project-stage-lucide" />}
+                    </span>
+                    <span class="stage-icon-status">
+                      {stage.visual === "ledger" ? <BadgeCheck class="project-stage-lucide" /> : <PackageIcon class="project-stage-lucide" />}
+                    </span>
+                  </div>
+                  <div class="project-stage-body">
+                    <span class="project-tag">{stage.tag}</span>
+                    <p>{stage.label}</p>
+                    <h3>{stage.title}</h3>
+                    <div class="project-stage-line" aria-hidden="true"></div>
+                    <p>{stage.body}</p>
+                    <strong>{stage.metric}</strong>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section route-system-section" aria-labelledby="route-system-title">
+        <div class="route-system-inner reveal">
+          <div class="section-heading route-system-heading">
+            <div>
+              <p class="eyebrow">Network simulator</p>
+              <h2 id="route-system-title">Live route system</h2>
+            </div>
+            <p>
+              A live network view of shops, sealed bags, and rider supply. Demand, point count, and dispatch capacity
+              change the route state without adding a central warehouse.
+            </p>
+          </div>
+
           <aside class="route-lab is-booting" aria-label="Live courier network">
             <div class="lab-topline">
               <span>Live route system</span>
@@ -451,87 +549,6 @@ const pilotMetrics = [
               </div>
             </div>
           </aside>
-        </div>
-
-        <div class="hero-strip" aria-label="Concept summary">
-          <div><strong>0</strong><span>central warehouses</span></div>
-          <div><strong>8</strong><span>directions per point</span></div>
-          <div><strong>50 KES</strong><span>hub-fee logic</span></div>
-          <div><strong>Offline</strong><span>marker and NFC ready</span></div>
-        </div>
-      </section>
-
-      <section class="section concept concept-pin" id="concept" aria-labelledby="concept-title">
-        <div class="concept-pin-inner">
-          <div class="concept-copy reveal">
-            <p class="eyebrow">Operating thesis</p>
-            <h2 id="concept-title">Start with shops and riders, not a warehouse.</h2>
-            <p>
-              The pilot should prove the mesh in small, auditable moves: add points, sort sealed bags,
-              dispatch riders, then scale only where density is real.
-            </p>
-
-            <div class="project-progress" aria-hidden="true">
-              <div class="project-progress-head">
-                <span data-project-current>01</span>
-                <strong>Project stages</strong>
-                <span>{projectStages.length.toString().padStart(2, "0")}</span>
-              </div>
-              <div class="project-progress-track">
-                <i data-project-progress></i>
-              </div>
-              <div class="project-markers">
-                {projectStages.map((stage, index) => (
-                  <span class:list={[index === 0 && "is-active"]} data-project-marker={index}>
-                    {stage.label}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div class="project-carousel reveal" aria-label="Project stages">
-            <div class="project-card-track" data-project-track>
-              {projectStages.map((stage, index) => (
-                <article class:list={["project-stage-card", index === 0 && "is-active"]} data-project-stage={index}>
-                  <div class:list={["project-stage-visual", `is-${stage.visual}`]} aria-hidden="true">
-                    <span class="stage-icon-chip chip-a">
-                      {stage.visual === "shops" && <MapPinned class="project-stage-lucide" />}
-                      {stage.visual === "sort" && <ShoppingBag class="project-stage-lucide" />}
-                      {stage.visual === "riders" && <Route class="project-stage-lucide" />}
-                      {stage.visual === "ledger" && <ScanLine class="project-stage-lucide" />}
-                      {stage.visual === "mesh" && <Waypoints class="project-stage-lucide" />}
-                    </span>
-                    <span class="stage-icon-main">
-                      {stage.visual === "shops" && <Store class="project-stage-lucide" />}
-                      {stage.visual === "sort" && <ListTree class="project-stage-lucide" />}
-                      {stage.visual === "riders" && <Bike class="project-stage-lucide" />}
-                      {stage.visual === "ledger" && <ClipboardCheck class="project-stage-lucide" />}
-                      {stage.visual === "mesh" && <Network class="project-stage-lucide" />}
-                    </span>
-                    <span class="stage-icon-chip chip-b">
-                      {stage.visual === "shops" && <ShoppingBag class="project-stage-lucide" />}
-                      {stage.visual === "sort" && <ArrowRightLeft class="project-stage-lucide" />}
-                      {stage.visual === "riders" && <ShoppingBag class="project-stage-lucide" />}
-                      {stage.visual === "ledger" && <ReceiptText class="project-stage-lucide" />}
-                      {stage.visual === "mesh" && <Store class="project-stage-lucide" />}
-                    </span>
-                    <span class="stage-icon-status">
-                      {stage.visual === "ledger" ? <BadgeCheck class="project-stage-lucide" /> : <PackageIcon class="project-stage-lucide" />}
-                    </span>
-                  </div>
-                  <div class="project-stage-body">
-                    <span class="project-tag">{stage.tag}</span>
-                    <p>{stage.label}</p>
-                    <h3>{stage.title}</h3>
-                    <div class="project-stage-line" aria-hidden="true"></div>
-                    <p>{stage.body}</p>
-                    <strong>{stage.metric}</strong>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1285,6 +1302,10 @@ const pilotMetrics = [
 
   .hero-copy {
     max-width: 760px;
+  }
+
+  .hero-empty {
+    min-height: clamp(320px, 38vw, 520px);
   }
 
   .eyebrow {
@@ -6963,6 +6984,39 @@ const pilotMetrics = [
     backdrop-filter: blur(18px);
   }
 
+  .route-system-section {
+    width: min(1360px, calc(100% - 32px));
+    margin-inline: auto;
+    padding-block: clamp(76px, 9vw, 126px);
+  }
+
+  .route-system-inner {
+    width: 100%;
+  }
+
+  .route-system-heading {
+    margin-bottom: clamp(22px, 3vw, 36px);
+  }
+
+  .route-system-heading > p {
+    max-width: 620px;
+    justify-self: end;
+    color: var(--muted);
+    font-size: clamp(0.96rem, 1.4vw, 1.08rem);
+    font-weight: 760;
+    line-height: 1.45;
+  }
+
+  .route-system-section .route-lab {
+    width: min(100%, 1120px);
+    margin-inline: auto;
+    justify-self: center;
+  }
+
+  .route-system-section .lab-stage {
+    min-height: clamp(380px, 46vw, 620px);
+  }
+
   .route-lab::before {
     display: none;
   }
@@ -8024,6 +8078,10 @@ const pilotMetrics = [
       justify-content: center;
     }
 
+    .hero-empty {
+      display: none;
+    }
+
     .route-lab {
       width: min(100%, 860px);
       justify-self: center;
@@ -8081,6 +8139,27 @@ const pilotMetrics = [
       justify-self: center;
       border-radius: 20px;
       padding: 10px;
+    }
+
+    .route-system-section {
+      width: calc(100% - 16px);
+      padding-block: 64px;
+    }
+
+    .route-system-heading {
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .route-system-heading > p {
+      justify-self: start;
+      max-width: 100%;
+      font-size: 0.92rem;
+    }
+
+    .route-system-section .lab-stage {
+      min-height: 300px;
     }
 
     .lab-topline {
@@ -9169,14 +9248,9 @@ const pilotMetrics = [
     .hero .hero-copy > .eyebrow,
     .hero .hero-lede,
     .hero .hero-actions,
-    .hero .route-lab,
     .hero .hero-strip {
       opacity: 0;
       transform: translateY(18px);
-    }
-
-    .hero .route-lab {
-      transform: translateY(24px) scale(0.985);
     }
   }
 
