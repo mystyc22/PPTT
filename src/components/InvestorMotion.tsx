@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+/** @jsxRuntime classic */
+import React, { useEffect, useState } from "react";
 
 const scaleSteps = [
   {
@@ -98,28 +98,6 @@ const cycleSegments = [
   "M64 156 A156 156 0 0 1 210 56",
 ];
 
-const viewport = { once: true, amount: 0.22 };
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 28, filter: "blur(8px)" },
-  visible: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.66, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const staggerGroup = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.075,
-      delayChildren: 0.08,
-    },
-  },
-};
-
 function CycleIcon({ type }: { type: string }) {
   if (type === "shop") {
     return (
@@ -195,21 +173,17 @@ export default function InvestorMotion() {
   };
 
   return (
-    <motion.section
+    <section
       className="motion-island scale-section"
       aria-labelledby="proof-title"
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
-      variants={staggerGroup}
     >
       <div className="scale-section-inner">
-        <motion.div className="section-heading scale-heading" variants={staggerGroup}>
+        <div className="section-heading scale-heading">
           <div>
-            <motion.p className="eyebrow" variants={fadeUp}>Expansion logic</motion.p>
-            <motion.h2 id="proof-title" variants={fadeUp}>Scale with shops before fixed sites.</motion.h2>
+            <p className="eyebrow">Expansion logic</p>
+            <h2 id="proof-title">Scale with shops before fixed sites.</h2>
           </div>
-          <motion.div className="scale-heading-copy" variants={fadeUp}>
+          <div className="scale-heading-copy">
             <p>
               The network grows only where real parcels repeat. Shops absorb intake and simple sorting while the handoff
               log decides when a higher-capacity point or fixed site would save more than it costs.
@@ -218,25 +192,23 @@ export default function InvestorMotion() {
               <span>Current decision</span>
               <strong>Add point P5, hold fixed site</strong>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <motion.div className="scale-check-grid" aria-label="Scale operating checks" variants={staggerGroup}>
+        <div className="scale-check-grid" aria-label="Scale operating checks">
           {scaleChecks.map(([title, body]) => (
-            <motion.article key={title} variants={fadeUp}>
+            <article key={title}>
               <span>{title}</span>
               <p>{body}</p>
-            </motion.article>
+            </article>
           ))}
-        </motion.div>
+        </div>
 
-        <motion.div
+        <div
           className="scale-system"
-          variants={staggerGroup}
         >
-          <motion.div
+          <div
             className="scale-cycle-panel"
-            variants={fadeUp}
           >
             <div className="scale-panel-head">
               <span>Point-first expansion</span>
@@ -257,20 +229,14 @@ export default function InvestorMotion() {
                     const isActive = index === activeIndex;
                     const shouldDraw = isComplete || isActive;
 
+                    if (!shouldDraw) return null;
+
                     return (
-                      <motion.path
-                        animate={{
-                          opacity: shouldDraw ? 1 : 0,
-                          pathLength: shouldDraw ? 1 : 0,
-                        }}
+                      <path
                         className={`scale-cycle-live ${isActive ? "is-loading" : ""}`}
                         d={segment}
-                        initial={isActive ? { opacity: 0, pathLength: 0 } : false}
                         key={`live-${index}-${isActive ? flowStep : "idle"}`}
-                        transition={{
-                          opacity: { duration: isActive ? 0.18 : 0.12, ease: "easeOut" },
-                          pathLength: { duration: isActive ? 1.45 : 0.18, ease: [0.45, 0, 0.18, 1] },
-                        }}
+                        pathLength={1}
                       />
                     );
                   })}
@@ -327,11 +293,10 @@ export default function InvestorMotion() {
                 ))}
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
+          <div
             className="scale-rules-panel"
-            variants={fadeUp}
           >
             <div className="scale-panel-head">
               <span>Expansion gates</span>
@@ -360,22 +325,21 @@ export default function InvestorMotion() {
                 <p>No repeated sort load yet; fixed rent would hide whether the mesh works.</p>
               </div>
             </div>
-          </motion.div>
+          </div>
 
-          <motion.div
+          <div
             className="scale-signal-strip"
-            variants={staggerGroup}
           >
             {scaleSignals.map(([label, value, note]) => (
-              <motion.div key={label} variants={fadeUp}>
+              <div key={label}>
                 <span>{label}</span>
                 <strong>{value}</strong>
                 <p>{note}</p>
-              </motion.div>
+              </div>
             ))}
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 }

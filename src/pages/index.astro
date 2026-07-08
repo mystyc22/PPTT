@@ -113,6 +113,8 @@ const pilotMetrics = [
     <meta charset="utf-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f8f6f2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta
@@ -1028,8 +1030,9 @@ const pilotMetrics = [
             </div>
           </div>
 
-          <form class="lead-form" id="lead-form">
+          <form class="lead-form" id="lead-form" action="/api/lead" method="post">
             <input name="audience" type="hidden" value="Investor" data-lead-audience />
+            <input class="lead-honeypot" name="website" type="text" autocomplete="off" tabindex="-1" aria-hidden="true" />
             <label>
               Name
               <input name="name" type="text" autocomplete="name" placeholder="Your name" required />
@@ -1071,7 +1074,19 @@ const pilotMetrics = [
               ></textarea>
             </label>
             <button class="button button-primary magnetic" type="submit" data-lead-submit>Request investor deck</button>
-            <p class="form-status" role="status" aria-live="polite"></p>
+            <p class="form-status" role="status" aria-live="polite" data-lead-status></p>
+            <div class="lead-success" role="status" aria-live="polite" tabindex="-1" hidden data-lead-success>
+              <span class="lead-success-check" aria-hidden="true">
+                <svg viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="31"></circle>
+                  <path d="M24 41.5 34.5 52 57 28"></path>
+                </svg>
+              </span>
+              <span data-lead-success-kicker>Request sent</span>
+              <h3 data-lead-success-title>We received your request.</h3>
+              <p data-lead-success-copy>We will reply with the right pilot details.</p>
+              <button class="button button-ghost magnetic" type="button" data-lead-reset>Send another request</button>
+            </div>
           </form>
         </div>
       </section>
@@ -4082,6 +4097,11 @@ const pilotMetrics = [
     transition: transform 180ms ease;
   }
 
+  .pilot-point,
+  .pilot-tabs button {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   .pilot-point:hover,
   .pilot-point.is-active {
     transform: translateY(-3px);
@@ -4273,6 +4293,19 @@ const pilotMetrics = [
     cursor: pointer;
   }
 
+  .pilot-point:focus,
+  .pilot-tabs button:focus {
+    outline: none;
+  }
+
+  @media (pointer: fine) {
+    .pilot-point:focus-visible,
+    .pilot-tabs button:focus-visible {
+      outline: 2px solid rgba(254, 127, 45, 0.5);
+      outline-offset: 3px;
+    }
+  }
+
   .pilot-tabs button + button {
     border-top: 1px solid rgba(35, 61, 77, 0.08);
   }
@@ -4425,12 +4458,182 @@ const pilotMetrics = [
 
   .lead-form {
     position: relative;
+    display: grid;
+    gap: 14px;
     min-height: 652px;
     align-content: start;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 24px;
     background: rgba(255, 255, 255, 0.06);
     padding: clamp(16px, 2.4vw, 24px);
+  }
+
+  .lead-form.is-sending {
+    pointer-events: none;
+  }
+
+  .lead-form.is-sending .button-primary {
+    opacity: 0.72;
+  }
+
+  .lead-honeypot {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .lead-form.is-success {
+    align-content: stretch;
+  }
+
+  .lead-form.is-success > :not(.lead-success) {
+    display: none;
+  }
+
+  .lead-success {
+    display: grid;
+    min-height: 604px;
+    place-items: center;
+    align-content: center;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .lead-success[hidden] {
+    display: none;
+  }
+
+  .lead-success-check {
+    display: grid;
+    width: 92px;
+    height: 92px;
+    place-items: center;
+    border-radius: 999px;
+    background: rgba(254, 127, 45, 0.14);
+    box-shadow:
+      0 22px 52px rgba(254, 127, 45, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  .lead-success-check svg {
+    width: 76px;
+    height: 76px;
+    overflow: visible;
+  }
+
+  .lead-success-check circle,
+  .lead-success-check path {
+    fill: none;
+    stroke: var(--orange);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .lead-success-check circle {
+    stroke-width: 4;
+  }
+
+  .lead-success-check path {
+    stroke-width: 6;
+  }
+
+  .lead-success > span:not(.lead-success-check) {
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .lead-success h3 {
+    max-width: 12ch;
+    color: var(--white);
+    font-size: clamp(2.1rem, 4vw, 3.3rem);
+    font-weight: 950;
+    line-height: 0.96;
+  }
+
+  .lead-success p {
+    max-width: 32ch;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1rem;
+    font-weight: 760;
+    line-height: 1.42;
+  }
+
+  .lead-success .button {
+    width: min(100%, 240px);
+    margin-top: 6px;
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    box-shadow: none;
+  }
+
+  .lead-success .button:hover,
+  .lead-success .button:focus-visible {
+    border-color: rgba(254, 127, 45, 0.58);
+    background: rgba(254, 127, 45, 0.18);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lead-form.is-success .lead-success {
+      animation: leadSuccessEnter 520ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .lead-form.is-success .lead-success-check {
+      animation: leadSuccessPop 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .lead-form.is-success .lead-success-check circle {
+      stroke-dasharray: 195;
+      stroke-dashoffset: 195;
+      animation: leadCheckDraw 620ms ease-out 120ms forwards;
+    }
+
+    .lead-form.is-success .lead-success-check path {
+      stroke-dasharray: 54;
+      stroke-dashoffset: 54;
+      animation: leadCheckDraw 420ms ease-out 520ms forwards;
+    }
+  }
+
+  @keyframes leadSuccessEnter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes leadSuccessPop {
+    0% {
+      opacity: 0;
+      transform: scale(0.72);
+    }
+
+    70% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes leadCheckDraw {
+    to {
+      stroke-dashoffset: 0;
+    }
   }
 
   .lead-form select option {
@@ -10925,13 +11128,18 @@ const pilotMetrics = [
   .scale-cycle-live {
     stroke: var(--orange);
     stroke-width: 7;
+    opacity: 1;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 0;
     filter: drop-shadow(0 5px 8px rgba(254, 127, 45, 0.16));
     transform-box: fill-box;
     will-change: stroke-dashoffset, stroke-dasharray;
   }
 
   .scale-cycle-live.is-loading {
-    animation: scaleLiveGlow 1.45s ease-in-out infinite;
+    animation:
+      scaleLiveDraw 1.45s cubic-bezier(0.45, 0, 0.18, 1) both,
+      scaleLiveGlow 1.45s ease-in-out infinite;
   }
 
   .scale-cycle-spoke {
@@ -11228,6 +11436,18 @@ const pilotMetrics = [
 
     50% {
       filter: drop-shadow(0 8px 16px rgba(254, 127, 45, 0.26));
+    }
+  }
+
+  @keyframes scaleLiveDraw {
+    from {
+      opacity: 0;
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      opacity: 1;
+      stroke-dashoffset: 0;
     }
   }
 
@@ -11558,9 +11778,9 @@ const pilotMetrics = [
   }
 
   .scale-signal-strip strong {
-    font-size: clamp(1.8rem, 3.8vw, 3.4rem);
-    font-weight: 950;
-    line-height: 0.9;
+    font-size: clamp(0.92rem, 1.18vw, 1.08rem);
+    font-weight: 900;
+    line-height: 1.04;
   }
 
   .scale-signal-strip p {
@@ -11639,6 +11859,11 @@ const pilotMetrics = [
   @media (max-width: 760px) {
     .scale-section {
       padding: 86px 0;
+    }
+
+    .scale-signal-strip strong {
+      font-size: clamp(1rem, 5vw, 1.22rem);
+      line-height: 1;
     }
 
     .scale-section-inner {
@@ -12647,8 +12872,8 @@ const pilotMetrics = [
   }
 
   .scale-section {
-    margin-top: var(--section-gap);
-    padding-block: var(--section-pad-y);
+    margin-top: clamp(24px, 4vw, 52px);
+    padding-block: clamp(56px, 6.5vw, 88px) var(--section-pad-y);
   }
 
   .concept-copy h2,
@@ -13610,6 +13835,11 @@ const pilotMetrics = [
     .scale-section,
     .route-system-section {
       padding-block: var(--section-pad-y);
+    }
+
+    .scale-section {
+      margin-top: 24px;
+      padding-block: 54px var(--section-pad-y);
     }
 
     .section-heading h2,

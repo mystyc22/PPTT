@@ -1012,24 +1012,101 @@ if (!reduceMotion) {
     const targetArray = Array.from(targets).filter((target) => getComputedStyle(target).display !== "none");
     if (!targetArray.length) return;
 
-    const { scrollTrigger, ...tweenOptions } = options;
+    const {
+      clearProps = "opacity,visibility,transform,filter",
+      duration = 0.72,
+      ease = "power3.out",
+      filter = "blur(8px)",
+      scrollTrigger,
+      stagger = targetArray.length > 1 ? 0.075 : 0,
+      y = 26,
+      ...tweenOptions
+    } = options;
     const scrollTriggerOptions = typeof scrollTrigger === "object" ? scrollTrigger : {};
+    const {
+      onEnter: providedOnEnter,
+      onRefresh: providedOnRefresh,
+      ...triggerOptions
+    } = scrollTriggerOptions;
+    const fromFilter = typeof filter === "string" ? filter : "blur(8px)";
+    const fromY = typeof y === "number" || typeof y === "string" ? y : 26;
+    let hasPlayed = false;
+    let fallbackFrame = 0;
 
-    gsap.from(targetArray, {
+    const cleanupFallback = () => {
+      window.removeEventListener("scroll", queueFallback);
+      window.removeEventListener("resize", queueFallback);
+      if (fallbackFrame) {
+        window.cancelAnimationFrame(fallbackFrame);
+        fallbackFrame = 0;
+      }
+    };
+
+    const play = () => {
+      if (hasPlayed) return;
+      hasPlayed = true;
+      cleanupFallback();
+      gsap.to(targetArray, {
+        autoAlpha: 1,
+        y: 0,
+        filter: "blur(0px)",
+        duration,
+        ease,
+        stagger,
+        clearProps,
+        ...tweenOptions,
+      });
+    };
+
+    const checkFallback = () => {
+      if (hasPlayed) return;
+      const rect = trigger.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.94 || rect.bottom <= window.innerHeight * 0.94) {
+        play();
+      }
+    };
+
+    function queueFallback() {
+      if (fallbackFrame) return;
+      fallbackFrame = window.requestAnimationFrame(() => {
+        fallbackFrame = 0;
+        checkFallback();
+      });
+    }
+
+    gsap.set(targetArray, {
       autoAlpha: 0,
-      y: 26,
-      filter: "blur(8px)",
-      duration: 0.72,
-      ease: "power3.out",
-      stagger: targetArray.length > 1 ? 0.075 : 0,
-      clearProps: "opacity,visibility,transform,filter",
-      ...tweenOptions,
-      scrollTrigger: {
-        trigger,
-        start: "top 84%",
-        once: true,
-        ...scrollTriggerOptions,
+      y: fromY,
+      filter: fromFilter,
+    });
+
+    ScrollTrigger.create({
+      trigger,
+      start: "top 84%",
+      once: true,
+      ...triggerOptions,
+      onEnter: (self) => {
+        if (typeof providedOnEnter === "function") providedOnEnter(self);
+        play();
       },
+      onRefresh: (self) => {
+        if (typeof providedOnRefresh === "function") providedOnRefresh(self);
+        if (self.isActive || self.progress > 0) checkFallback();
+      },
+    });
+
+    window.addEventListener("scroll", queueFallback, { passive: true });
+    window.addEventListener("resize", queueFallback, { passive: true });
+    window.setTimeout(queueFallback, 250);
+    window.setTimeout(queueFallback, 1400);
+  };
+
+  const revealElement = (element: HTMLElement, options: gsap.TweenVars = {}) => {
+    revealTargets(element, [element], {
+      y: 28,
+      duration: 0.78,
+      scrollTrigger: { start: "top 86%" },
+      ...options,
     });
   };
 
@@ -1059,19 +1136,7 @@ if (!reduceMotion) {
       return;
     }
 
-    gsap.from(element, {
-      autoAlpha: 0,
-      y: 28,
-      filter: "blur(8px)",
-      duration: 0.78,
-      ease: "power3.out",
-      clearProps: "opacity,visibility,transform,filter",
-      scrollTrigger: {
-        trigger: element,
-        start: "top 86%",
-        once: true,
-      },
-    });
+    revealElement(element);
   });
 
   const storyPin = document.querySelector<HTMLElement>(".story-pin");
@@ -1080,6 +1145,30 @@ if (!reduceMotion) {
       y: 32,
       scrollTrigger: { start: "top 78%" },
     });
+  }
+
+  const scaleSection = document.querySelector<HTMLElement>(".scale-section");
+  if (scaleSection) {
+    revealTargets(
+      scaleSection,
+      scaleSection.querySelectorAll<HTMLElement>(".scale-heading > div, .scale-check-grid article, .scale-cycle-panel, .scale-rules-panel"),
+      {
+        y: 30,
+        duration: 0.74,
+        stagger: 0.08,
+        scrollTrigger: { start: "top 76%" },
+      },
+    );
+
+    const scaleSignalStrip = scaleSection.querySelector<HTMLElement>(".scale-signal-strip");
+    if (scaleSignalStrip) {
+      revealTargets(scaleSignalStrip, scaleSignalStrip.querySelectorAll<HTMLElement>(":scope > div"), {
+        y: 18,
+        duration: 0.58,
+        stagger: 0.06,
+        scrollTrigger: { start: "top 84%" },
+      });
+    }
   }
 
   const nestedRevealGroups = [
@@ -1642,8 +1731,13 @@ if (pilotSystem) {
 }
 
 const leadForm = document.querySelector<HTMLFormElement>("#lead-form");
-const status = document.querySelector<HTMLElement>(".form-status");
+const status = document.querySelector<HTMLElement>("[data-lead-status]");
 const leadPanel = document.querySelector<HTMLElement>("[data-lead-panel]");
+const leadSuccess = document.querySelector<HTMLElement>("[data-lead-success]");
+const leadSuccessKicker = document.querySelector<HTMLElement>("[data-lead-success-kicker]");
+const leadSuccessTitle = document.querySelector<HTMLElement>("[data-lead-success-title]");
+const leadSuccessCopy = document.querySelector<HTMLElement>("[data-lead-success-copy]");
+const leadReset = document.querySelector<HTMLButtonElement>("[data-lead-reset]");
 
 const leadConfigs = {
   investor: {
@@ -1701,6 +1795,26 @@ const leadConfigs = {
 };
 
 let activeLeadKey: keyof typeof leadConfigs = "investor";
+
+const setLeadFormBusy = (isBusy: boolean) => {
+  if (!leadForm) return;
+  leadForm.classList.toggle("is-sending", isBusy);
+  leadForm.setAttribute("aria-busy", String(isBusy));
+  leadForm
+    .querySelectorAll("input, textarea, select, button")
+    .forEach((control) => {
+      (control as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | HTMLButtonElement).disabled = isBusy;
+    });
+};
+
+const resetLeadFeedback = () => {
+  if (!leadForm) return;
+  leadForm.classList.remove("is-sending", "is-success");
+  leadForm.removeAttribute("aria-busy");
+  leadSuccess?.setAttribute("hidden", "");
+  if (status) status.textContent = "";
+  setLeadFormBusy(false);
+};
 
 if (leadPanel && leadForm) {
   const leadChoices = Array.from(leadPanel.querySelectorAll<HTMLButtonElement>("[data-lead-choice]"));
@@ -1768,6 +1882,7 @@ if (leadPanel && leadForm) {
   const setLead = (key: keyof typeof leadConfigs) => {
     const config = leadConfigs[key];
     activeLeadKey = key;
+    resetLeadFeedback();
     leadChoices.forEach((choice) => choice.classList.toggle("is-active", choice.dataset.leadChoice === key));
     if (leadTitle) leadTitle.textContent = config.title;
     if (leadCopy) leadCopy.textContent = config.copy;
@@ -1823,14 +1938,32 @@ if (leadPanel && leadForm) {
 }
 
 if (leadForm && status) {
-  leadForm.addEventListener("submit", (event) => {
+  leadReset?.addEventListener("click", () => {
+    const key = activeLeadKey;
+    leadForm.reset();
+    resetLeadFeedback();
+    leadPanel?.querySelector<HTMLInputElement>("input[name='name']")?.focus();
+    if (leadPanel && leadForm) {
+      const activeChoice = leadPanel.querySelector<HTMLButtonElement>(`[data-lead-choice="${key}"]`);
+      activeChoice?.click();
+    }
+  });
+
+  leadForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (leadForm.classList.contains("is-sending")) return;
+    if (!leadForm.checkValidity()) {
+      leadForm.reportValidity();
+      return;
+    }
+
     const data = new FormData(leadForm);
     const name = String(data.get("name") || "");
     const email = String(data.get("email") || "");
     const type = String(data.get("type") || "");
     const audience = String(data.get("audience") || leadConfigs[activeLeadKey].audience);
     const message = String(data.get("message") || "");
+    const website = String(data.get("website") || "");
     const config = leadConfigs[activeLeadKey];
 
     if (!type) {
@@ -1840,16 +1973,52 @@ if (leadForm && status) {
       return;
     }
 
-    const body = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Lead lane: ${audience}`,
-      `Lead type: ${type}`,
-      "",
-      `Request: ${message || config.placeholder}`,
-    ].join("\n");
+    const endpoint = leadForm.getAttribute("action") || "/api/lead";
+    const payload = {
+      audience,
+      email,
+      message,
+      name,
+      page: window.location.href,
+      subject: config.subject,
+      submittedAt: new Date().toISOString(),
+      type,
+      website,
+    };
 
-    status.textContent = "Opening your email client with the request.";
-    window.location.href = `mailto:hello@bebarun.com?subject=${encodeURIComponent(config.subject)}&body=${encodeURIComponent(body)}`;
+    setLeadFormBusy(true);
+    status.textContent = "Sending request...";
+
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      let result: { error?: string; message?: string } | null = null;
+      try {
+        result = (await response.json()) as { error?: string; message?: string };
+      } catch {
+        result = null;
+      }
+
+      if (!response.ok) {
+        throw new Error(result?.error || result?.message || "Could not send the request.");
+      }
+
+      setLeadFormBusy(false);
+      leadSuccessKicker && (leadSuccessKicker.textContent = `${audience} request sent`);
+      leadSuccessTitle && (leadSuccessTitle.textContent = "Request sent.");
+      leadSuccessCopy && (leadSuccessCopy.textContent = `We will reply with ${config.reply}.`);
+      status.textContent = "Request sent.";
+      leadSuccess?.removeAttribute("hidden");
+      leadForm.classList.add("is-success");
+      leadSuccess?.focus({ preventScroll: true });
+    } catch (error) {
+      setLeadFormBusy(false);
+      const fallback = "Could not send yet. Try again after the email endpoint is connected.";
+      status.textContent = error instanceof Error ? error.message || fallback : fallback;
+    }
   });
 }
