@@ -1253,9 +1253,15 @@ if (!reduceMotion) {
       stage.style.setProperty("--flow-progress", `${clampedProgress}`);
       stage.style.setProperty("--flow-card-drop", "0px");
       stage.style.setProperty("--flow-card-rotate", "0deg");
-      setFlowSheet("one", sheetOne, 12, 12, 0.984, 0.982, -0.22, -0.2);
-      setFlowSheet("two", sheetTwo, 24, 24, 0.962, 0.964, 0.16, 0.14);
-      setFlowSheet("three", sheetThree, 36, 34, 0.94, 0.946, -0.1, -0.08);
+      const compactLandscapeStack = window.matchMedia(
+        "(min-width: 901px) and (max-width: 1180px) and (orientation: landscape), (min-width: 1181px) and (max-width: 1380px) and (orientation: landscape) and (max-height: 899px)",
+      ).matches;
+      const stackSpread = compactLandscapeStack ? 0.66 : 1;
+      const stackTilt = compactLandscapeStack ? 0.72 : 1;
+
+      setFlowSheet("one", sheetOne, 12 * stackSpread, 12 * stackSpread, 0.984, 0.982, -0.22 * stackTilt, -0.2 * stackTilt);
+      setFlowSheet("two", sheetTwo, 24 * stackSpread, 24 * stackSpread, 0.962, 0.964, 0.16 * stackTilt, 0.14 * stackTilt);
+      setFlowSheet("three", sheetThree, 36 * stackSpread, 34 * stackSpread, 0.94, 0.946, -0.1 * stackTilt, -0.08 * stackTilt);
     };
 
     setStoryClasses(0);
@@ -1276,18 +1282,16 @@ if (!reduceMotion) {
 
       return () => trigger.kill();
     });
-    media.add("(min-width: 761px) and (max-width: 900px)", () => {
-      const trigger = ScrollTrigger.create({
-        trigger: story,
-        start: "top top",
-        end: () => `+=${Math.max(window.innerHeight * 2.55, steps.length * 360)}`,
-        pin: true,
-        scrub: 0.45,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => setStoryProgress(self.progress),
-        onRefresh: (self) => setStoryProgress(self.progress),
-      });
+	    media.add("(min-width: 761px) and (max-width: 900px)", () => {
+	      const trigger = ScrollTrigger.create({
+	        trigger: story,
+	        start: "top top",
+	        end: "bottom bottom",
+	        scrub: 0.45,
+	        invalidateOnRefresh: true,
+	        onUpdate: (self) => setStoryProgress(self.progress),
+	        onRefresh: (self) => setStoryProgress(self.progress),
+	      });
 
       return () => trigger.kill();
     });

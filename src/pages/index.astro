@@ -12144,11 +12144,11 @@ const pilotMetrics = [
     }
   }
 
-  @media (max-width: 1080px) {
-    .concept-pin-inner {
-      grid-template-columns: 1fr;
-      justify-items: center;
-      gap: clamp(22px, 4vw, 34px);
+	  @media (max-width: 1080px) {
+	    .concept-pin-inner {
+	      grid-template-columns: 1fr;
+	      justify-items: center;
+	      gap: clamp(22px, 4vw, 34px);
     }
 
     .concept-copy {
@@ -12160,15 +12160,878 @@ const pilotMetrics = [
     .concept-copy > p:not(.eyebrow),
     .project-progress {
       margin-right: auto;
-      margin-left: auto;
-    }
-  }
+	      margin-left: auto;
+	    }
+	  }
 
-  @media (max-width: 900px) {
-    main {
-      --section-gap: clamp(56px, 9vw, 72px);
-      --section-title-size: clamp(2.2rem, 5vw, 2.8rem);
-    }
+	  @media (min-width: 761px) and (max-width: 1080px) {
+	    .hero-grid {
+	      gap: clamp(34px, 4vh, 54px);
+	    }
+
+	    .hero-flow {
+	      margin-bottom: 8px;
+	    }
+
+	    .hero-visual {
+	      width: min(100%, 560px);
+	      margin-top: clamp(30px, 4vh, 48px);
+	    }
+
+	    .hero-people {
+	      transform: scale(1.03);
+	      transform-origin: 52% 100%;
+	    }
+
+	    .hero-handoff-map {
+	      inset: 2% -1% 0 -2%;
+	    }
+
+	    .concept-pin-inner {
+	      min-width: 0;
+	      gap: clamp(26px, 4vh, 42px);
+	      padding-block: clamp(128px, 11vh, 156px) 28px;
+	    }
+
+	    .concept-copy {
+	      width: min(100%, 760px);
+	    }
+
+	    .project-carousel {
+	      width: min(100%, 760px);
+	      min-width: 0;
+	      max-width: 100%;
+	      justify-self: center;
+	    }
+
+	    .project-card-track,
+	    .project-stage-card,
+	    .project-stage-body {
+	      width: 100%;
+	      min-width: 0;
+	      max-width: 100%;
+	    }
+
+	    .project-stage-card {
+	      flex-basis: 100%;
+	      grid-template-rows: minmax(126px, 0.74fr) auto;
+	      min-height: clamp(410px, 43vh, 520px);
+	      padding: clamp(22px, 3.1vw, 34px);
+	    }
+
+	    .project-stage-visual {
+	      width: clamp(136px, 20vw, 190px);
+	      max-width: 36%;
+	      min-height: 92px;
+	    }
+
+	    .project-stage-body {
+	      grid-template-rows: auto auto auto auto auto auto;
+	      min-height: 0;
+	    }
+
+	    .project-stage-body h3 {
+	      min-height: 0;
+	      font-size: clamp(1.85rem, 4vw, 3rem);
+	    }
+
+	    .project-stage-body > p:last-of-type {
+	      min-height: 0;
+	    }
+
+	    .story-pin-inner {
+	      padding-top: clamp(116px, 9vh, 132px);
+	      padding-bottom: clamp(32px, 4vh, 50px);
+	    }
+	  }
+
+	  @media (min-width: 761px) and (max-width: 900px) {
+	    .hero .hero-strip {
+	      grid-template-columns: repeat(3, minmax(0, 1fr));
+	      width: 100%;
+	      margin-top: clamp(8px, 1.8vh, 18px);
+	    }
+
+	    .hero .hero-strip div {
+	      min-height: 100px;
+	      padding: 15px 14px;
+	    }
+
+	    .hero .hero-strip div + div,
+	    .hero .hero-strip div:nth-child(n + 3) {
+	      border-top: 0;
+	    }
+
+	    .hero .hero-strip div + div,
+	    .hero .hero-strip div:nth-child(3) {
+	      border-left: 1px solid rgba(35, 61, 77, 0.1);
+	    }
+
+	    .hero .hero-strip strong {
+	      max-width: 15ch;
+	      font-size: 0.94rem;
+	    }
+
+	    .hero .hero-strip span {
+	      max-width: 24ch;
+	      font-size: 0.74rem;
+	      line-height: 1.28;
+	    }
+
+	    .project-carousel {
+	      width: min(100%, 680px);
+	    }
+
+	    .project-stage-card {
+	      min-height: clamp(390px, 42vh, 460px);
+	    }
+
+	    .story-pin {
+	      min-height: max(270svh, 2600px);
+	      padding: 0;
+	    }
+
+	    .story-pin-inner {
+	      position: sticky;
+	      top: 0;
+	      display: grid;
+	      align-content: start;
+	      min-height: 100svh;
+	      padding-block: clamp(128px, 11vh, 150px) 24px;
+	    }
+
+	    @supports (min-height: 100dvh) {
+	      .story-pin-inner {
+	        min-height: 100dvh;
+	      }
+	    }
+	  }
+
+	  @media (min-width: 901px) and (max-width: 1180px) and (orientation: landscape) {
+	    main {
+	      --section-pad-y: clamp(74px, 9vw, 104px);
+	      --section-title-size: clamp(2.45rem, 4.15vw, 3.35rem);
+	    }
+
+	    .hero {
+	      width: min(100% - 32px, 1120px);
+	      min-height: 100svh;
+	      padding-top: 78px;
+	      padding-bottom: 18px;
+	    }
+
+	    @supports (height: 100dvh) {
+	      .hero {
+	        min-height: 100dvh;
+	      }
+	    }
+
+	    .hero-grid {
+	      grid-template-columns: minmax(0, 0.9fr) minmax(340px, 0.62fr);
+	      justify-items: stretch;
+	      gap: clamp(22px, 3vw, 34px);
+	      padding: 22px 0 8px;
+	    }
+
+	    .hero-copy {
+	      justify-self: start;
+	      max-width: 520px;
+	      text-align: left;
+	    }
+
+	    .hero-copy h1 {
+	      max-width: 520px;
+	      font-size: clamp(2.95rem, 4.45vw, 3.95rem);
+	    }
+
+	    .hero-lede {
+	      max-width: 46ch;
+	      font-size: clamp(0.98rem, 1.55vw, 1.08rem);
+	    }
+
+	    .hero-actions,
+	    .hero-flow {
+	      justify-content: flex-start;
+	    }
+
+	    .hero-flow {
+	      max-width: 520px;
+	      margin-bottom: 0;
+	    }
+
+	    .hero-visual {
+	      justify-self: end;
+	      width: min(35vw, 410px);
+	      margin: 0;
+	      transform: none;
+	    }
+
+	    .hero-handoff-map {
+	      inset: 3% 0 1% -1%;
+	    }
+
+	    .hero-route-node.is-shop {
+	      top: 1.6%;
+	    }
+
+	    .hero-people {
+	      transform: scale(1);
+	    }
+
+	    .hero .hero-strip {
+	      margin-top: 0;
+	    }
+
+	    .hero .hero-strip div {
+	      min-height: 82px;
+	      padding: 13px 20px;
+	    }
+
+	    .hero .hero-strip div::before {
+	      margin-bottom: 10px;
+	    }
+
+	    .hero .hero-strip strong {
+	      font-size: 0.98rem;
+	    }
+
+	    .hero .hero-strip span {
+	      font-size: 0.76rem;
+	      line-height: 1.26;
+	    }
+
+	    .concept-pin {
+	      min-height: max(340svh, 2550px);
+	    }
+
+	    .concept-pin-inner {
+	      grid-template-columns: minmax(300px, 0.72fr) minmax(0, 1fr);
+	      align-items: center;
+	      gap: clamp(24px, 4vw, 44px);
+	      min-height: 100svh;
+	      padding-block: clamp(78px, 10vh, 104px) 24px;
+	    }
+
+	    @supports (min-height: 100dvh) {
+	      .concept-pin-inner {
+	        min-height: 100dvh;
+	      }
+	    }
+
+	    .concept-copy {
+	      justify-self: start;
+	      width: min(100%, 420px);
+	      max-width: 420px;
+	      text-align: left;
+	    }
+
+	    .concept-copy h2,
+	    .concept-copy > p:not(.eyebrow),
+	    .project-progress {
+	      margin-right: 0;
+	      margin-left: 0;
+	    }
+
+	    .concept-copy h2 {
+	      max-width: 420px;
+	    }
+
+	    .concept-copy > p:not(.eyebrow),
+	    .project-progress {
+	      max-width: 390px;
+	    }
+
+	    .project-carousel {
+	      justify-self: end;
+	      width: min(55vw, 640px);
+	    }
+
+	    .project-stage-card {
+	      grid-template-rows: minmax(108px, 0.66fr) auto;
+	      min-height: clamp(390px, 57vh, 492px);
+	      padding: clamp(20px, 2.7vw, 30px);
+	    }
+
+	    .project-stage-visual {
+	      width: clamp(128px, 17vw, 190px);
+	      max-width: 38%;
+	      min-height: 88px;
+	    }
+
+	    .project-stage-body {
+	      grid-template-rows: auto auto auto auto auto auto;
+	      min-height: 0;
+	    }
+
+	    .project-stage-body h3 {
+	      min-height: 0;
+	      font-size: clamp(1.9rem, 3.25vw, 2.6rem);
+	    }
+
+	    .project-stage-body > p:last-of-type {
+	      min-height: 0;
+	    }
+
+	    .story-pin {
+	      width: min(100% - 32px, 1180px);
+	      min-height: max(300svh, 2300px);
+	      padding: 0;
+	    }
+
+	    .story-pin-inner {
+	      position: sticky;
+	      top: 0;
+	      grid-template-columns: minmax(0, 1fr) minmax(290px, 0.46fr);
+	      align-items: center;
+	      gap: clamp(24px, 3.7vw, 44px);
+	      min-height: 100svh;
+	      padding-block: clamp(72px, 9vh, 92px) 24px;
+	    }
+
+	    @supports (min-height: 100dvh) {
+	      .story-pin-inner {
+	        min-height: 100dvh;
+	      }
+	    }
+
+	    .story-copy {
+	      order: 0;
+	      justify-self: start;
+	      width: min(100%, 340px);
+	      max-width: 340px;
+	      text-align: left;
+	    }
+
+	    .story-copy h2 {
+	      font-size: clamp(2.25rem, 3.65vw, 3.05rem);
+	    }
+
+	    .story-stage {
+	      min-height: clamp(600px, 80vh, 640px);
+	      overflow: visible;
+	    }
+
+	    .flow-device {
+	      position: absolute;
+	      inset: clamp(10px, 1.6vw, 18px);
+	      grid-template-columns: minmax(0, 1fr);
+	      grid-template-rows: 34px auto auto;
+	      gap: clamp(10px, 1.6vw, 16px);
+	      padding: clamp(10px, 1.7vw, 18px);
+	    }
+
+	    .flow-head {
+	      min-height: 34px;
+	      font-size: 0.66rem;
+	    }
+
+	    .flow-board {
+	      grid-template-columns: minmax(0, 0.92fr) minmax(250px, 0.68fr);
+	      grid-template-rows: minmax(0, 1fr);
+	      gap: 16px;
+	      height: clamp(392px, 53vh, 430px);
+	      padding: 16px;
+	    }
+
+	    .flow-manifest,
+	    .flow-bid-panel {
+	      min-height: 0;
+	    }
+
+	    .flow-manifest {
+	      top: 0;
+	      left: 0;
+	      width: 100%;
+	      padding: 3px 0 0;
+	    }
+
+	    .flow-manifest strong {
+	      font-size: clamp(2rem, 3.35vw, 2.7rem);
+	    }
+
+	    .flow-manifest em {
+	      font-size: 0.78rem;
+	      line-height: 1.18;
+	    }
+
+	    .flow-manifest div {
+	      margin-top: 14px;
+	    }
+
+	    .flow-manifest b {
+	      max-width: 100%;
+	      font-size: 0.82rem;
+	      line-height: 1.16;
+	    }
+
+	    .flow-transfer {
+	      height: 100%;
+	      min-height: 0;
+	      grid-template-rows: 22px minmax(0, 1fr);
+	      gap: 8px;
+	    }
+
+	    .flow-fiche-stack {
+	      height: calc(100% - 22px);
+	      min-height: 0;
+	      align-self: start;
+	    }
+
+	    .flow-parcel-card {
+	      grid-template-rows: 12px auto auto minmax(58px, auto) 46px;
+	      align-content: space-between;
+	      gap: 8px;
+	      height: 100%;
+	      padding: clamp(16px, 2vw, 22px);
+	    }
+
+	    .flow-parcel-card > strong {
+	      font-size: clamp(2.1rem, 4.35vw, 3rem);
+	    }
+
+	    .flow-parcel-card p {
+	      font-size: 0.88rem;
+	      line-height: 1.28;
+	    }
+
+	    .flow-card-details {
+	      height: auto;
+	      min-height: 58px;
+	      gap: 6px;
+	    }
+
+	    .flow-card-details div {
+	      min-height: 58px;
+	      padding: 8px 7px 8px 9px;
+	    }
+
+	    .flow-card-details span {
+	      font-size: 0.5rem;
+	    }
+
+	    .flow-card-details b {
+	      font-size: 0.58rem;
+	    }
+
+	    .flow-seal-strip {
+	      grid-template-columns: minmax(0, 1fr) 122px;
+	      gap: 8px;
+	    }
+
+	    .flow-card-status {
+	      grid-template-columns: 24px minmax(0, 1fr);
+	      min-height: 46px;
+	      padding: 7px;
+	    }
+
+	    .flow-status-icon {
+	      width: 24px;
+	      height: 24px;
+	    }
+
+	    .flow-ledger {
+	      gap: 10px;
+	    }
+
+	    .flow-ledger div {
+	      min-height: 50px;
+	      padding-top: 8px;
+	    }
+
+	    .flow-ledger span {
+	      font-size: 0.58rem;
+	    }
+
+	    .flow-ledger strong {
+	      font-size: 0.68rem;
+	    }
+	  }
+
+	  @media (min-width: 901px) and (max-width: 1180px) and (orientation: landscape) and (max-height: 720px) {
+	    .hero {
+	      padding-top: 72px;
+	      padding-bottom: 12px;
+	    }
+
+	    .hero-grid {
+	      grid-template-columns: minmax(0, 0.94fr) minmax(300px, 0.56fr);
+	      gap: clamp(18px, 2.6vw, 28px);
+	      padding: 12px 0 4px;
+	    }
+
+	    .hero-copy h1 {
+	      font-size: clamp(2.62rem, 4vw, 3.35rem);
+	    }
+
+	    .hero-lede {
+	      max-width: 48ch;
+	      margin-top: 16px;
+	      font-size: 0.94rem;
+	      line-height: 1.46;
+	    }
+
+	    .hero-actions {
+	      margin-top: 20px;
+	    }
+
+	    .hero .button {
+	      min-height: 46px;
+	    }
+
+	    .hero-flow {
+	      margin-top: 18px;
+	      gap: 7px;
+	      font-size: 0.64rem;
+	    }
+
+	    .hero-flow i {
+	      width: clamp(16px, 2.2vw, 26px);
+	    }
+
+	    .hero-visual {
+	      width: min(31vw, 360px);
+	    }
+
+	    .hero-route-node {
+	      width: 30px;
+	      height: 30px;
+	    }
+
+	    .hero-route-icon {
+	      width: 14px;
+	      height: 14px;
+	    }
+
+	    .hero .hero-strip div {
+	      min-height: 70px;
+	      padding: 10px 18px;
+	    }
+
+	    .hero .hero-strip div::before {
+	      margin-bottom: 8px;
+	    }
+
+	    .hero .hero-strip strong {
+	      font-size: 0.9rem;
+	    }
+
+	    .hero .hero-strip span {
+	      font-size: 0.68rem;
+	      line-height: 1.22;
+	    }
+	  }
+
+	  @media (min-width: 1181px) and (max-width: 1380px) and (orientation: landscape) and (max-height: 899px) {
+	    .hero {
+	      width: min(100% - 32px, 1180px);
+	      min-height: 100svh;
+	      padding-top: 78px;
+	      padding-bottom: 16px;
+	    }
+
+	    @supports (height: 100dvh) {
+	      .hero {
+	        min-height: 100dvh;
+	      }
+	    }
+
+	    .hero-grid {
+	      grid-template-columns: minmax(0, 0.92fr) minmax(350px, 0.58fr);
+	      gap: clamp(20px, 3vw, 34px);
+	      padding: 18px 0 6px;
+	    }
+
+	    .hero-copy {
+	      max-width: 560px;
+	      transform: none;
+	    }
+
+	    .hero-copy h1 {
+	      max-width: 560px;
+	      font-size: clamp(3rem, 4.35vw, 3.95rem);
+	    }
+
+	    .hero-lede {
+	      max-width: 47ch;
+	      font-size: clamp(0.98rem, 1.45vw, 1.08rem);
+	      line-height: 1.5;
+	    }
+
+	    .hero-actions {
+	      margin-top: 24px;
+	    }
+
+	    .hero-flow {
+	      gap: 7px;
+	      margin-top: 20px;
+	      font-size: 0.66rem;
+	    }
+
+	    .hero-flow i {
+	      width: clamp(16px, 2.1vw, 28px);
+	    }
+
+	    .hero-visual {
+	      justify-self: end;
+	      width: min(35vw, 420px);
+	      margin: 0;
+	      transform: none;
+	    }
+
+	    .hero-handoff-map {
+	      inset: 3% 0 1% -1%;
+	    }
+
+	    .hero-route-node.is-shop {
+	      top: 1.6%;
+	    }
+
+	    .hero-people {
+	      transform: scale(1);
+	    }
+
+	    .hero .hero-strip {
+	      margin-top: 0;
+	    }
+
+	    .hero .hero-strip div {
+	      min-height: 78px;
+	      padding: 12px 20px;
+	    }
+
+	    .hero .hero-strip div::before {
+	      margin-bottom: 9px;
+	    }
+
+	    .hero .hero-strip strong {
+	      font-size: 0.95rem;
+	    }
+
+	    .hero .hero-strip span {
+	      font-size: 0.72rem;
+	      line-height: 1.24;
+	    }
+
+	    .story-pin {
+	      width: min(100% - 32px, 1210px);
+	      min-height: max(300svh, 2400px);
+	      padding: 0;
+	    }
+
+	    .story-pin-inner {
+	      position: sticky;
+	      top: 0;
+	      grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+	      align-items: center;
+	      gap: clamp(28px, 3.4vw, 40px);
+	      min-height: 100svh;
+	      padding-block: clamp(76px, 9vh, 96px) 24px;
+	    }
+
+	    @supports (min-height: 100dvh) {
+	      .story-pin-inner {
+	        min-height: 100dvh;
+	      }
+	    }
+
+	    .story-copy {
+	      max-width: 330px;
+	    }
+
+	    .story-copy h2 {
+	      font-size: clamp(2.45rem, 4vw, 3.35rem);
+	    }
+
+	    .story-stage {
+	      min-height: clamp(570px, 72vh, 620px);
+	    }
+
+	    .flow-device {
+	      inset: clamp(10px, 1.4vw, 18px);
+	      grid-template-rows: 34px auto auto;
+	      gap: clamp(10px, 1.4vw, 16px);
+	      padding: clamp(10px, 1.5vw, 18px);
+	    }
+
+	    .flow-board {
+	      grid-template-columns: minmax(0, 1fr) minmax(260px, 0.52fr);
+	      grid-template-rows: minmax(0, 1fr);
+	      gap: 18px;
+	      height: clamp(430px, 54vh, 462px);
+	      padding: 18px;
+	    }
+
+	    .flow-transfer {
+	      height: 100%;
+	      min-height: 0;
+	      grid-template-rows: 24px minmax(0, 1fr);
+	      gap: 10px;
+	    }
+
+	    .flow-fiche-stack {
+	      height: calc(100% - 18px);
+	      min-height: 0;
+	      align-self: start;
+	    }
+
+	    .flow-parcel-card {
+	      grid-template-rows: 12px auto auto minmax(64px, auto) 50px;
+	      align-content: space-between;
+	      gap: 9px;
+	      height: 100%;
+	      padding: clamp(18px, 1.9vw, 24px);
+	    }
+
+	    .flow-parcel-card > strong {
+	      font-size: clamp(2.55rem, 4.7vw, 3.65rem);
+	    }
+
+	    .flow-parcel-card p {
+	      font-size: 0.92rem;
+	      line-height: 1.3;
+	    }
+
+	    .flow-card-details {
+	      height: auto;
+	      min-height: 64px;
+	      gap: 8px;
+	    }
+
+	    .flow-card-details div {
+	      min-height: 64px;
+	      padding: 9px 9px 9px 11px;
+	    }
+
+	    .flow-card-details span {
+	      font-size: 0.54rem;
+	    }
+
+	    .flow-card-details b {
+	      font-size: 0.64rem;
+	      line-height: 1.08;
+	    }
+
+	    .flow-seal-strip {
+	      grid-template-columns: minmax(0, 1fr) 164px;
+	      gap: 10px;
+	    }
+
+	    .flow-card-status {
+	      grid-template-columns: 24px minmax(0, 1fr);
+	      min-height: 50px;
+	    }
+
+	    .flow-status-icon {
+	      width: 24px;
+	      height: 24px;
+	    }
+
+	    .flow-manifest,
+	    .flow-bid-panel {
+	      min-height: 0;
+	    }
+
+	    .flow-manifest {
+	      top: 0;
+	      left: 0;
+	      width: 100%;
+	      padding: 3px 0 0;
+	    }
+
+	    .flow-manifest strong {
+	      font-size: clamp(2.2rem, 3.5vw, 3rem);
+	    }
+
+	    .flow-manifest em {
+	      font-size: 0.82rem;
+	      line-height: 1.2;
+	    }
+
+	    .flow-manifest div {
+	      margin-top: 16px;
+	    }
+
+	    .flow-manifest b {
+	      font-size: 0.86rem;
+	      line-height: 1.18;
+	    }
+
+	    .flow-ledger {
+	      gap: 10px;
+	    }
+
+	    .flow-ledger div {
+	      min-height: 54px;
+	      padding-top: 9px;
+	    }
+
+	    .flow-ledger span {
+	      font-size: 0.6rem;
+	    }
+
+	    .flow-ledger strong {
+	      font-size: 0.7rem;
+	    }
+	  }
+
+	  @media (min-width: 1181px) and (max-width: 1380px) and (min-height: 900px) {
+	    .hero {
+	      width: min(100% - 32px, 1240px);
+	      padding-top: 86px;
+	      padding-bottom: 16px;
+	    }
+
+	    .hero-grid {
+	      grid-template-columns: minmax(0, 0.78fr) minmax(460px, 0.78fr);
+	      gap: clamp(24px, 3vw, 44px);
+	      padding: 24px 0 4px;
+	    }
+
+	    .hero-copy {
+	      max-width: 620px;
+	      transform: translateY(clamp(-190px, -12vh, -110px));
+	    }
+
+	    .hero-copy h1 {
+	      max-width: 620px;
+	      font-size: clamp(3.65rem, 5.2vw, 5.35rem);
+	    }
+
+	    .hero-flow {
+	      gap: 7px;
+	      font-size: 0.68rem;
+	    }
+
+	    .hero-flow i {
+	      width: clamp(18px, 2.2vw, 28px);
+	    }
+
+	    .hero-visual {
+	      justify-self: end;
+	      width: min(44vw, 540px);
+	      margin: 0 0 -18px;
+	      transform: none;
+	    }
+
+	    .hero-handoff-map {
+	      inset: 2% 0 0 -1%;
+	    }
+
+	    .hero-people {
+	      transform: scale(1);
+	    }
+
+	    .hero .hero-strip div {
+	      min-height: 96px;
+	      padding: 18px 24px;
+	    }
+	  }
+
+	  @media (max-width: 900px) {
+	    main {
+	      --section-gap: clamp(56px, 9vw, 72px);
+	      --section-title-size: clamp(2.2rem, 5vw, 2.8rem);
+	    }
 
     .section-heading,
     .route-system-heading,
