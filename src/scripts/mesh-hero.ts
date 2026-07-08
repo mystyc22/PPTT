@@ -871,7 +871,7 @@ if (routeLab) {
 
 if (!reduceMotion) {
   const heroWords = gsap.utils.toArray<HTMLElement>("[data-hero-word]");
-  const heroAfterWords = gsap.utils.toArray<HTMLElement>(".hero-copy > .eyebrow, .hero-lede, .hero-actions");
+  const heroAfterWords = gsap.utils.toArray<HTMLElement>(".hero-copy > .eyebrow, .hero-lede, .hero-actions, .hero-flow");
 
   gsap
     .timeline({ defaults: { ease: "power3.out" } })
