@@ -6,7 +6,7 @@ const scaleSteps = [
     code: "01",
     title: "Add one useful point",
     body: "Open a shop only where it shortens a real route, increases bag fill, or gives riders a cleaner handoff.",
-    metric: "5-8 active points",
+    metric: "pilot gate",
   },
   {
     code: "02",
@@ -16,23 +16,23 @@ const scaleSteps = [
   },
   {
     code: "03",
-    title: "Delay the depot decision",
-    body: "A depot is only justified after the ledger proves sorting volume, staffing load, and rent can beat the shop mesh.",
-    metric: "depot gate locked",
+    title: "Delay fixed rent",
+    body: "A fixed site is only justified after the ledger proves sorting volume, staffing load, and rent beat the shop mesh.",
+    metric: "rent gate locked",
   },
 ];
 
 const scaleSignals = [
-  ["Point density", "12 shops", "before fixed hub rent"],
-  ["Bag fill", "68%", "enough volume to bundle"],
-  ["Rider overlap", "41%", "routes already crossing"],
-  ["Depot trigger", "not yet", "density data decides"],
+  ["Point density", "pilot target", "before fixed rent"],
+  ["Bag fill", "example gate", "enough volume to bundle"],
+  ["Rider overlap", "example overlap", "routes already crossing"],
+  ["Fixed-site trigger", "not yet", "density data decides"],
 ];
 
 const scaleChecks = [
   ["Open point", "Only when it reduces distance or creates a reliable handoff lane."],
   ["Keep shops light", "No printers, no warehouse shift, no full parcel sorting room."],
-  ["Let data decide", "Depot rent waits until repeated bags prove a fixed site earns more than it costs."],
+  ["Let data decide", "Fixed rent waits until repeated bags prove a site earns more than it costs."],
 ];
 
 const cycleNodes = [
@@ -41,7 +41,7 @@ const cycleNodes = [
     label: "Shop",
     title: "A shop becomes a point",
     body: "A trusted shop accepts parcels, writes the local code, and keeps the work lightweight.",
-    stat: "5-8 points",
+    stat: "pilot cluster",
     x: "50%",
     y: "13.3%",
   },
@@ -50,7 +50,7 @@ const cycleNodes = [
     label: "Bag",
     title: "Direction bags prove volume",
     body: "Repeated sealed bags show which local lanes are real before rent is committed.",
-    stat: "18/day lane",
+    stat: "example lane",
     x: "84.8%",
     y: "37.1%",
   },
@@ -59,7 +59,7 @@ const cycleNodes = [
     label: "Rider",
     title: "Riders clear existing movement",
     body: "The system prefers riders already crossing the lane instead of creating a fresh trip.",
-    stat: "41% overlap",
+    stat: "example overlap",
     x: "71.9%",
     y: "80%",
   },
@@ -68,7 +68,7 @@ const cycleNodes = [
     label: "Ledger",
     title: "The ledger decides the next point",
     body: "Open another point only when fill rate, handoff time, and payout data repeat.",
-    stat: "7 day gate",
+    stat: "audit gate",
     x: "28.1%",
     y: "80%",
   },
@@ -77,14 +77,14 @@ const cycleNodes = [
     label: "P5",
     title: "Candidate point opens last",
     body: "P5 stays a candidate until the existing P2-P4 lane repeats without manual help.",
-    stat: "hold depot",
+    stat: "hold fixed site",
     x: "15.2%",
     y: "37.1%",
   },
 ];
 
 const compareRows = [
-  ["Capital", "Add one shop", "Lease depot first"],
+  ["Capital", "Add one shop", "Lease fixed site first"],
   ["Proof", "Real bags repeat", "Forecasted volume"],
   ["Risk", "Reversible point", "Fixed rent drag"],
   ["Scale trigger", "Ledger gates P5", "Manager approval"],
@@ -177,17 +177,17 @@ export default function InvestorMotion() {
       <div className="scale-section-inner">
         <div className="section-heading scale-heading">
           <div>
-            <p className="eyebrow">Why it can scale</p>
-            <h2 id="proof-title">Scale by adding points, not depots.</h2>
+            <p className="eyebrow">Expansion logic</p>
+            <h2 id="proof-title">Scale with shops before fixed sites.</h2>
           </div>
           <div className="scale-heading-copy">
             <p>
-              The network grows by proving local density first. Shops absorb intake and sort work while the ledger decides
-              when a fixed depot is finally worth the cost.
+              The network grows only where real parcels repeat. Shops absorb intake and simple sorting while the handoff
+              log decides when a higher-capacity point or fixed site would save more than it costs.
             </p>
             <div className="scale-heading-decision">
               <span>Current decision</span>
-              <strong>Add point P5, hold depot</strong>
+              <strong>Add point P5, hold fixed site</strong>
             </div>
           </div>
         </div>
@@ -211,7 +211,7 @@ export default function InvestorMotion() {
           >
             <div className="scale-panel-head">
               <span>Point-first expansion</span>
-              <strong>No depot yet</strong>
+              <strong>No fixed site yet</strong>
             </div>
             <div className="scale-cycle-layout" aria-label="Point-first expansion cycle">
               <div className="scale-cycle-orbit">
@@ -286,7 +286,7 @@ export default function InvestorMotion() {
             <div className="scale-compare">
               <div className="scale-compare-head">
                 <span>Expansion logic</span>
-                <strong>BebaRun vs depot-first</strong>
+                <strong>BebaRun vs fixed-site first</strong>
               </div>
               <div className="scale-compare-grid">
                 {compareRows.map(([label, mesh, depot]) => (
@@ -321,13 +321,13 @@ export default function InvestorMotion() {
               ))}
             </div>
             <div className="scale-depot-decision">
-              <span>Depot decision matrix</span>
+              <span>Fixed-site decision</span>
               <div>
                 <strong>Open more shops</strong>
                 <p>Low rent, local staff, faster proof of real parcel density.</p>
               </div>
               <div>
-                <strong>Hold depot</strong>
+                <strong>Hold fixed site</strong>
                 <p>No repeated sort load yet; fixed rent would hide whether the mesh works.</p>
               </div>
             </div>

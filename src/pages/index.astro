@@ -26,7 +26,7 @@ const projectStages = [
     label: "Start",
     title: "Recruit the first shop ring",
     body: "Begin with a small cluster of trusted shops close enough for riders to move sealed bags without a warehouse.",
-    metric: "5-8 points",
+    metric: "pilot cluster",
     visual: "shops",
   },
   {
@@ -57,7 +57,7 @@ const projectStages = [
     tag: "05",
     label: "Scale",
     title: "Add shops before warehouses",
-    body: "Grow the mesh by adding more points and riders, then use density data to decide where a permanent hub actually earns its rent.",
+    body: "Add shops where demand repeats, then use route data to decide where another nearby point reduces load without creating a bottleneck.",
     metric: "density first",
     visual: "mesh",
   },
@@ -68,7 +68,7 @@ const storySteps = [
     tag: "01",
     label: "Code",
     title: "Drop at a nearby shop",
-    body: "Staff writes a relative direction code on the parcel. It works without GPS, printers, or exact street addresses.",
+    body: "Staff writes a short Base32 parcel code. The system maps it to the sector route, so counter work needs no printed label, phone GPS, or exact street address.",
   },
   {
     tag: "02",
@@ -86,15 +86,16 @@ const storySteps = [
     tag: "04",
     label: "Audit",
     title: "Audit every handoff",
-    body: "The customer quote stays fixed. Handoffs, handling fees, courier payout, and skip-hop bonuses are logged.",
+    body: "The customer quote stays fixed. Handoffs, handling fees, courier payout, and eligible skip-hop or surplus events are logged.",
   },
 ];
 
 const modelRows = [
   ["No central hub", "Flat network, no single warehouse bottleneck"],
-  ["Marker-first", "Works when printers, QR, or constant internet are not available"],
+  ["Marker-first", "Optional QR/NFC; works without printers or steady internet"],
   ["Sealed bags", "Open only when the route code changes"],
   ["Courier market", "Dynamic job value, consolidation, and express upgrades"],
+  ["Code-only pickup", "Final point releases the parcel by pickup code; ID checks stay outside MVP"],
 ];
 
 const pilotMetrics = [
@@ -116,7 +117,7 @@ const pilotMetrics = [
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="BebaRun is a low-capex courier network for Nairobi, built with local shops, independent riders, offline-ready parcel codes, and auditable route economics."
+      content="BebaRun is a low-capex courier network for Nairobi, built with local shops, independent riders, marker-first parcel codes, and auditable route economics."
     />
     <title>BebaRun | Courier grid for Nairobi</title>
   </head>
@@ -194,8 +195,9 @@ const pilotMetrics = [
               </span>
             </h1>
             <p class="hero-lede">
-              BebaRun turns local shops into parcel points and lets independent riders move sealed bags across Nairobi.
-              Short marker codes, fixed customer quotes, and auditable route economics.
+              BebaRun turns trusted neighborhood shops into parcel points. Staff write short parcel codes, riders move
+              sealed bags, and receivers pick up by code in a city with traffic, uneven addresses, and unreliable printer
+              access.
             </p>
             <div class="hero-actions" aria-label="Primary actions">
               <a class="button button-primary magnetic" href="#lead">Investor deck</a>
@@ -273,9 +275,9 @@ const pilotMetrics = [
         </div>
 
         <div class="hero-strip" aria-label="Concept summary">
-          <div><strong>Low capex network</strong><span>Existing shops become parcel points before BebaRun rents depots.</span></div>
-          <div><strong>Dense city flow</strong><span>Short marker codes keep sealed bags moving through nearby riders.</span></div>
-          <div><strong>Transparent economics</strong><span>Every route keeps customer quote, rider payout, and shop handling visible.</span></div>
+          <div><strong>Small pilot cluster</strong><span>Existing counters test parcel intake before fixed infrastructure.</span></div>
+          <div><strong>Marker-first sorting</strong><span>Short parcel codes resolve into local sector routes for shop staff.</span></div>
+          <div><strong>Illustrative economics</strong><span>Customer quote, handling fee, rider payout, and surplus stay visible.</span></div>
         </div>
       </section>
 
@@ -353,24 +355,24 @@ const pilotMetrics = [
         </div>
       </section>
 
-      <section class="section route-system-section" aria-labelledby="route-system-title">
+      <section class="section route-system-section" id="lab" aria-labelledby="route-system-title">
         <div class="route-system-inner reveal">
           <div class="section-heading route-system-heading">
             <div>
-              <p class="eyebrow">Network simulator</p>
-              <h2 id="route-system-title">Live route system</h2>
+              <p class="eyebrow">Pilot simulation</p>
+              <h2 id="route-system-title">Route simulator</h2>
             </div>
             <p>
-              A live network view of shops, sealed bags, and rider supply. Demand, point count, and dispatch capacity
-              change the route state without adding a central warehouse.
+              Change demand, shop count, and rider supply to see the route rebalance. More points shorten handoffs; more
+              riders clear sealed bags; the ledger keeps counts conserved.
             </p>
           </div>
 
-          <aside class="route-lab is-booting" aria-label="Live courier network">
+          <aside class="route-lab is-booting" aria-label="Pilot courier route simulator">
             <div class="lab-topline">
-              <span>Live route system</span>
+              <span>Route simulator</span>
               <div class="lab-live-meta">
-                <span class="lab-live-pill"><i aria-hidden="true"></i>Live</span>
+                <span class="lab-live-pill"><i aria-hidden="true"></i>Sim</span>
                 <strong><span data-lab-riders>0</span> riders</strong>
                 <strong><span data-lab-delivered>0</span> ready</strong>
               </div>
@@ -425,7 +427,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P5" data-kind="shop" data-km-x="22.5" data-km-y="22.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P5</strong>
-                <em>Mid hub</em>
+                <em>High-volume shop</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -613,15 +615,15 @@ const pilotMetrics = [
 
             <div class="lab-readout" aria-live="polite">
               <div>
-                <span>At points</span>
+                <span>Waiting at shops</span>
                 <strong data-lab-route>0 in bags</strong>
               </div>
               <div>
-                <span>En route</span>
+                <span>With riders</span>
                 <strong data-lab-price>0 in bags</strong>
               </div>
               <div>
-                <span>Ready</span>
+                <span>Ready pickup</span>
                 <em data-lab-action>0</em>
               </div>
             </div>
@@ -634,18 +636,18 @@ const pilotMetrics = [
           <div class="story-stage">
             <div class="flow-device" aria-label="Operational parcel flow preview">
               <div class="flow-head">
-                <span data-flow-head-label>Relative direction code</span>
-                <strong data-flow-code>Code 4.4.5</strong>
+                <span data-flow-head-label>Marker parcel code</span>
+                <strong data-flow-code>Code X92K</strong>
               </div>
 
               <div class="flow-board" aria-hidden="true">
                 <div class="flow-manifest">
-                  <span data-flow-kicker>Direction code</span>
-                  <strong data-flow-main>4.4.5</strong>
-                  <em data-flow-sub>local hops, not a GPS address</em>
+                  <span data-flow-kicker>Parcel code</span>
+                  <strong data-flow-main>X92K</strong>
+                  <em data-flow-sub>resolved into local sectors</em>
                   <div>
-                    <small data-flow-detail-label>Meaning</small>
-                    <b data-flow-detail>4 -> 4 -> 5: next local sectors written by marker</b>
+                    <small data-flow-detail-label>Route</small>
+                    <b data-flow-detail>The app resolves X92K into sector route 4.4.5 for sorting</b>
                   </div>
                 </div>
 
@@ -666,7 +668,7 @@ const pilotMetrics = [
                       <div class="flow-card-details">
                         <div>
                           <span>Direction</span>
-                          <b data-flow-card-route>4.4.5 local sectors</b>
+                          <b data-flow-card-route>sector route 4.4.5</b>
                         </div>
                         <div>
                           <span>Bundle</span>
@@ -713,13 +715,13 @@ const pilotMetrics = [
                     <em data-flow-decision-note>Once the code is written, the next shop can sort it without opening the parcel.</em>
                     <div class="flow-decision-tags">
                       <span data-flow-tag-0>No printer</span>
-                      <span data-flow-tag-1>No GPS</span>
-                      <span data-flow-tag-2>Offline ready</span>
+                      <span data-flow-tag-1>No phone GPS</span>
+                      <span data-flow-tag-2>Steady net optional</span>
                     </div>
                   </div>
                   <div class="flow-bid-row is-selected">
                     <strong data-flow-bid-rider-0>Code</strong>
-                    <em data-flow-bid-value-0>4.4.5 written by marker</em>
+                    <em data-flow-bid-value-0>X92K written by marker</em>
                     <small data-flow-bid-state-0>ready</small>
                   </div>
                   <div class="flow-bid-row">
@@ -747,8 +749,8 @@ const pilotMetrics = [
 
               <div class="flow-ledger">
                 <div>
-                  <span>Sender quote</span>
-                  <strong>300 KES</strong>
+                  <span>Example quote</span>
+                  <strong>350 KES</strong>
                 </div>
                 <div>
                   <span>Open directions</span>
@@ -768,7 +770,7 @@ const pilotMetrics = [
 
           <div class="story-copy">
             <p class="eyebrow">Parcel flow</p>
-            <h2 id="story-title">Write the code. Seal the bag. Let riders bid.</h2>
+            <h2 id="story-title">Write the code. Seal the bag. Match the rider.</h2>
           </div>
         </div>
       </section>
@@ -778,22 +780,22 @@ const pilotMetrics = [
       <section class="section economics" id="economics">
         <div class="section-heading simple-heading reveal">
           <p class="eyebrow">Business model</p>
-          <h2>Fixed customer quote. Dynamic courier market.</h2>
+          <h2>Price locked after intake. Courier market clears the route budget.</h2>
           <p class="economics-intro">
-            The sender sees one locked price. Inside the network, sealed bags, shop handling, and rider supply decide how
-            the route budget is spent.
+            The sender sees one locked price unless they choose express or a top-up. Behind the receipt, BebaRun splits
+            handling fees, rider payout, wallet settlement, and surplus events through the route ledger.
           </p>
         </div>
 
         <div class="economics-board reveal">
           <div class="quote-lock-panel">
             <div class="economics-panel-head">
-              <span><ReceiptText class="economics-icon" /> Customer quote</span>
+              <span><ReceiptText class="economics-icon" /> Example sender quote</span>
               <strong>Locked</strong>
             </div>
             <div class="quote-amount">
               <span>Sender pays</span>
-              <strong>300</strong>
+              <strong>350</strong>
               <em>KES locked at intake</em>
             </div>
             <div class="quote-breakdown" aria-label="Fixed quote breakdown">
@@ -802,7 +804,7 @@ const pilotMetrics = [
                 <strong>fixed receipt</strong>
               </div>
               <div>
-                <span>Shop reserve</span>
+                <span>Handling fee</span>
                 <strong>50 KES held</strong>
               </div>
               <div>
@@ -811,12 +813,12 @@ const pilotMetrics = [
               </div>
             </div>
             <p>
-              The price does not change after drop-off. Bundling and rider bids happen behind the quote, not on the
-              customer receipt.
+              The price stays locked after intake unless the sender chooses an express/top-up. Bundling and rider bids
+              change internal settlement, not the original receipt.
             </p>
             <div class="quote-rules">
               <span>No surprise fee</span>
-              <span>Cash or wallet</span>
+              <span>Cash KES or VKES wallet</span>
               <span>Receipt event logged</span>
             </div>
           </div>
@@ -836,7 +838,7 @@ const pilotMetrics = [
                 <strong>same sector</strong>
               </div>
               <div>
-                <span>Network cost</span>
+                <span>Example payout</span>
                 <strong>280 KES</strong>
               </div>
             </div>
@@ -881,8 +883,8 @@ const pilotMetrics = [
                 <strong>R2 / 280 KES</strong>
               </div>
               <div>
-                <span>System margin</span>
-                <strong>surplus logged</strong>
+                <span>Surplus/top-up</span>
+                <strong>20 KES event</strong>
               </div>
             </div>
           </div>
@@ -892,17 +894,17 @@ const pilotMetrics = [
       <section class="section pilot" id="pilot">
         <div class="section-heading simple-heading reveal">
           <p class="eyebrow">Pilot plan</p>
-          <h2>Prove one corridor before adding density.</h2>
+          <h2>Prove one Nairobi corridor before adding density.</h2>
           <p class="pilot-intro">
-            Start with one live corridor, keep the route small, and measure whether shops, riders, and ledger events stay
-            synchronized before expanding the network.
+            Start with one small corridor and measure pickup time, bag accuracy, rider payout, code-only pickup risk,
+            cash/wallet ledger entries, and zero balance diffs before expanding the network.
           </p>
         </div>
 
         <div class="pilot-system reveal" data-pilot-system>
           <div class="pilot-console">
             <div class="pilot-console-head">
-              <span><Route class="pilot-icon" /> Live corridor</span>
+              <span><Route class="pilot-icon" /> Pilot corridor</span>
               <strong data-pilot-window>Week 01</strong>
             </div>
 
@@ -917,7 +919,7 @@ const pilotMetrics = [
                   <span class="pilot-step-code">01</span>
                   <Store class="pilot-point-icon" />
                   <strong>Shop ring</strong>
-                  <em>5-8 points</em>
+                  <em>pilot cluster</em>
                 </button>
                 <button class="pilot-point" type="button" data-pilot-point="1">
                   <span class="pilot-step-code">02</span>
@@ -929,7 +931,7 @@ const pilotMetrics = [
                   <span class="pilot-step-code">03</span>
                   <Bike class="pilot-point-icon" />
                   <strong>Rider market</strong>
-                  <em>live bid</em>
+                  <em>rider bid</em>
                 </button>
                 <button class="pilot-point" type="button" data-pilot-point="3">
                   <span class="pilot-step-code">04</span>
@@ -953,8 +955,8 @@ const pilotMetrics = [
                 <strong>1 corridor</strong>
               </div>
               <div>
-                <span>Proof window</span>
-                <strong>4 weeks</strong>
+                <span>Pilot window</span>
+                <strong>gate cycle</strong>
               </div>
               <div>
                 <span>Scale rule</span>
@@ -968,7 +970,7 @@ const pilotMetrics = [
               <p class="eyebrow">Pilot focus</p>
               <h3 data-pilot-title>Recruit a tight shop ring</h3>
               <p data-pilot-copy>
-                Start with 5-8 trusted points close enough for sealed bags to move without a central warehouse.
+                Start with a small trusted point cluster close enough for sealed bags to move with low handoff risk.
               </p>
             </div>
 
@@ -982,7 +984,7 @@ const pilotMetrics = [
             <div class="pilot-signal-grid" aria-label="Pilot metrics">
               <div>
                 <span>Target</span>
-                <strong data-pilot-target>5-8 points</strong>
+                <strong data-pilot-target>pilot cluster</strong>
               </div>
               <div>
                 <span>Measure</span>
@@ -990,7 +992,7 @@ const pilotMetrics = [
               </div>
               <div>
                 <span>Gate</span>
-                <strong data-pilot-gate>no depot needed</strong>
+                <strong data-pilot-gate>hold fixed site</strong>
               </div>
             </div>
           </div>
@@ -1001,10 +1003,10 @@ const pilotMetrics = [
         <div class="lead-panel reveal" data-lead-panel>
           <div class="lead-copy">
             <p class="eyebrow">Contact route</p>
-            <h2 id="lead-title" data-lead-title>Choose the right BebaRun conversation.</h2>
+            <h2 id="lead-title" data-lead-title>Request the deck or join the Nairobi pilot.</h2>
             <p data-lead-copy>
-              Investors can request the deck. Operators, shop owners, riders, and partners can route their interest to the
-              right pilot lane.
+              Tell us whether you are investing, running a shop, riding, or partnering. We will send the right pilot
+              details.
             </p>
 
             <div class="lead-switch" role="tablist" aria-label="Lead type">
@@ -1068,7 +1070,7 @@ const pilotMetrics = [
                 data-lead-message
               ></textarea>
             </label>
-            <button class="button button-primary magnetic" type="submit" data-lead-submit>Prepare investor request</button>
+            <button class="button button-primary magnetic" type="submit" data-lead-submit>Request investor deck</button>
             <p class="form-status" role="status" aria-live="polite"></p>
           </form>
         </div>
@@ -1076,34 +1078,90 @@ const pilotMetrics = [
     </main>
 
     <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <a class="brand" href="#top" aria-label="BebaRun home">
-            <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
-              <path
-                class="mark-bag"
-                fill-rule="evenodd"
-                d="M25 29h13v-3c0-5.5 4.5-10 10-10s10 4.5 10 10v3h13c5 0 9 4 9 9v28c0 5-4 9-9 9H25c-5 0-9-4-9-9V38c0-5 4-9 9-9Zm20 0h6v-3c0-1.7-1.3-3-3-3s-3 1.3-3 3v3Z"
-              />
-              <text class="mark-letter" x="48" y="52" text-anchor="middle" dominant-baseline="central">B</text>
-            </svg>
-            <span class="brand-wordmark">BebaRun</span>
-          </a>
-          <p>
-            A shop-first courier mesh for sealed bags, local riders, fixed sender quotes, and audit-ready route economics.
-          </p>
+      <div class="footer-shell">
+        <div class="footer-main">
+          <div class="footer-brand">
+            <a class="brand" href="#top" aria-label="BebaRun home">
+              <svg class="brand-mark" viewBox="0 0 96 96" aria-hidden="true">
+                <path
+                  class="mark-bag"
+                  fill-rule="evenodd"
+                  d="M25 29h13v-3c0-5.5 4.5-10 10-10s10 4.5 10 10v3h13c5 0 9 4 9 9v28c0 5-4 9-9 9H25c-5 0-9-4-9-9V38c0-5 4-9 9-9Zm20 0h6v-3c0-1.7-1.3-3-3-3s-3 1.3-3 3v3Z"
+                />
+                <text class="mark-letter" x="48" y="52" text-anchor="middle" dominant-baseline="central">B</text>
+              </svg>
+              <span class="brand-wordmark">BebaRun</span>
+            </a>
+            <p>
+              Review the Nairobi pilot thesis, route simulator, and example economics for a shop-first courier corridor.
+            </p>
+            <div class="footer-actions">
+              <a class="footer-primary-link" href="#lead">
+                Open pilot lane
+                <Route class="footer-link-icon" aria-hidden="true" />
+              </a>
+              <a class="footer-secondary-link" href="#economics">View economics</a>
+            </div>
+          </div>
+
+          <div class="footer-signal" aria-label="BebaRun operating snapshot">
+            <div>
+              <span class="footer-signal-icon"><Store class="footer-icon" aria-hidden="true" /></span>
+              <span>Point model</span>
+              <strong>shops first</strong>
+              <em>fixed hub later</em>
+            </div>
+            <div>
+              <span class="footer-signal-icon"><ShoppingBag class="footer-icon" aria-hidden="true" /></span>
+              <span>Parcel state</span>
+              <strong>sealed bags</strong>
+              <em>sector routed</em>
+            </div>
+            <div>
+              <span class="footer-signal-icon"><Bike class="footer-icon" aria-hidden="true" /></span>
+              <span>Courier market</span>
+              <strong>rider bids</strong>
+              <em>example clearing</em>
+            </div>
+            <div>
+              <span class="footer-signal-icon"><ReceiptText class="footer-icon" aria-hidden="true" /></span>
+              <span>Ledger</span>
+              <strong>settlement</strong>
+              <em>events logged</em>
+            </div>
+          </div>
         </div>
-        <nav class="footer-nav" aria-label="Footer navigation">
-          <a href="#lab">Live route</a>
-          <a href="#concept">Project stages</a>
-          <a href="#economics">Economics</a>
-          <a href="#pilot">Pilot</a>
-          <a href="#lead">Contact</a>
-        </nav>
-        <div class="footer-status">
-          <span>Next pilot lane</span>
-          <strong>Nairobi corridor</strong>
-          <em>shops -> sealed bags -> riders -> ledger</em>
+
+        <div class="footer-directory">
+          <div class="footer-column">
+            <span>Navigate</span>
+            <nav class="footer-nav" aria-label="Footer navigation">
+              <a href="#top">Top</a>
+              <a href="#concept">Network</a>
+              <a href="#story">Flow</a>
+              <a href="#economics">Economics</a>
+              <a href="#pilot">Pilot</a>
+            </nav>
+          </div>
+          <div class="footer-column">
+            <span>Model</span>
+            <nav class="footer-nav" aria-label="Footer model navigation">
+              <a href="#concept">Shop ring</a>
+              <a href="#lab">Route simulator</a>
+              <a href="#story">Parcel flow</a>
+              <a href="#lead">Pilot deck</a>
+            </nav>
+          </div>
+          <div class="footer-contact">
+            <span>Next pilot lane</span>
+            <strong>Nairobi corridor</strong>
+            <p>shops -> sealed bags -> riders -> ledger</p>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>&copy; 2026 BebaRun</span>
+          <span>Built for corridor validation before fixed infrastructure.</span>
         </div>
       </div>
     </footer>
@@ -1219,7 +1277,7 @@ const pilotMetrics = [
       position: fixed;
       top: 0;
       left: 0;
-      z-index: 1000;
+      z-index: 10000;
       display: block;
       pointer-events: none;
       transform: translate3d(-50%, -50%, 0);
@@ -1228,7 +1286,9 @@ const pilotMetrics = [
         height 180ms ease,
         border-color 180ms ease,
         background 180ms ease,
-        opacity 180ms ease;
+        opacity 180ms ease,
+        box-shadow 180ms ease;
+      will-change: transform;
     }
 
     .cursor-dot {
@@ -1243,6 +1303,7 @@ const pilotMetrics = [
       height: 34px;
       border: 1px solid rgba(35, 61, 77, 0.42);
       border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
     }
 
     .cursor-ring.is-active {
@@ -1250,12 +1311,47 @@ const pilotMetrics = [
       height: 56px;
       border-color: var(--orange);
       background: rgba(254, 127, 45, 0.08);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.36),
+        0 12px 28px rgba(254, 127, 45, 0.2);
     }
 
-    .cursor-dot.is-hidden,
-    .cursor-ring.is-hidden {
-      opacity: 0;
+    .cursor-dot.is-topbar {
+      width: 9px;
+      height: 9px;
+      background: var(--black);
+      box-shadow: 0 0 0 3px rgba(254, 127, 45, 0.22);
     }
+
+    .cursor-ring.is-topbar {
+      width: 40px;
+      height: 40px;
+      border-color: rgba(0, 0, 0, 0.72);
+      background: rgba(255, 255, 255, 0.24);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.92),
+        0 10px 24px rgba(35, 61, 77, 0.16);
+    }
+
+    .cursor-dot.is-active {
+      background: var(--white);
+      box-shadow: 0 0 0 3px rgba(254, 127, 45, 0.24);
+    }
+
+    .cursor-dot.is-topbar.is-active {
+      background: var(--black);
+    }
+
+    .cursor-ring.is-topbar.is-active {
+      width: 58px;
+      height: 58px;
+      border-color: var(--orange);
+      background: rgba(254, 127, 45, 0.18);
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.94),
+        0 14px 30px rgba(254, 127, 45, 0.22);
+    }
+
   }
 
   .hero,
@@ -4467,75 +4563,398 @@ const pilotMetrics = [
   }
 
   .site-footer {
-    width: min(1240px, calc(100% - 40px));
-    margin: 0 auto;
-    padding: 0 0 34px;
+    position: relative;
+    overflow: hidden;
+    margin-top: clamp(16px, 4vw, 54px);
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(145deg, #050607 0%, #11171a 48%, #08090a 100%);
+    background-size: 72px 72px, 72px 72px, auto;
+    color: var(--white);
   }
 
-  .footer-inner {
+  .site-footer::before {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(112deg, rgba(254, 127, 45, 0.2), transparent 34%),
+      radial-gradient(circle at 82% 10%, rgba(255, 255, 255, 0.1), transparent 28%);
+    content: "";
+    pointer-events: none;
+  }
+
+  .footer-shell {
+    position: relative;
+    z-index: 1;
     display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.55fr) minmax(260px, 0.55fr);
-    gap: 24px;
+    width: min(1320px, calc(100% - 40px));
+    margin: 0 auto;
+    padding: clamp(46px, 7vw, 84px) 0 28px;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: minmax(0, 0.86fr) minmax(520px, 0.82fr);
+    gap: clamp(34px, 6vw, 78px);
     align-items: end;
-    border-top: 1px solid rgba(35, 61, 77, 0.14);
-    padding-top: 28px;
+  }
+
+  .site-footer .brand {
+    color: var(--white);
+  }
+
+  .site-footer .brand-wordmark {
+    color: var(--white);
+  }
+
+  .site-footer .brand-mark {
+    width: 44px;
+    height: 44px;
+  }
+
+  .site-footer .mark-bag {
+    fill: var(--white);
+  }
+
+  .site-footer .mark-letter {
+    fill: var(--black);
   }
 
   .footer-brand p {
-    max-width: 520px;
-    margin-top: 14px;
-    color: var(--muted);
-    font-size: 0.95rem;
-    font-weight: 750;
-    line-height: 1.5;
+    max-width: 760px;
+    margin-top: 28px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: clamp(1.18rem, 2.2vw, 1.82rem);
+    font-weight: 850;
+    line-height: 1.18;
+    text-wrap: balance;
+  }
+
+  .footer-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  .footer-primary-link,
+  .footer-secondary-link {
+    display: inline-flex;
+    min-height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    padding: 0 16px;
+    font-size: 0.9rem;
+    font-weight: 950;
+    text-decoration: none;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease,
+      transform 180ms ease;
+  }
+
+  .footer-primary-link {
+    gap: 9px;
+    border: 1px solid rgba(254, 127, 45, 0.54);
+    background: var(--orange);
+    color: var(--black);
+    box-shadow: 0 18px 40px rgba(254, 127, 45, 0.16);
+  }
+
+  .footer-secondary-link {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.84);
+  }
+
+  .footer-primary-link:hover,
+  .footer-secondary-link:hover {
+    transform: translateY(-2px);
+  }
+
+  .footer-primary-link:hover {
+    border-color: rgba(255, 255, 255, 0.38);
+    background: #ff9a56;
+  }
+
+  .footer-link-icon {
+    width: 17px;
+    height: 17px;
+    stroke-width: 2.4;
+  }
+
+  .footer-signal {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .footer-signal div {
+    display: grid;
+    grid-template-columns: 38px minmax(0, 1fr);
+    grid-template-rows: auto auto auto;
+    column-gap: 12px;
+    min-height: 152px;
+    align-content: center;
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 20px;
+    text-align: left;
+    transition:
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .footer-signal div:hover {
+    background: rgba(255, 255, 255, 0.045);
+    transform: translateY(-2px);
+  }
+
+  .footer-signal-icon {
+    grid-row: 1 / span 3;
+    align-self: center;
+    justify-self: center;
+    display: grid;
+    width: 38px;
+    height: 38px;
+    place-items: center;
+    border: 1px solid rgba(254, 127, 45, 0.34);
+    border-radius: var(--radius);
+    background: rgba(254, 127, 45, 0.13);
+    color: var(--orange);
+  }
+
+  .footer-icon {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.2;
+  }
+
+  .footer-signal span:not(.footer-signal-icon),
+  .footer-column > span,
+  .footer-contact > span {
+    color: rgba(255, 255, 255, 0.48);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .footer-signal strong {
+    margin-top: 9px;
+    color: var(--white);
+    font-size: clamp(1.2rem, 2vw, 1.48rem);
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  .footer-signal em {
+    margin-top: 7px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.86rem;
+    font-style: normal;
+    font-weight: 780;
+  }
+
+  .footer-directory {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 0.7fr) minmax(320px, 0.72fr);
+    gap: clamp(24px, 5vw, 72px);
+    margin-top: clamp(44px, 6vw, 72px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 28px;
+  }
+
+  .footer-column,
+  .footer-contact {
+    display: grid;
+    align-content: start;
+    gap: 14px;
   }
 
   .footer-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+    gap: 10px 22px;
   }
 
   .footer-nav a {
-    border: 1px solid rgba(35, 61, 77, 0.12);
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.52);
-    padding: 8px 10px;
-    color: var(--navy);
-    font-size: 0.72rem;
-    font-weight: 900;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.92rem;
+    font-weight: 850;
     text-decoration: none;
-    text-transform: uppercase;
+    transition:
+      color 160ms ease,
+      transform 160ms ease;
   }
 
-  .footer-status {
-    display: grid;
-    gap: 7px;
+  .footer-nav a:hover,
+  .footer-secondary-link:hover {
+    color: var(--white);
+  }
+
+  .footer-nav a:hover {
+    transform: translateX(3px);
+  }
+
+  .footer-contact {
     justify-self: end;
-    max-width: 340px;
-    border: 1px solid rgba(35, 61, 77, 0.12);
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.58);
-    padding: 16px;
+    width: min(100%, 360px);
+    border-left: 1px solid rgba(254, 127, 45, 0.42);
+    padding-left: 22px;
   }
 
-  .footer-status span {
-    color: rgba(35, 61, 77, 0.58);
-    font-size: 0.66rem;
-    font-weight: 900;
-    text-transform: uppercase;
+  .footer-contact strong {
+    color: var(--white);
+    font-size: clamp(1.7rem, 3vw, 2.42rem);
+    font-weight: 950;
+    line-height: 0.96;
   }
 
-  .footer-status strong {
-    font-size: 1.08rem;
-    line-height: 1.08;
+  .footer-contact p {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.92rem;
+    font-weight: 780;
+    line-height: 1.42;
   }
 
-  .footer-status em {
-    color: var(--muted);
-    font-size: 0.84rem;
-    font-style: normal;
-    font-weight: 750;
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 42px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 18px;
+    color: rgba(255, 255, 255, 0.46);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  @media (max-width: 1080px) {
+    .footer-shell {
+      width: min(100% - 32px, 920px);
+      padding-top: clamp(44px, 8vw, 72px);
+    }
+
+    .footer-main {
+      grid-template-columns: 1fr;
+      gap: 34px;
+      align-items: start;
+    }
+
+    .footer-brand p {
+      max-width: 820px;
+      font-size: clamp(1.28rem, 3.8vw, 1.78rem);
+    }
+
+    .footer-signal {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .footer-signal div {
+      grid-template-columns: 34px minmax(0, 1fr);
+      column-gap: 10px;
+      min-height: 136px;
+      padding: 16px;
+    }
+
+    .footer-signal-icon {
+      width: 34px;
+      height: 34px;
+    }
+
+    .footer-signal strong {
+      font-size: clamp(1.02rem, 2.2vw, 1.28rem);
+    }
+
+    .footer-directory {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 30px;
+      margin-top: 44px;
+    }
+
+    .footer-contact {
+      grid-column: 1 / -1;
+      justify-self: stretch;
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .site-footer {
+      margin-top: 0;
+    }
+
+    .footer-shell {
+      width: min(100% - 28px, 560px);
+      padding: 38px 0 22px;
+    }
+
+    .footer-main {
+      gap: 28px;
+    }
+
+    .site-footer .brand-mark {
+      width: 40px;
+      height: 40px;
+    }
+
+    .footer-brand p {
+      margin-top: 22px;
+      font-size: clamp(1.1rem, 5.7vw, 1.42rem);
+      line-height: 1.17;
+    }
+
+    .footer-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      margin-top: 24px;
+    }
+
+    .footer-primary-link,
+    .footer-secondary-link {
+      width: 100%;
+      min-height: 50px;
+    }
+
+    .footer-signal {
+      display: none;
+    }
+
+    .footer-directory {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      margin-top: 34px;
+      padding-top: 24px;
+    }
+
+    .footer-nav {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px 16px;
+    }
+
+    .footer-contact {
+      border-top: 1px solid rgba(254, 127, 45, 0.42);
+      border-left: 0;
+      padding-top: 20px;
+      padding-left: 0;
+    }
+
+    .footer-contact strong {
+      font-size: clamp(1.72rem, 9vw, 2.18rem);
+    }
+
+    .footer-bottom {
+      display: grid;
+      gap: 8px;
+      margin-top: 32px;
+    }
   }
 
   @media (max-width: 1080px) {
@@ -4564,8 +4983,7 @@ const pilotMetrics = [
       border-radius: 22px;
     }
 
-    .lead-panel,
-    .footer-inner {
+    .lead-panel {
       grid-template-columns: 1fr;
     }
 
@@ -4653,9 +5071,6 @@ const pilotMetrics = [
       border-left: 0;
     }
 
-    .footer-status {
-      justify-self: stretch;
-    }
   }
 
   @media (max-width: 760px) {
@@ -4885,10 +5300,6 @@ const pilotMetrics = [
 
     .lead-copy > [data-lead-copy] {
       min-height: 78px;
-    }
-
-    .footer-inner {
-      gap: 20px;
     }
 
     .hero-product {
@@ -9232,7 +9643,7 @@ const pilotMetrics = [
 </style>
 
 <style is:global>
-  /* Live route system — continuous mesh network rendering. */
+  /* Route simulator — continuous mesh network rendering. */
   .route-lab.is-booting .lab-stage,
   .route-lab.is-booting .lab-readout,
   .route-lab.is-booting .lab-controls {
@@ -13168,5 +13579,13 @@ const pilotMetrics = [
     main {
       --section-title-size: clamp(2rem, 10vw, 2.1rem);
     }
+  }
+
+  html.has-custom-cursor,
+  html.has-custom-cursor body,
+  html.has-custom-cursor body *,
+  html.has-custom-cursor body *::before,
+  html.has-custom-cursor body *::after {
+    cursor: none !important;
   }
 </style>

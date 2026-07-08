@@ -94,6 +94,8 @@ const dot = document.querySelector<HTMLElement>(".cursor-dot");
 const ring = document.querySelector<HTMLElement>(".cursor-ring");
 
 if (dot && ring && window.matchMedia("(pointer: fine)").matches) {
+  document.documentElement.classList.add("has-custom-cursor");
+
   const cursor = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
   const follower = { x: cursor.x, y: cursor.y };
 
@@ -110,27 +112,29 @@ if (dot && ring && window.matchMedia("(pointer: fine)").matches) {
   });
 
   document.querySelectorAll<HTMLElement>(".magnetic, a, button, input, select, textarea").forEach((element) => {
-    const isTopbarControl = Boolean(element.closest(".topbar"));
-
     element.addEventListener("mouseenter", () => {
-      if (!isTopbarControl) ring.classList.add("is-active");
+      dot.classList.add("is-active");
+      ring.classList.add("is-active");
     });
-    element.addEventListener("mouseleave", () => ring.classList.remove("is-active"));
+    element.addEventListener("mouseleave", () => {
+      dot.classList.remove("is-active");
+      ring.classList.remove("is-active");
+    });
   });
 
   topbar?.addEventListener("mouseenter", () => {
-    dot.classList.add("is-hidden");
-    ring.classList.add("is-hidden");
+    dot.classList.add("is-topbar");
+    ring.classList.add("is-topbar");
   });
 
   topbar?.addEventListener("mouseleave", () => {
-    dot.classList.remove("is-hidden");
-    ring.classList.remove("is-hidden");
+    dot.classList.remove("is-topbar");
+    ring.classList.remove("is-topbar");
   });
 }
 
 /* ------------------------------------------------------------------ */
-/* Live route system — a continuously running flat mesh network.       */
+/* Route simulator — a continuously running flat mesh network.         */
 /* Not a run-once demo: parcels spawn, bags seal, riders move, drop    */
 /* and pick up along real point-to-point hops. Counts are conserved.   */
 /* ------------------------------------------------------------------ */
@@ -494,7 +498,7 @@ if (routeLab) {
       .to(delta, { opacity: 0, y: -10, scale: 0.94, duration: 0.16, onComplete: () => delta.remove() }, "-=0.08");
   };
 
-  let latestEvent = "Ready - press Run to start live mesh";
+  let latestEvent = "Ready - press Run to start route simulator";
   let eventLockUntil = 0;
   const pushEvent = (msg: string) => {
     latestEvent = msg;
@@ -1034,30 +1038,30 @@ if (!reduceMotion) {
     const flowStates = [
       {
         key: "code",
-        headLabel: "Marker-written direction code",
-        code: "Code 4.4.5",
-        kicker: "Direction code",
-        main: "4.4.5",
-        sub: "relative sectors, not a GPS address",
-        detailLabel: "Meaning",
-        detail: "4 -> 4 -> 5 means each next shop only reads its local direction.",
+        headLabel: "Marker-written parcel code",
+        code: "Code X92K",
+        kicker: "Parcel code",
+        main: "X92K",
+        sub: "resolved into local sectors",
+        detailLabel: "Route",
+        detail: "The app resolves X92K into sector route 4.4.5 for sorting.",
         marketTitle: "Before auction",
         decisionTitle: "Code becomes the routing instruction",
-        decisionNote: "The parcel does not need an address lookup. Each shop only reads the next local sector.",
+        decisionNote: "Counter staff write the short code; the system maps it to the next local sector.",
         visualTitle: "Write local code",
         visualKicker: "Shop counter",
         visualNote: "Parcel gets a code before any route auction starts.",
         packetLabel: "Code",
-        cardRoute: "4.4.5 local sectors",
+        cardRoute: "sector route 4.4.5",
         cardBundle: "not sealed yet",
         cardOutcome: "quote locked",
         statusLabel: "Counter proof",
-        statusMain: "4.4.5 written",
+        statusMain: "X92K written",
         statusNote: "sort next sector",
-        tags: ["No printer", "No GPS", "Offline ready"],
+        tags: ["No printer", "No phone GPS", "Steady internet optional"],
         bids: [
-          ["Code", "4.4.5 written by marker", "ready"],
-          ["Sort", "next shop reads local sector", "offline"],
+          ["Code", "X92K written by marker", "ready"],
+          ["Sort", "next shop reads local sector", "queued"],
           ["Quote", "sender price is fixed", "locked"],
         ],
         selectedBid: 0,
@@ -1124,31 +1128,31 @@ if (!reduceMotion) {
       },
       {
         key: "audit",
-        headLabel: "Fixed quote, audited payout",
+        headLabel: "Example quote, audited payout",
         code: "Ledger",
         kicker: "Route ledger",
-        main: "300 KES",
-        sub: "sender quote stays fixed after drop-off",
+        main: "350 KES",
+        sub: "sender quote stays locked after intake",
         detailLabel: "Logged",
-        detail: "Scan, handling reserve, rider payout, and skip-hop reward stay traceable.",
+        detail: "Tracking events, handling fee, courier payout, surplus/top-up, and balance checks stay linked.",
         marketTitle: "Settlement",
         decisionTitle: "Write the settlement ledger",
-        decisionNote: "The sender quote stays fixed while the internal courier payout is audited.",
+        decisionNote: "The sender quote stays locked while the internal courier payout and surplus events are audited.",
         visualTitle: "Audit handoff",
         visualKicker: "Ledger",
-        visualNote: "Quote, reserve, payout, and skip-hop reward are logged.",
+        visualNote: "Quote, handling fee, payout, and eligible surplus events are logged.",
         packetLabel: "Audit",
         cardRoute: "handoff logged",
-        cardBundle: "50 KES reserve",
+        cardBundle: "50 KES handling",
         cardOutcome: "R2 payout audited",
         statusLabel: "Settlement",
-        statusMain: "300 KES fixed",
+        statusMain: "350 KES example",
         statusNote: "payout logged",
-        tags: ["300 KES fixed", "50 KES reserve", "Payout logged"],
+        tags: ["350 KES example", "50 KES handling", "Payout logged"],
         bids: [
-          ["Sender", "paid quote does not change", "300 KES"],
-          ["Reserve", "shop handling fee stays visible", "50 KES"],
-          ["Rider", "auction payout and reward logged", "audit"],
+          ["Sender", "paid quote stays locked", "350 KES"],
+          ["Handling", "shop handling fee stays visible", "50 KES"],
+          ["Rider", "payout and surplus event logged", "audit"],
         ],
         selectedBid: 2,
       },
@@ -1338,11 +1342,11 @@ if (pilotSystem) {
   const pilotStates = [
     {
       title: "Recruit a tight shop ring",
-      copy: "Start with 5-8 trusted points close enough for sealed bags to move without a central warehouse.",
-      window: "Week 01",
-      target: "5-8 points",
+      copy: "Start with a small trusted point cluster close enough for sealed bags to move with low handoff risk.",
+      window: "Gate 01",
+      target: "pilot cluster",
       measure: "first pickup",
-      gate: "no depot needed",
+      gate: "hold fixed site",
       progress: 0,
       markerX: "12.5%",
       stepIndex: 0,
@@ -1351,7 +1355,7 @@ if (pilotSystem) {
     {
       title: "Prove sealed bag sorting",
       copy: "Staff sort parcels into direction bags and only open a bag when the next local code changes.",
-      window: "Week 02",
+      window: "Gate 02",
       target: "8 directions",
       measure: "bag accuracy",
       gate: "counts conserved",
@@ -1361,10 +1365,10 @@ if (pilotSystem) {
       rider: "B4",
     },
     {
-      title: "Let riders bid on live demand",
+      title: "Let riders bid on ready demand",
       copy: "Riders see ready bundles. The system prefers a rider already moving through the same sector.",
-      window: "Week 03",
-      target: "live bags",
+      window: "Gate 03",
+      target: "ready bags",
       measure: "time to move",
       gate: "R2 assigned",
       progress: 0.667,
@@ -1374,8 +1378,8 @@ if (pilotSystem) {
     },
     {
       title: "Audit the corridor before scaling",
-      copy: "Every handoff, handling reserve, payout, and surplus event is checked before adding more points.",
-      window: "Week 04",
+      copy: "Every handoff, handling fee, payout, and surplus event is checked before adding more points.",
+      window: "Gate 04",
       target: "zero diffs",
       measure: "ledger audit",
       gate: "scale ready",
@@ -1418,14 +1422,14 @@ const leadPanel = document.querySelector<HTMLElement>("[data-lead-panel]");
 const leadConfigs = {
   investor: {
     audience: "Investor",
-    title: "Choose the right BebaRun conversation.",
-    copy: "Investors can request the deck, pilot economics, and route ledger model for the first corridor.",
+    title: "Request the deck or join the Nairobi pilot.",
+    copy: "Tell us whether you are investing, running a shop, riding, or partnering. We will send the right pilot details.",
     lane: "Investor deck",
     reply: "deck + pilot economics",
     typeLabel: "Investor type",
     messageLabel: "What should we send?",
     placeholder: "Deck, pilot model, technical appendix...",
-    submit: "Prepare investor request",
+    submit: "Request investor deck",
     subject: "BebaRun investor lead",
     options: ["Angel investor", "VC / fund", "Strategic investor", "Operator / advisor"],
   },
@@ -1438,20 +1442,20 @@ const leadConfigs = {
     typeLabel: "Shop profile",
     messageLabel: "What kind of point could you run?",
     placeholder: "Location, daily parcel volume, staff availability...",
-    submit: "Prepare shop request",
+    submit: "Apply as a pilot shop",
     subject: "BebaRun shop pilot lead",
     options: ["Convenience shop", "Restaurant", "Pharmacy", "Service counter"],
   },
   rider: {
     audience: "Rider",
     title: "Join the rider side of the market.",
-    copy: "Riders can register interest for live bag assignments, corridor coverage, and payout rules.",
+    copy: "Riders can register interest for ready bag assignments, corridor coverage, and payout rules.",
     lane: "Rider market",
     reply: "rider onboarding",
     typeLabel: "Rider setup",
     messageLabel: "Where do you usually ride?",
     placeholder: "Neighborhoods, vehicle type, working hours...",
-    submit: "Prepare rider request",
+    submit: "Register as a rider",
     subject: "BebaRun rider lead",
     options: ["Motorbike rider", "Bicycle rider", "Courier team", "Dispatcher"],
   },
@@ -1464,7 +1468,7 @@ const leadConfigs = {
     typeLabel: "Partner type",
     messageLabel: "What should we discuss?",
     placeholder: "Operations, wallets, compliance, city rollout...",
-    submit: "Prepare partner request",
+    submit: "Discuss a partnership",
     subject: "BebaRun partner lead",
     options: ["Operations partner", "Wallet / payments", "City partner", "Brand / merchant network"],
   },
