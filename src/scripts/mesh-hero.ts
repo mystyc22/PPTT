@@ -874,44 +874,198 @@ if (routeLab) {
 }
 
 if (!reduceMotion) {
+  const hero = document.querySelector<HTMLElement>(".hero");
   const heroWords = gsap.utils.toArray<HTMLElement>("[data-hero-word]");
-  const heroAfterWords = gsap.utils.toArray<HTMLElement>(".hero-copy > .eyebrow, .hero-lede, .hero-actions, .hero-flow");
+  const shopWords = heroWords.slice(0, 2);
+  const riderWords = heroWords.slice(2);
+  const routeLinePaths = gsap.utils
+    .toArray<SVGPathElement>(".hero-route-base, .hero-route-active")
+    .filter((path) => getComputedStyle(path).display !== "none");
+
+  const prepareRouteLine = () => {
+    routeLinePaths.forEach((path) => {
+      const length = path.getTotalLength();
+      gsap.set(path, {
+        autoAlpha: path.classList.contains("hero-route-active") ? 0.7 : 1,
+        strokeDasharray: length,
+        strokeDashoffset: length,
+      });
+    });
+  };
 
   gsap
-    .timeline({ defaults: { ease: "power3.out" } })
-    .to(heroWords, {
-      autoAlpha: 1,
-      yPercent: 0,
-      y: 0,
-      duration: 0.58,
-      stagger: 0.13,
+    .timeline({
+      defaults: { ease: "power3.out" },
+      onComplete: () => hero?.classList.add("is-route-live"),
     })
+    .to(".hero-copy > .eyebrow", {
+      autoAlpha: 1,
+      y: 0,
+      duration: 0.24,
+    }, 0)
     .to(
-      heroAfterWords,
+      shopWords,
+      {
+        autoAlpha: 1,
+        yPercent: 0,
+        y: 0,
+        duration: 0.42,
+        stagger: 0.045,
+      },
+      0.08,
+    )
+    .to(
+      riderWords,
+      {
+        autoAlpha: 1,
+        yPercent: 0,
+        y: 0,
+        duration: 0.44,
+        stagger: 0.045,
+      },
+      0.26,
+    )
+    .to(
+      ".hero-lede",
       {
         autoAlpha: 1,
         y: 0,
-        duration: 0.58,
-        stagger: 0.08,
+        duration: 0.34,
       },
-      "-=0.04",
+      0.48,
     )
+    .to("[data-topbar]", {
+      autoAlpha: 1,
+      y: 0,
+      scale: 1,
+      duration: 0.34,
+      ease: "power2.out",
+    }, 0.54)
+    .to(".hero-visual", {
+      autoAlpha: 1,
+      filter: "blur(0px)",
+      duration: 0.44,
+      ease: "power2.out",
+    }, 0.6)
+    .to(
+      ".hero-actions",
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.3,
+      },
+      0.68,
+    )
+    .to(".hero-route-node.is-rider", {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 0.2,
+      ease: "back.out(1.9)",
+    }, 0.92)
+    .to(
+      ".hero-flow",
+      {
+        autoAlpha: 1,
+        y: 0,
+        duration: 0.3,
+      },
+      0.78,
+    )
+    .to(".hero-route-node.is-bag", {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 0.2,
+      ease: "back.out(1.9)",
+    }, 1.18)
+    .to(".hero-route-node.is-shop", {
+      autoAlpha: 1,
+      scale: 1,
+      duration: 0.2,
+      ease: "back.out(1.9)",
+    }, 1.44)
+    .add(prepareRouteLine, 1.7)
+    .to(routeLinePaths, {
+      strokeDashoffset: 0,
+      duration: 0.58,
+      ease: "power2.out",
+    }, 1.7)
+    .add(() => {
+      hero?.classList.add("is-route-line-visible");
+      gsap.set(routeLinePaths, { clearProps: "strokeDasharray,strokeDashoffset,opacity,visibility" });
+      hero?.classList.add("is-route-live");
+    }, 2.28)
     .to(
       ".hero-strip",
       {
         autoAlpha: 1,
         y: 0,
-        duration: 0.5,
+        duration: 0.3,
       },
-      "-=0.34",
+      0.96,
     );
 
-  document.querySelectorAll<HTMLElement>(".reveal").forEach((element) => {
-    gsap.from(element, {
-      y: 28,
-      duration: 0.8,
+  const revealTargets = (
+    trigger: HTMLElement,
+    targets: ArrayLike<HTMLElement> | Iterable<HTMLElement>,
+    options: gsap.TweenVars = {},
+  ) => {
+    const targetArray = Array.from(targets).filter((target) => getComputedStyle(target).display !== "none");
+    if (!targetArray.length) return;
+
+    const { scrollTrigger, ...tweenOptions } = options;
+    const scrollTriggerOptions = typeof scrollTrigger === "object" ? scrollTrigger : {};
+
+    gsap.from(targetArray, {
+      autoAlpha: 0,
+      y: 26,
+      filter: "blur(8px)",
+      duration: 0.72,
       ease: "power3.out",
-      clearProps: "transform",
+      stagger: targetArray.length > 1 ? 0.075 : 0,
+      clearProps: "opacity,visibility,transform,filter",
+      ...tweenOptions,
+      scrollTrigger: {
+        trigger,
+        start: "top 84%",
+        once: true,
+        ...scrollTriggerOptions,
+      },
+    });
+  };
+
+  document.querySelectorAll<HTMLElement>(".reveal").forEach((element) => {
+    if (element.classList.contains("section-heading") || element.classList.contains("concept-copy")) {
+      revealTargets(element, element.children as HTMLCollectionOf<HTMLElement>, { y: 22 });
+      return;
+    }
+
+    if (element.classList.contains("route-system-inner")) {
+      revealTargets(element, element.querySelectorAll<HTMLElement>(".route-system-heading, .route-lab"));
+      return;
+    }
+
+    if (element.classList.contains("economics-board")) {
+      revealTargets(element, element.querySelectorAll<HTMLElement>(".quote-lock-panel, .market-console, .audit-ledger-panel"));
+      return;
+    }
+
+    if (element.classList.contains("pilot-system")) {
+      revealTargets(element, element.querySelectorAll<HTMLElement>(".pilot-console, .pilot-control-panel"));
+      return;
+    }
+
+    if (element.classList.contains("lead-panel")) {
+      revealTargets(element, element.querySelectorAll<HTMLElement>(".lead-copy, .lead-form"));
+      return;
+    }
+
+    gsap.from(element, {
+      autoAlpha: 0,
+      y: 28,
+      filter: "blur(8px)",
+      duration: 0.78,
+      ease: "power3.out",
+      clearProps: "opacity,visibility,transform,filter",
       scrollTrigger: {
         trigger: element,
         start: "top 86%",
@@ -919,6 +1073,78 @@ if (!reduceMotion) {
       },
     });
   });
+
+  const storyPin = document.querySelector<HTMLElement>(".story-pin");
+  if (storyPin) {
+    revealTargets(storyPin, storyPin.querySelectorAll<HTMLElement>(".flow-device, .story-copy"), {
+      y: 32,
+      scrollTrigger: { start: "top 78%" },
+    });
+  }
+
+  const nestedRevealGroups = [
+    {
+      trigger: ".route-lab",
+      targets: ".lab-stage, .lab-controls, .lab-readout",
+      start: "top 78%",
+      y: 18,
+    },
+    {
+      trigger: ".quote-lock-panel",
+      targets: ".quote-breakdown > div, .quote-rules span",
+      start: "top 78%",
+      y: 14,
+    },
+    {
+      trigger: ".market-console",
+      targets: ".market-clearing > div, .market-rider",
+      start: "top 78%",
+      y: 14,
+    },
+    {
+      trigger: ".audit-ledger-panel",
+      targets: ".audit-ledger-grid > div",
+      start: "top 82%",
+      y: 14,
+    },
+    {
+      trigger: ".pilot-console",
+      targets: ".pilot-point, .pilot-console-foot > div",
+      start: "top 78%",
+      y: 16,
+    },
+    {
+      trigger: ".pilot-control-panel",
+      targets: ".pilot-tabs > button, .pilot-signal-grid > div",
+      start: "top 78%",
+      y: 16,
+    },
+    {
+      trigger: ".lead-panel",
+      targets: ".lead-switch > button, .lead-summary > div, .lead-form label, .lead-form-field, .lead-form .button",
+      start: "top 80%",
+      y: 16,
+    },
+  ];
+
+  nestedRevealGroups.forEach(({ trigger, targets, start, y }) => {
+    const triggerElement = document.querySelector<HTMLElement>(trigger);
+    if (!triggerElement) return;
+    revealTargets(triggerElement, triggerElement.querySelectorAll<HTMLElement>(targets), {
+      y,
+      duration: 0.58,
+      scrollTrigger: { start },
+    });
+  });
+
+  const footer = document.querySelector<HTMLElement>(".site-footer");
+  if (footer) {
+    revealTargets(
+      footer,
+      footer.querySelectorAll<HTMLElement>(".footer-brand, .footer-signal > div, .footer-column, .footer-contact, .footer-bottom"),
+      { y: 20, scrollTrigger: { start: "top 88%" } },
+    );
+  }
 
   const concept = document.querySelector<HTMLElement>(".concept-pin");
   const projectCarousel = document.querySelector<HTMLElement>(".project-carousel");

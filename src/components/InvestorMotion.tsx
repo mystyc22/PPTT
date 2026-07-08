@@ -98,6 +98,28 @@ const cycleSegments = [
   "M64 156 A156 156 0 0 1 210 56",
 ];
 
+const viewport = { once: true, amount: 0.22 };
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 28, filter: "blur(8px)" },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: "blur(0px)",
+    transition: { duration: 0.66, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const staggerGroup = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.075,
+      delayChildren: 0.08,
+    },
+  },
+};
+
 function CycleIcon({ type }: { type: string }) {
   if (type === "shop") {
     return (
@@ -173,14 +195,21 @@ export default function InvestorMotion() {
   };
 
   return (
-    <section className="motion-island scale-section" aria-labelledby="proof-title">
+    <motion.section
+      className="motion-island scale-section"
+      aria-labelledby="proof-title"
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewport}
+      variants={staggerGroup}
+    >
       <div className="scale-section-inner">
-        <div className="section-heading scale-heading">
+        <motion.div className="section-heading scale-heading" variants={staggerGroup}>
           <div>
-            <p className="eyebrow">Expansion logic</p>
-            <h2 id="proof-title">Scale with shops before fixed sites.</h2>
+            <motion.p className="eyebrow" variants={fadeUp}>Expansion logic</motion.p>
+            <motion.h2 id="proof-title" variants={fadeUp}>Scale with shops before fixed sites.</motion.h2>
           </div>
-          <div className="scale-heading-copy">
+          <motion.div className="scale-heading-copy" variants={fadeUp}>
             <p>
               The network grows only where real parcels repeat. Shops absorb intake and simple sorting while the handoff
               log decides when a higher-capacity point or fixed site would save more than it costs.
@@ -189,25 +218,25 @@ export default function InvestorMotion() {
               <span>Current decision</span>
               <strong>Add point P5, hold fixed site</strong>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
-        <div className="scale-check-grid" aria-label="Scale operating checks">
+        <motion.div className="scale-check-grid" aria-label="Scale operating checks" variants={staggerGroup}>
           {scaleChecks.map(([title, body]) => (
-            <article key={title}>
+            <motion.article key={title} variants={fadeUp}>
               <span>{title}</span>
               <p>{body}</p>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
 
         <motion.div
           className="scale-system"
-          initial={false}
+          variants={staggerGroup}
         >
           <motion.div
             className="scale-cycle-panel"
-            initial={false}
+            variants={fadeUp}
           >
             <div className="scale-panel-head">
               <span>Point-first expansion</span>
@@ -302,7 +331,7 @@ export default function InvestorMotion() {
 
           <motion.div
             className="scale-rules-panel"
-            initial={false}
+            variants={fadeUp}
           >
             <div className="scale-panel-head">
               <span>Expansion gates</span>
@@ -335,18 +364,18 @@ export default function InvestorMotion() {
 
           <motion.div
             className="scale-signal-strip"
-            initial={false}
+            variants={staggerGroup}
           >
             {scaleSignals.map(([label, value, note]) => (
-              <div key={label}>
+              <motion.div key={label} variants={fadeUp}>
                 <span>{label}</span>
                 <strong>{value}</strong>
                 <p>{note}</p>
-              </div>
+              </motion.div>
             ))}
           </motion.div>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 }

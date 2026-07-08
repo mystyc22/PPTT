@@ -10026,6 +10026,11 @@ const pilotMetrics = [
   }
 
   @media (prefers-reduced-motion: no-preference) {
+    .hero .topbar {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.985);
+    }
+
     .hero .hero-title-word {
       opacity: 0;
       transform: translateY(112%);
@@ -10034,9 +10039,15 @@ const pilotMetrics = [
     .hero .hero-copy > .eyebrow,
     .hero .hero-lede,
     .hero .hero-actions,
+    .hero .hero-flow,
     .hero .hero-strip {
       opacity: 0;
       transform: translateY(18px);
+    }
+
+    .hero .hero-visual {
+      opacity: 0;
+      filter: blur(4px);
     }
   }
 
@@ -11985,7 +11996,7 @@ const pilotMetrics = [
   }
 
   .hero-route-node.is-shop {
-    top: -4.9%;
+    top: -4.3%;
     left: 65.8%;
   }
 
@@ -12095,38 +12106,57 @@ const pilotMetrics = [
       transform: translateY(18px);
     }
 
-    .hero-route-active {
+    .hero .hero-route-base,
+    .hero .hero-route-active,
+    .hero .hero-route-spark {
+      opacity: 0;
+    }
+
+    .hero .hero-route-node {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.72);
+    }
+
+    .hero.is-route-line-visible .hero-route-base {
+      opacity: 1;
+    }
+
+    .hero.is-route-line-visible .hero-route-active {
+      opacity: 0.7;
+    }
+
+    .hero.is-route-live .hero-route-active {
       animation:
         heroRouteFlow 1.25s linear infinite,
         heroRouteBreathe 3.8s ease-in-out infinite;
     }
 
-    .hero-route-spark {
+    .hero.is-route-live .hero-route-spark {
       animation: heroRouteSpark 2.65s cubic-bezier(0.62, 0, 0.28, 1) infinite;
     }
 
-    .hero-route-node.is-shop,
-    .hero-route-node.is-rider {
+    .hero.is-route-live .hero-route-node.is-shop,
+    .hero.is-route-live .hero-route-node.is-rider {
       animation: heroRouteEndpoint 3.1s ease-in-out infinite;
     }
 
-    .hero-route-node::before {
+    .hero.is-route-live .hero-route-node::before {
       animation: heroRouteRing 2.8s ease-out infinite;
     }
 
-    .hero-route-node.is-shop {
+    .hero.is-route-live .hero-route-node.is-shop {
       animation-delay: 0.35s;
     }
 
-    .hero-route-node.is-shop::before {
+    .hero.is-route-live .hero-route-node.is-shop::before {
       animation-delay: 0.35s;
     }
 
-    .hero-route-node.is-bag {
+    .hero.is-route-live .hero-route-node.is-bag {
       animation: heroRouteNode 2.4s ease-in-out infinite;
     }
 
-    .hero-route-node.is-bag::before {
+    .hero.is-route-live .hero-route-node.is-bag::before {
       animation-delay: 0.7s;
     }
   }
@@ -12203,6 +12233,108 @@ const pilotMetrics = [
     100% {
       opacity: 0;
       transform: scale(1.22);
+    }
+  }
+
+  @media (min-width: 1500px) and (max-height: 1120px) {
+    .hero {
+      width: min(100% - 32px, 1360px);
+      min-height: 100svh;
+      padding-top: 86px;
+      padding-bottom: 16px;
+    }
+
+    @supports (height: 100dvh) {
+      .hero {
+        min-height: 100dvh;
+      }
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(690px, 0.96fr) minmax(0, 0.74fr);
+      gap: clamp(32px, 3vw, 48px);
+      padding: 28px 0 0;
+    }
+
+    .hero-copy {
+      max-width: 700px;
+      padding-bottom: 0;
+      transform: translateY(-56px);
+    }
+
+    .hero-copy h1 {
+      max-width: 700px;
+      font-size: clamp(4.6rem, 4.55vw, 5.45rem);
+      line-height: 0.91;
+      text-wrap: normal;
+    }
+
+    .hero-title-line {
+      white-space: nowrap;
+    }
+
+    .hero-lede {
+      max-width: 52ch;
+      margin-top: 20px;
+      font-size: 1.02rem;
+      line-height: 1.5;
+    }
+
+    .hero-actions {
+      margin-top: 22px;
+    }
+
+    .hero-flow {
+      gap: 7px;
+      margin-top: 18px;
+      font-size: 0.66rem;
+    }
+
+    .hero-flow i {
+      width: 24px;
+    }
+
+    .hero-visual {
+      justify-self: end;
+      width: min(33vw, 590px);
+      margin: 16px 0 0;
+      transform: none;
+    }
+
+    .hero-handoff-map {
+      inset: 2% 0 0 -1%;
+    }
+
+    .hero-route-node.is-shop {
+      top: -4.3%;
+    }
+
+    .hero-people {
+      transform: scale(1.02);
+      transform-origin: 52% 100%;
+    }
+
+    .hero .hero-strip {
+      margin-top: 2px;
+    }
+
+    .hero .hero-strip div {
+      min-height: 88px;
+      padding: 14px 24px;
+    }
+
+    .hero .hero-strip div::before {
+      margin-bottom: 10px;
+    }
+
+    .hero .hero-strip strong {
+      font-size: 1rem;
+      line-height: 1.06;
+    }
+
+    .hero .hero-strip span {
+      font-size: 0.76rem;
+      line-height: 1.25;
     }
   }
 
@@ -12782,7 +12914,7 @@ const pilotMetrics = [
 	    }
 
 	    .hero-route-node.is-shop {
-	      top: 1.6%;
+	      top: -4.3%;
 	    }
 
 	    .hero-people {
@@ -13194,7 +13326,7 @@ const pilotMetrics = [
 	    }
 
 	    .hero-route-node.is-shop {
-	      top: 1.6%;
+	      top: -4.3%;
 	    }
 
 	    .hero-people {
