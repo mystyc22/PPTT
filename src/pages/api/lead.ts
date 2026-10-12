@@ -110,65 +110,104 @@ export const POST: APIRoute = async ({ request }) => {
   const apiKey = import.meta.env.RESEND_API_KEY as string | undefined;
   const fromEmail = (import.meta.env.RESEND_FROM_EMAIL as string | undefined) || "PPTT Network <onboarding@resend.dev>";
   const toEmail = (import.meta.env.LEADS_TO_EMAIL as string | undefined) || "osypowicz@gmail.com";
-
-  if (!apiKey || !fromEmail || !toEmail) {
-    return json({ error: "Lead email endpoint is not configured yet." }, { status: 500 });
-  }
-
-  const resend = new Resend(apiKey);
   const subject = `[PPTT] ${audience} inquiry: ${name}`;
-  const text = [
-    `New PPTT Inquiry`,
-    ``,
-    `Audience: ${audience}`,
-    `Type: ${type}`,
-    `Name: ${name}`,
-    `Email: ${email}`,
-    `Submitted: ${submittedAt}`,
-    page ? `Page: ${page}` : "",
-    ``,
-    `Message:`,
-    message || "No message provided.",
-  ]
-    .filter(Boolean)
-    .join("\n");
 
-  const html = `
-    <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#101417">
-      <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">New PPTT Inquiry</p>
-      <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} inquiry from ${escapeHtml(name)}</h1>
-      <table style="width:100%;border-collapse:collapse;margin:0 0 22px">
-        <tbody>
-          <tr><td style="padding:8px 0;color:#657782">Audience</td><td style="padding:8px 0;font-weight:700">${escapeHtml(audience)}</td></tr>
-          <tr><td style="padding:8px 0;color:#657782">Type</td><td style="padding:8px 0;font-weight:700">${escapeHtml(type)}</td></tr>
-          <tr><td style="padding:8px 0;color:#657782">Name</td><td style="padding:8px 0;font-weight:700">${escapeHtml(name)}</td></tr>
-          <tr><td style="padding:8px 0;color:#657782">Email</td><td style="padding:8px 0;font-weight:700">${escapeHtml(email)}</td></tr>
-          <tr><td style="padding:8px 0;color:#657782">Submitted</td><td style="padding:8px 0;font-weight:700">${escapeHtml(submittedAt)}</td></tr>
-          ${
-            page
-              ? `<tr><td style="padding:8px 0;color:#657782">Page</td><td style="padding:8px 0;font-weight:700">${escapeHtml(page)}</td></tr>`
-              : ""
-          }
-        </tbody>
-      </table>
-      <div style="padding:18px;border:1px solid #dde3e7;border-radius:14px;background:#f8fafb">
-        ${escapeHtml(message || "No message provided.").replace(/\n/g, "<br />")}
+  if (apiKey) {
+    const resend = new Resend(apiKey);
+    const text = [
+      `New PPTT Inquiry`,
+      ``,
+      `Audience: ${audience}`,
+      `Type: ${type}`,
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Submitted: ${submittedAt}`,
+      page ? `Page: ${page}` : "",
+      ``,
+      `Message:`,
+      message || "No message provided.",
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const html = `
+      <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#101417">
+        <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">New PPTT Inquiry</p>
+        <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} inquiry from ${escapeHtml(name)}</h1>
+        <table style="width:100%;border-collapse:collapse;margin:0 0 22px">
+          <tbody>
+            <tr><td style="padding:8px 0;color:#657782">Audience</td><td style="padding:8px 0;font-weight:700">${escapeHtml(audience)}</td></tr>
+            <tr><td style="padding:8px 0;color:#657782">Type</td><td style="padding:8px 0;font-weight:700">${escapeHtml(type)}</td></tr>
+            <tr><td style="padding:8px 0;color:#657782">Name</td><td style="padding:8px 0;font-weight:700">${escapeHtml(name)}</td></tr>
+            <tr><td style="padding:8px 0;color:#657782">Email</td><td style="padding:8px 0;font-weight:700">${escapeHtml(email)}</td></tr>
+            <tr><td style="padding:8px 0;color:#657782">Submitted</td><td style="padding:8px 0;font-weight:700">${escapeHtml(submittedAt)}</td></tr>
+            ${
+              page
+                ? `<tr><td style="padding:8px 0;color:#657782">Page</td><td style="padding:8px 0;font-weight:700">${escapeHtml(page)}</td></tr>`
+                : ""
+            }
+          </tbody>
+        </table>
+        <div style="padding:18px;border:1px solid #dde3e7;border-radius:14px;background:#f8fafb">
+          ${escapeHtml(message || "No message provided.").replace(/\n/g, "<br />")}
+        </div>
       </div>
-    </div>
-  `;
+    `;
 
-  const { error } = await resend.emails.send({
-    from: fromEmail,
-    html,
-    replyTo: email,
-    subject,
-    text,
-    to: toEmail.split(",").map((item) => item.trim()).filter(Boolean),
-  });
+    const { error } = await resend.emails.send({
+      from: fromEmail,
+      html,
+      replyTo: email,
+      subject,
+      text,
+      to: toEmail.split(",").map((item) => item.trim()).filter(Boolean),
+    });
 
-  if (error) {
-    return json({ error: error.message || "Could not send lead email." }, { status: 502 });
+    if (error) {
+      return json({ error: error.message || "Could not send lead email." }, { status: 502 });
+    }
+
+    return json({ ok: true });
   }
 
-  return json({ ok: true });
+  // Automatic fallback to FormSubmit without external accounts/domain
+  try {
+    const fsResponse = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(toEmail)}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+        "Referer": page || "https://pptt-alpha.vercel.app/",
+      },
+      body: JSON.stringify({
+        _subject: subject,
+        _replyto: email,
+        _captcha: "false",
+        Audience: audience,
+        Type: type,
+        Name: name,
+        Email: email,
+        SubmittedAt: submittedAt,
+        Page: page || "",
+        Message: message || "No message provided.",
+      }),
+    });
+
+    const fsData = (await fsResponse.json()) as { success?: string | boolean; message?: string };
+    if (fsData && (fsData.success === "true" || fsData.success === true)) {
+      return json({ ok: true });
+    }
+
+    if (fsData && typeof fsData.message === "string" && fsData.message.includes("Activation")) {
+      return json({
+        ok: true,
+        message: "Activation email sent to administrator. Form will receive leads once confirmed.",
+      });
+    }
+
+    return json({ error: fsData?.message || "Could not deliver email through fallback service." }, { status: 502 });
+  } catch (err) {
+    const errMsg = err instanceof Error ? err.message : "Service error";
+    return json({ error: `Could not send inquiry: ${errMsg}` }, { status: 502 });
+  }
 };
