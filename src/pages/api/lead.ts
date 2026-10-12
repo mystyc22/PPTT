@@ -109,16 +109,16 @@ export const POST: APIRoute = async ({ request }) => {
 
   const apiKey = import.meta.env.RESEND_API_KEY as string | undefined;
   const fromEmail = import.meta.env.RESEND_FROM_EMAIL as string | undefined;
-  const toEmail = import.meta.env.LEADS_TO_EMAIL as string | undefined;
+  const toEmail = (import.meta.env.LEADS_TO_EMAIL as string | undefined) || "osypowicz@gmail.com";
 
   if (!apiKey || !fromEmail || !toEmail) {
     return json({ error: "Lead email endpoint is not configured yet." }, { status: 500 });
   }
 
   const resend = new Resend(apiKey);
-  const subject = `[BebaRun] ${audience} lead: ${name}`;
+  const subject = `[PPTT] ${audience} kontakt: ${name}`;
   const text = [
-    `New BebaRun lead`,
+    `Nowe zgłoszenie PPTT`,
     ``,
     `Audience: ${audience}`,
     `Type: ${type}`,
@@ -135,8 +135,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   const html = `
     <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#101417">
-      <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">New BebaRun lead</p>
-      <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} lead from ${escapeHtml(name)}</h1>
+      <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">Nowe zgłoszenie PPTT</p>
+      <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} kontakt od ${escapeHtml(name)}</h1>
       <table style="width:100%;border-collapse:collapse;margin:0 0 22px">
         <tbody>
           <tr><td style="padding:8px 0;color:#657782">Audience</td><td style="padding:8px 0;font-weight:700">${escapeHtml(audience)}</td></tr>

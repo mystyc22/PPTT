@@ -4,90 +4,90 @@ import React, { useEffect, useState } from "react";
 const scaleSteps = [
   {
     code: "01",
-    title: "Add one useful point",
-    body: "Open a shop only where it shortens a real route, increases bag fill, or gives riders a cleaner handoff.",
-    metric: "pilot gate",
+    title: "Dodawaj punkty tam, gdzie skracają drogę",
+    body: "Otwieraj kolejny sklep partnerski tam, gdzie zagęszcza to siatkę, zwiększa wypełnienie worków i ułatwia transfer motocyklistom.",
+    metric: "bramka klastra",
   },
   {
     code: "02",
-    title: "Watch density, not territory",
-    body: "A neighborhood is ready when parcels, direction bags, and rider overlap repeat without manual dispatch.",
-    metric: "3+ bags per lane",
+    title: "Mierz gęstość, nie powierzchnię",
+    body: "Obszar jest dojrzały, gdy worki kierunkowe i kursy motocykli powtarzają się płynnie i bezobsługowo bez ręcznej dyspozycji.",
+    metric: "3+ worki na linię",
   },
   {
     code: "03",
-    title: "Delay fixed rent",
-    body: "A fixed site is only justified after the ledger proves sorting volume, staffing load, and rent beat the shop mesh.",
-    metric: "rent gate locked",
+    title: "Odsuń w czasie stały czynsz",
+    body: "Budowa stałego magazynu jest zbędna – sieć sklepów i motocykli jest tańsza, bardziej elastyczna i odporna na zatory miejskie.",
+    metric: "zero stałego czynszu",
   },
 ];
 
 const scaleSignals = [
-  ["Point density", "pilot target", "before fixed rent"],
-  ["Bag fill", "example gate", "enough volume to bundle"],
-  ["Rider overlap", "example overlap", "routes already crossing"],
-  ["Fixed-site trigger", "not yet", "density data decides"],
+  ["Gęstość hubów", "klaster testowy", "przed stałym czynszem"],
+  ["Wypełnienie worków", "bramka skali", "minimum do spięcia korytarza"],
+  ["Ruch motocykli", "naturalny potok", "kursy w istniejących kierunkach"],
+  ["Stałe magazyny", "niepotrzebne", "decydują realne dane z tras"],
 ];
 
 const scaleChecks = [
-  ["Open point", "Only when it reduces distance or creates a reliable handoff lane."],
-  ["Keep shops light", "No printers, no warehouse shift, no full parcel sorting room."],
-  ["Let data decide", "Fixed rent waits until repeated bags prove a site earns more than it costs."],
+  ["Otwórz punkt", "Tylko tam, gdzie skraca dystans i tworzy pewne połączenie między hubami."],
+  ["Lekkie punkty", "Zero drukarek, zero pracowników magazynowych, wystarczy wolna półka i lada."],
+  ["Dane decydują", "Skalowanie następuje organicznie na podstawie rzeczywistych przepływów worków."],
 ];
 
 const cycleNodes = [
   {
     key: "shop",
-    label: "Shop",
-    title: "A shop becomes a point",
-    body: "A trusted shop accepts parcels, writes the local code, and keeps the work lightweight.",
-    stat: "pilot cluster",
+    label: "Hub",
+    title: "Lokalny sklep staje się hubem",
+    body: "Właściciel przyjmuje paczkę, wpisuje 4-znakowy kod i wkłada do odpowiedniego worka kierunkowego.",
+    stat: "klaster hubów",
     x: "50%",
     y: "13.3%",
   },
   {
     key: "bag",
-    label: "Bag",
-    title: "Direction bags prove volume",
-    body: "Repeated sealed bags show which local lanes are real before rent is committed.",
-    stat: "example lane",
+    label: "Worek",
+    title: "Maksymalnie 8 worków kierunkowych",
+    body: "Zapieczętowany worek gromadzi paczki jadące w tym samym kierunku. Worek pozostaje zamknięty w drodze.",
+    stat: "8 kierunków",
     x: "84.8%",
     y: "37.1%",
   },
   {
     key: "rider",
-    label: "Rider",
-    title: "Riders clear existing movement",
-    body: "The system prefers riders already crossing the lane instead of creating a fresh trip.",
-    stat: "example overlap",
+    label: "Motocykl",
+    title: "Prywatni przewoźnicy (Moto-taxi)",
+    body: "Kierowcy boda-boda czekający na postojach podejmują zapieczętowane worki, minimalizując puste przejazdy powrotne.",
+    stat: "giełda kursów",
     x: "71.9%",
     y: "80%",
   },
   {
     key: "ledger",
-    label: "Ledger",
-    title: "The ledger decides the next point",
-    body: "Open another point only when fill rate, handoff time, and payout data repeat.",
-    stat: "audit gate",
+    label: "Księga",
+    title: "Księga rozlicza transfery paczki",
+    body: "Paczka płaci za swój transfer w wirtualnej walucie. Punkty i kierowcy otrzymują środki natychmiast.",
+    stat: "audyt salda",
     x: "28.1%",
     y: "80%",
   },
   {
     key: "candidate",
     label: "P5",
-    title: "Candidate point opens last",
-    body: "P5 stays a candidate until the existing P2-P4 lane repeats without manual help.",
-    stat: "hold fixed site",
+    title: "Organiczny punkt P5",
+    body: "Nowy punkt włącza się organicznie, gdy sąsiedni sklep osiąga maksymalną przepustowość.",
+    stat: "płaska sieć",
     x: "15.2%",
     y: "37.1%",
   },
 ];
 
 const compareRows = [
-  ["Capital", "Add one shop", "Lease fixed site first"],
-  ["Proof", "Real bags repeat", "Forecasted volume"],
-  ["Risk", "Reversible point", "Fixed rent drag"],
-  ["Scale trigger", "Ledger gates P5", "Manager approval"],
+  ["Kapitał (CAPEX)", "Dodanie kolejnego sklepu", "Wynajem i budowa sortowni"],
+  ["Weryfikacja", "Realny obrót worków", "Prognozy na papierze"],
+  ["Ryzyko operacyjne", "Elastyczny punkt partnerski", "Ciężar stałego czynszu"],
+  ["Zarządzanie siecią", "Automatyczna księga zdarzeń", "Ręczna dyspozytornia"],
 ];
 
 const cycleSegments = [
@@ -180,22 +180,22 @@ export default function InvestorMotion() {
       <div className="scale-section-inner">
         <div className="section-heading scale-heading">
           <div>
-            <p className="eyebrow">Expansion logic</p>
-            <h2 id="proof-title">Scale with shops before fixed sites.</h2>
+            <p className="eyebrow">Logika skalowania</p>
+            <h2 id="proof-title">Skalowanie siecią sklepów zamiast budowy sortowni.</h2>
           </div>
           <div className="scale-heading-copy">
             <p>
-              The network grows only where real parcels repeat. Shops absorb intake and simple sorting while the handoff
-              log decides when a higher-capacity point or fixed site would save more than it costs.
+              Sieć rośnie organicznie wraz z liczbą paczek. Sklepy przejmują przyjęcie i proste sortowanie do worków,
+              a motocykle obsługują transfery bez konieczności inwestowania w kosztowną infrastrukturę magazynową.
             </p>
             <div className="scale-heading-decision">
-              <span>Current decision</span>
-              <strong>Add point P5, hold fixed site</strong>
+              <span>Bieżący etap</span>
+              <strong>Dołącz punkt P5, wstrzymaj budowę sortowni</strong>
             </div>
           </div>
         </div>
 
-        <div className="scale-check-grid" aria-label="Scale operating checks">
+        <div className="scale-check-grid" aria-label="Kryteria operacyjne skalowania">
           {scaleChecks.map(([title, body]) => (
             <article key={title}>
               <span>{title}</span>
@@ -211,10 +211,10 @@ export default function InvestorMotion() {
             className="scale-cycle-panel"
           >
             <div className="scale-panel-head">
-              <span>Point-first expansion</span>
-              <strong>No fixed site yet</strong>
+              <span>Rozwój oparty o mikroskopijne huby</span>
+              <strong>Zero stałych magazynów</strong>
             </div>
-            <div className="scale-cycle-layout" aria-label="Point-first expansion cycle">
+            <div className="scale-cycle-layout" aria-label="Cykl rozwoju hubów">
               <div className="scale-cycle-orbit">
                 <svg className="scale-cycle-lines" viewBox="0 0 420 420" aria-hidden="true">
                   {cycleSegments.map((segment, index) => (
@@ -247,8 +247,8 @@ export default function InvestorMotion() {
                   <path className="scale-cycle-spoke" d="M210 210 L64 156" />
                 </svg>
                 <div className="scale-cycle-core">
-                  <span>BebaRun mesh</span>
-                  <strong>point-first</strong>
+                  <span>Siatka PPTT</span>
+                  <strong>hub-to-hub</strong>
                   <small>{activeCycle.label}{" -> "}{nextCycle.label}</small>
                 </div>
                 {cycleNodes.map((node, nodeIndex) => (
@@ -273,15 +273,15 @@ export default function InvestorMotion() {
                 <h3>{activeCycle.title}</h3>
                 <p>{activeCycle.body}</p>
                 <div className="scale-cycle-status">
-                  <strong>Current gate</strong>
-                  <em>{activeCycle.key === "candidate" ? "hold P5 until lane repeats" : "keep proving density"}</em>
+                  <strong>Status bramki</strong>
+                  <em>{activeCycle.key === "candidate" ? "dołącz P5 po ustabilizowaniu korytarza" : "buduj gęstość sieci"}</em>
                 </div>
               </div>
             </div>
             <div className="scale-compare">
               <div className="scale-compare-head">
-                <span>Expansion logic</span>
-                <strong>BebaRun vs fixed-site first</strong>
+                <span>Porównanie modeli</span>
+                <strong>PPTT vs Tradycyjna sortownia</strong>
               </div>
               <div className="scale-compare-grid">
                 {compareRows.map(([label, mesh, depot]) => (
@@ -299,8 +299,8 @@ export default function InvestorMotion() {
             className="scale-rules-panel"
           >
             <div className="scale-panel-head">
-              <span>Expansion gates</span>
-              <strong>Measured</strong>
+              <span>Kryteria wzrostu</span>
+              <strong>Weryfikowalne</strong>
             </div>
             <div className="scale-rules">
               {scaleSteps.map((step) => (
@@ -315,14 +315,14 @@ export default function InvestorMotion() {
               ))}
             </div>
             <div className="scale-depot-decision">
-              <span>Fixed-site decision</span>
+              <span>Decyzja o infrastrukturze</span>
               <div>
-                <strong>Open more shops</strong>
-                <p>Low rent, local staff, faster proof of real parcel density.</p>
+                <strong>Dołączaj kolejne sklepy</strong>
+                <p>Zero czynszu, lokalni przedsiębiorcy, natychmiastowe skalowanie bez ryzyka.</p>
               </div>
               <div>
-                <strong>Hold fixed site</strong>
-                <p>No repeated sort load yet; fixed rent would hide whether the mesh works.</p>
+                <strong>Unikaj budowy sortowni</strong>
+                <p>Sortownie centralne tworzą wąskie gardła i generują ogromne koszty stałe na rynkach bez adresacji.</p>
               </div>
             </div>
           </div>
@@ -343,3 +343,4 @@ export default function InvestorMotion() {
     </section>
   );
 }
+
