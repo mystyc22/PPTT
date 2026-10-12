@@ -4,90 +4,90 @@ import React, { useEffect, useState } from "react";
 const scaleSteps = [
   {
     code: "01",
-    title: "Dodawaj punkty tam, gdzie skracają drogę",
-    body: "Otwieraj kolejny sklep partnerski tam, gdzie zagęszcza to siatkę, zwiększa wypełnienie worków i ułatwia transfer motocyklistom.",
-    metric: "bramka klastra",
+    title: "Add Nodes Where They Shorten Distance",
+    body: "Onboard the next partner shop where it increases network density, improves bag fill rates, and shortens courier transfers.",
+    metric: "cluster gate",
   },
   {
     code: "02",
-    title: "Mierz gęstość, nie powierzchnię",
-    body: "Obszar jest dojrzały, gdy worki kierunkowe i kursy motocykli powtarzają się płynnie i bezobsługowo bez ręcznej dyspozycji.",
-    metric: "3+ worki na linię",
+    title: "Measure Density, Not Warehouse Area",
+    body: "A corridor reaches maturity when directional bags and rider transfers cycle smoothly without manual intervention.",
+    metric: "3+ bags per route",
   },
   {
     code: "03",
-    title: "Odsuń w czasie stały czynsz",
-    body: "Budowa stałego magazynu jest zbędna – sieć sklepów i motocykli jest tańsza, bardziej elastyczna i odporna na zatory miejskie.",
-    metric: "zero stałego czynszu",
+    title: "Eliminate Fixed Warehouse Leases",
+    body: "Central warehouses are obsolete—a distributed mesh of local shops and motorcycles is cheaper, more agile, and immune to urban traffic gridlock.",
+    metric: "zero fixed rent",
   },
 ];
 
 const scaleSignals = [
-  ["Gęstość hubów", "klaster testowy", "przed stałym czynszem"],
-  ["Wypełnienie worków", "bramka skali", "minimum do spięcia korytarza"],
-  ["Ruch motocykli", "naturalny potok", "kursy w istniejących kierunkach"],
-  ["Stałe magazyny", "niepotrzebne", "decydują realne dane z tras"],
+  ["Hub Density", "pilot cluster", "zero warehouse lease"],
+  ["Bag Fill Rate", "scale threshold", "minimum to clear corridor"],
+  ["Rider Flow", "organic traffic", "transfers along natural routes"],
+  ["Central Depots", "unnecessary", "decided by live transit data"],
 ];
 
 const scaleChecks = [
-  ["Otwórz punkt", "Tylko tam, gdzie skraca dystans i tworzy pewne połączenie między hubami."],
-  ["Lekkie punkty", "Zero drukarek, zero pracowników magazynowych, wystarczy wolna półka i lada."],
-  ["Dane decydują", "Skalowanie następuje organicznie na podstawie rzeczywistych przepływów worków."],
+  ["Open a Hub", "Only where it shortens distance and establishes reliable node-to-node connectivity."],
+  ["Asset-Light Nodes", "Zero printers, zero warehouse payroll; a single counter shelf is all it takes."],
+  ["Data-Driven Mesh", "Network density grows organically based on verified parcel bag velocities."],
 ];
 
 const cycleNodes = [
   {
     key: "shop",
     label: "Hub",
-    title: "Lokalny sklep staje się hubem",
-    body: "Właściciel przyjmuje paczkę, wpisuje 4-znakowy kod i wkłada do odpowiedniego worka kierunkowego.",
-    stat: "klaster hubów",
+    title: "Local Shop Becomes a Hub",
+    body: "Merchant receives the parcel, marks the 4-character code, and places it into the target directional bag.",
+    stat: "hub cluster",
     x: "50%",
     y: "13.3%",
   },
   {
     key: "bag",
-    label: "Worek",
-    title: "Maksymalnie 8 worków kierunkowych",
-    body: "Zapieczętowany worek gromadzi paczki jadące w tym samym kierunku. Worek pozostaje zamknięty w drodze.",
-    stat: "8 kierunków",
+    label: "Bag",
+    title: "Max 8 Directional Bags",
+    body: "Sealed transit bag batches parcels traveling in the same direction. Stays sealed until destination sector.",
+    stat: "8 corridors",
     x: "84.8%",
     y: "37.1%",
   },
   {
     key: "rider",
-    label: "Motocykl",
-    title: "Prywatni przewoźnicy (Moto-taxi)",
-    body: "Kierowcy boda-boda czekający na postojach podejmują zapieczętowane worki, minimalizując puste przejazdy powrotne.",
-    stat: "giełda kursów",
+    label: "Rider",
+    title: "Private Carriers (Moto-Taxi)",
+    body: "Boda-boda riders waiting at stands pick up sealed bags along their natural route, minimizing empty return trips.",
+    stat: "freight exchange",
     x: "71.9%",
     y: "80%",
   },
   {
     key: "ledger",
-    label: "Księga",
-    title: "Księga rozlicza transfery paczki",
-    body: "Paczka płaci za swój transfer w wirtualnej walucie. Punkty i kierowcy otrzymują środki natychmiast.",
-    stat: "audyt salda",
+    label: "Ledger",
+    title: "Ledger Clears Hop by Hop",
+    body: "The parcel pays for its own transit in digital balance. Hubs and riders receive payments instantly upon handover.",
+    stat: "balance audit",
     x: "28.1%",
     y: "80%",
   },
   {
     key: "candidate",
     label: "P5",
-    title: "Organiczny punkt P5",
-    body: "Nowy punkt włącza się organicznie, gdy sąsiedni sklep osiąga maksymalną przepustowość.",
-    stat: "płaska sieć",
+    title: "Organic Node P5",
+    body: "A new shop activates automatically when an adjacent hub approaches throughput limits.",
+    stat: "flat mesh",
     x: "15.2%",
     y: "37.1%",
   },
 ];
 
 const compareRows = [
-  ["Kapitał (CAPEX)", "Dodanie kolejnego sklepu", "Wynajem i budowa sortowni"],
-  ["Weryfikacja", "Realny obrót worków", "Prognozy na papierze"],
-  ["Ryzyko operacyjne", "Elastyczny punkt partnerski", "Ciężar stałego czynszu"],
-  ["Zarządzanie siecią", "Automatyczna księga zdarzeń", "Ręczna dyspozytornia"],
+  ["Capital Expenditure (CAPEX)", "Onboard existing shops", "Lease & build sorting hubs"],
+  ["Validation", "Actual bag throughput", "Speculative paper projections"],
+  ["Operational Risk", "Flexible merchant partners", "Fixed warehouse lease commitments"],
+  ["Network Orchestration", "Automated event ledger", "Manual dispatch call centers"],
 ];
 
 const cycleSegments = [
@@ -180,22 +180,22 @@ export default function InvestorMotion() {
       <div className="scale-section-inner">
         <div className="section-heading scale-heading">
           <div>
-            <p className="eyebrow">Logika skalowania</p>
-            <h2 id="proof-title">Skalowanie siecią sklepów zamiast budowy sortowni.</h2>
+            <p className="eyebrow">Scaling Architecture</p>
+            <h2 id="proof-title">Scale Through Shop Networks, Not Central Warehouses.</h2>
           </div>
           <div className="scale-heading-copy">
             <p>
-              Sieć rośnie organicznie wraz z liczbą paczek. Sklepy przejmują przyjęcie i proste sortowanie do worków,
-              a motocykle obsługują transfery bez konieczności inwestowania w kosztowną infrastrukturę magazynową.
+              The network expands organically with parcel volume. Local merchants handle intake and simple directional sorting,
+              while independent riders power transit without expensive central sorting hubs.
             </p>
             <div className="scale-heading-decision">
-              <span>Bieżący etap</span>
-              <strong>Dołącz punkt P5, wstrzymaj budowę sortowni</strong>
+              <span>Current Stage</span>
+              <strong>Activate node P5, defer central warehouse build</strong>
             </div>
           </div>
         </div>
 
-        <div className="scale-check-grid" aria-label="Kryteria operacyjne skalowania">
+        <div className="scale-check-grid" aria-label="Operational scaling criteria">
           {scaleChecks.map(([title, body]) => (
             <article key={title}>
               <span>{title}</span>
@@ -211,10 +211,10 @@ export default function InvestorMotion() {
             className="scale-cycle-panel"
           >
             <div className="scale-panel-head">
-              <span>Rozwój oparty o mikroskopijne huby</span>
-              <strong>Zero stałych magazynów</strong>
+              <span>Micro-Hub Network Expansion</span>
+              <strong>Zero Fixed Warehouses</strong>
             </div>
-            <div className="scale-cycle-layout" aria-label="Cykl rozwoju hubów">
+            <div className="scale-cycle-layout" aria-label="Hub network expansion cycle">
               <div className="scale-cycle-orbit">
                 <svg className="scale-cycle-lines" viewBox="0 0 420 420" aria-hidden="true">
                   {cycleSegments.map((segment, index) => (
@@ -247,7 +247,7 @@ export default function InvestorMotion() {
                   <path className="scale-cycle-spoke" d="M210 210 L64 156" />
                 </svg>
                 <div className="scale-cycle-core">
-                  <span>Siatka PPTT</span>
+                  <span>PPTT Mesh</span>
                   <strong>hub-to-hub</strong>
                   <small>{activeCycle.label}{" -> "}{nextCycle.label}</small>
                 </div>
@@ -273,15 +273,15 @@ export default function InvestorMotion() {
                 <h3>{activeCycle.title}</h3>
                 <p>{activeCycle.body}</p>
                 <div className="scale-cycle-status">
-                  <strong>Status bramki</strong>
-                  <em>{activeCycle.key === "candidate" ? "dołącz P5 po ustabilizowaniu korytarza" : "buduj gęstość sieci"}</em>
+                  <strong>Gate Status</strong>
+                  <em>{activeCycle.key === "candidate" ? "activate P5 once corridor stabilizes" : "scale network density"}</em>
                 </div>
               </div>
             </div>
             <div className="scale-compare">
               <div className="scale-compare-head">
-                <span>Porównanie modeli</span>
-                <strong>PPTT vs Tradycyjna sortownia</strong>
+                <span>Model Comparison</span>
+                <strong>PPTT vs Central Sorting Warehouses</strong>
               </div>
               <div className="scale-compare-grid">
                 {compareRows.map(([label, mesh, depot]) => (
@@ -299,8 +299,8 @@ export default function InvestorMotion() {
             className="scale-rules-panel"
           >
             <div className="scale-panel-head">
-              <span>Kryteria wzrostu</span>
-              <strong>Weryfikowalne</strong>
+              <span>Growth Criteria</span>
+              <strong>Verifiable</strong>
             </div>
             <div className="scale-rules">
               {scaleSteps.map((step) => (
@@ -315,14 +315,14 @@ export default function InvestorMotion() {
               ))}
             </div>
             <div className="scale-depot-decision">
-              <span>Decyzja o infrastrukturze</span>
+              <span>Infrastructure Strategy</span>
               <div>
-                <strong>Dołączaj kolejne sklepy</strong>
-                <p>Zero czynszu, lokalni przedsiębiorcy, natychmiastowe skalowanie bez ryzyka.</p>
+                <strong>Onboard Local Shops</strong>
+                <p>Zero lease overhead, local merchant engagement, instant zero-risk scale.</p>
               </div>
               <div>
-                <strong>Unikaj budowy sortowni</strong>
-                <p>Sortownie centralne tworzą wąskie gardła i generują ogromne koszty stałe na rynkach bez adresacji.</p>
+                <strong>Avoid Central Sorting Depots</strong>
+                <p>Central sorting hubs introduce single points of failure and crushing fixed costs in address-less cities.</p>
               </div>
             </div>
           </div>

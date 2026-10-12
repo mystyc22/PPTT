@@ -116,9 +116,9 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const resend = new Resend(apiKey);
-  const subject = `[PPTT] ${audience} kontakt: ${name}`;
+  const subject = `[PPTT] ${audience} inquiry: ${name}`;
   const text = [
-    `Nowe zgłoszenie PPTT`,
+    `New PPTT Inquiry`,
     ``,
     `Audience: ${audience}`,
     `Type: ${type}`,
@@ -135,8 +135,8 @@ export const POST: APIRoute = async ({ request }) => {
 
   const html = `
     <div style="font-family:Inter,Arial,sans-serif;line-height:1.5;color:#101417">
-      <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">Nowe zgłoszenie PPTT</p>
-      <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} kontakt od ${escapeHtml(name)}</h1>
+      <p style="margin:0 0 16px;color:#fe7f2d;font-size:12px;font-weight:800;text-transform:uppercase">New PPTT Inquiry</p>
+      <h1 style="margin:0 0 20px;font-size:28px;line-height:1.05">${escapeHtml(audience)} inquiry from ${escapeHtml(name)}</h1>
       <table style="width:100%;border-collapse:collapse;margin:0 0 22px">
         <tbody>
           <tr><td style="padding:8px 0;color:#657782">Audience</td><td style="padding:8px 0;font-weight:700">${escapeHtml(audience)}</td></tr>

@@ -23,42 +23,42 @@ import {
 const projectStages = [
   {
     tag: "01",
-    label: "Hub Partnerski",
-    title: "Lokalny sklep jako punkt sieci",
-    body: "Każdy działający biznes (sklep spożywczy, fryzjer, gastronomia) staje się mikroskopijnym hubem. Dodatkowy dochód dla właściciela, zerowy CAPEX na magazyny dla sieci.",
-    metric: "zero czynszu",
+    label: "Partner Hub",
+    title: "Local Store as a Network Node",
+    body: "Any existing business (grocer, barber, diner, kiosk) becomes an ultra-light micro-hub. Supplemental revenue for the merchant, zero warehouse CAPEX for the network.",
+    metric: "zero fixed lease",
     visual: "shops",
   },
   {
     tag: "02",
-    label: "Sortowanie",
-    title: "Maksymalnie 8 worków kierunkowych",
-    body: "Hub nie wymaga sortowni – wystarczy miejsce na maks. 8 worków tranzytowych i półka na paczki do odbioru. 8 worków jest po to, by zawęzić pomyłkę przy wyborze kierunku trasy. Worek pozostaje zapieczętowany aż do zmiany kierunku.",
-    metric: "8 kierunków",
+    label: "Sorting",
+    title: "Maximum 8 Directional Transit Bags",
+    body: "Hubs require zero automated sorting—just counter space for max 8 directional bags and a pickup shelf. Limiting to 8 directions eliminates human routing errors. Bags stay sealed until a corridor direction switch.",
+    metric: "8 transit corridors",
     visual: "sort",
   },
   {
     tag: "03",
     label: "Transport",
-    title: "Prywatni przewoźnicy i giełda zleceń",
-    body: "Te motocykle nie są miejskie – to prywatni przewoźnicy czekający na postojach jak taksówki. Dzięki giełdzie przewozów PPTT zabierają całe worki w swoich kierunkach, minimalizując puste przejazdy i optymalizując zysk.",
-    metric: "mniej pustych kursów",
+    title: "Private Carriers & Freight Exchange",
+    body: "These riders are independent boda-boda taxi operators waiting at stands. PPTT’s freight exchange batches full sealed bags along their natural route, minimizing empty return miles and maximizing driver earnings.",
+    metric: "zero empty miles",
     visual: "riders",
   },
   {
     tag: "04",
-    label: "Finanse",
-    title: "Paczka sama płaci za transfer",
-    body: "Klient zostawia pieniądze w hubie, które są zamieniane na wirtualną walutę. Paczka podróżująca do celu opłaca wszystkie huby i kurierów, którzy jej w tym pomagają – środki uwalniane są automatycznie na każdym etapie trasy.",
-    metric: "portfel paczki",
+    label: "Finance",
+    title: "The Self-Funding Parcel",
+    body: "Senders pay cash at the intake hub, converted into internal digital balance. As the parcel travels toward its target, it pays every hub and courier hop by hop upon verified handover.",
+    metric: "parcel balance",
     visual: "ledger",
   },
   {
     tag: "05",
-    label: "Skalowanie",
-    title: "Organiczny wzrost bez centralnego HUB-a",
-    body: "Płaska sieć bez wąskich gardeł sortowni centralnej. Gdy ruch w danym punkcie rośnie, sieć włącza kolejny sklep obok, zagęszczając zasięg i skracając dystans.",
-    metric: "płaska sieć",
+    label: "Scale",
+    title: "Organic Mesh Expansion",
+    body: "A flat network without central sorting bottlenecks. When a node nears capacity, the network onboards an adjacent shop, tightening network density and shortening transit legs.",
+    metric: "flat mesh",
     visual: "mesh",
   },
 ];
@@ -66,60 +66,61 @@ const projectStages = [
 const storySteps = [
   {
     tag: "01",
-    label: "Kod",
-    title: "Nadanie markerem: 4 znaki",
-    body: "Zero drukarek, zero etykiet i zero problemu z brakiem adresów. Obsługa wpisuje na paczce 4-znakowy kod (np. X92K), a system natychmiast przypisuje go do odpowiedniego sektora.",
+    label: "Marker",
+    title: "Intake Code: 4 Characters",
+    body: "Zero printers, zero sticky labels, zero reliance on non-existent street addresses. Shop staff writes a 4-character code (e.g., X92K) with marker; the system routes it to the correct sector.",
   },
   {
     tag: "02",
-    label: "Worek",
-    title: "Zapieczętowany worek kierunkowy",
-    body: "Paczka trafia do jednego z maks. 8 worków tranzytowych. Worek jest plombowany i nikt go nie rozpakowuje, dopóki transportuje się w tym samym kierunku.",
+    label: "Bag",
+    title: "Sealed Directional Bag",
+    body: "Parcel drops into one of max 8 transit bags. The bag is tamper-sealed and remains untouched throughout transit until the corridor changes.",
   },
   {
     tag: "03",
-    label: "Ruch",
-    title: "Grupowy przewóz motocyklem",
-    body: "Kierowcy podejmują gotowe worki kierunkowe. System faworyzuje motocyklistów poruszających się już na danym korytarzu, co radykalnie obniża koszt krańcowy.",
+    label: "Transit",
+    title: "Consolidated Motorcycle Hop",
+    body: "Carriers pick up sealed bags. The system matches riders already traveling along that corridor, dramatically lowering marginal cost.",
   },
   {
     tag: "04",
-    label: "Odbiór",
-    title: "Wydanie w hubie i rozliczenie",
-    body: "Odbiorca odbiera przesyłkę w swoim lokalnym punkcie na podstawie 4-znakowego kodu. Z salda paczki natychmiast uwalniane są prowizje hubów i wypłaty.",
+    label: "Outtake",
+    title: "Hub Pickup & Settlement",
+    body: "Recipient collects the parcel at their local neighborhood hub using the 4-character code. The parcel's internal balance instantly releases merchant commissions and carrier payouts.",
   },
 ];
 
 const modelRows = [
-  ["Brak centralnej sortowni", "Płaska sieć równorzędnych punktów, zero wąskich gardeł magazynowych"],
-  ["Tylko 4 znaki markerem", "Brak drukarek i papierowych etykiet; działa nawet przy słabym internecie"],
-  ["Zapieczętowane worki", "Otwierane wyłącznie wtedy, gdy zmienia się sektor kierunkowy"],
-  ["Prywatni przewoźnicy (Moto-taxi)", "Giełda zleceń redukująca puste przejazdy i łącząca całe worki"],
-  ["Odbiór kodem w hubie", "Doręczenia hub-to-hub bez błądzenia po nieoznaczonych ulicach"],
+  ["Zero Central Sorting Warehouses", "Flat peer-to-peer mesh of equal neighborhood nodes; zero warehouse bottlenecks"],
+  ["4-Character Pen Code Only", "Zero printers or paper labels; functions seamlessly even with weak connectivity"],
+  ["Sealed Transit Bags", "Opened strictly when switching directional corridor sectors"],
+  ["Private Motorcycle Carriers", "Freight exchange batches sealed cargo along natural travel routes, eliminating empty return miles"],
+  ["Neighborhood Hub Pickup", "Hub-to-hub delivery model avoids wandering through unmapped, address-less streets"],
 ];
 
 const pilotMetrics = [
-  "Koszt na paczkę",
-  "Czas do pierwszego transferu",
-  "Wypełnienie worków kierunkowych",
-  "Liczba przeładunków",
-  "Wskaźnik zagubień (0%)",
-  "Rentowność korytarza",
+  "Cost per parcel",
+  "Time to first transfer",
+  "Directional bag fill rate",
+  "Number of handoffs",
+  "Loss rate (0%)",
+  "Corridor unit profitability",
 ];
 ---
 
-<html lang="pl">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/Logo_PPTT.svg" />
-    <link rel="icon" href="/Logo_PPTT.svg" />
-    <link rel="apple-touch-icon" href="/Logo_PPTT.svg" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="shortcut icon" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" href="/favicon-512.png" />
     <meta name="theme-color" content="#f8f6f2" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
     <meta
       name="description"
-      content="PPTT (Package Push Towards Target) – zdecentralizowana sieć kurierska hub-to-hub dla miast bez adresów. Zero sortowni, zero drukarek, transport worków motocyklami i autorska księga finansowa."
+      content="PPTT (Package Push Towards Target) – decentralized hub-to-hub courier network for address-less megacities. Zero sorting warehouses, zero printers, motorcycle transit bags, and an autonomous self-funding parcel ledger."
     />
     <title>PPTT — Package Push Towards Target</title>
   </head>
@@ -130,9 +131,9 @@ const pilotMetrics = [
     <main>
       <section class="hero" id="top" aria-labelledby="hero-title">
         <div class="ambient-sheen" aria-hidden="true"></div>
-        <nav class="topbar" aria-label="Nawigacja główna" data-topbar>
+        <nav class="topbar" aria-label="Main Navigation" data-topbar>
           <a class="brand magnetic" href="#top" aria-label="PPTT — Package Push Towards Target">
-            <img class="brand-mark" src="/Logo_PPTT.svg" alt="PPTT Logo" width="38" height="36" />
+            <img class="brand-mark" src="/favicon-512.png" alt="PPTT Logo" width="38" height="38" />
             <span class="brand-wordmark">
               <strong>PPTT</strong>
               <span class="brand-expansion">— Package Push Towards Target</span>
@@ -142,7 +143,7 @@ const pilotMetrics = [
           <button
             class="nav-toggle"
             type="button"
-            aria-label="Otwórz menu nawigacji"
+            aria-label="Open navigation menu"
             aria-controls="topbar-menu"
             aria-expanded="false"
             data-nav-toggle
@@ -155,23 +156,23 @@ const pilotMetrics = [
             <div class="nav-links">
               <a class="magnetic" href="#concept">
                 <Network class="nav-link-icon" aria-hidden="true" />
-                <span>Koncepcja Sieci</span>
+                <span>Network Concept</span>
               </a>
               <a class="magnetic" href="#story">
                 <Route class="nav-link-icon" aria-hidden="true" />
-                <span>Przepływ Paczki</span>
+                <span>Parcel Flow</span>
               </a>
               <a class="magnetic" href="#economics">
                 <ReceiptText class="nav-link-icon" aria-hidden="true" />
-                <span>Ekonomia & Waluta</span>
+                <span>Currency & Ledger</span>
               </a>
               <a class="magnetic" href="#pilot">
                 <BadgeCheck class="nav-link-icon" aria-hidden="true" />
-                <span>Gotowość ~70%</span>
+                <span>Readiness ~70%</span>
               </a>
               <a class="magnetic" href="#sponsor">
                 <Store class="nav-link-icon" aria-hidden="true" />
-                <span>Oczekiwania & Runda</span>
+                <span>Pre-Seed Round</span>
               </a>
             </div>
             <a class="topbar-cta magnetic" href="#lead">
@@ -183,42 +184,42 @@ const pilotMetrics = [
 
         <div class="hero-grid">
           <div class="hero-copy">
-            <p class="eyebrow">Zdecentralizowana infrastruktura logistyczna bez sortowni centralnych</p>
+            <p class="eyebrow">Decentralized logistics infrastructure with zero central sorting warehouses</p>
             <h1 id="hero-title">
               <span class="hero-title-line">
-                <span class="hero-title-word" data-hero-word>Sklepy</span>
+                <span class="hero-title-word" data-hero-word>Shops</span>
                 {" "}
-                <span class="hero-title-word" data-hero-word>łączą.</span>
+                <span class="hero-title-word" data-hero-word>connect.</span>
               </span>
               <span class="hero-title-line">
-                <span class="hero-title-word hero-title-accent" data-hero-word>Motocykle</span>
+                <span class="hero-title-word hero-title-accent" data-hero-word>Motorcycles</span>
                 {" "}
-                <span class="hero-title-word" data-hero-word>wiozą.</span>
+                <span class="hero-title-word" data-hero-word>move.</span>
               </span>
             </h1>
             <p class="hero-lede">
-              PPTT zamienia lokalne sklepy w płaską sieć mikroskopijnych hubów. Bez budowania drogich magazynów, bez
-              drukarek i bez szukania nieistniejących adresów. Paczki z 4-znakowym kodem podróżują w zapieczętowanych workach
-              przewożonych przez prywatnych przewoźników motocyklowych, a każdy transfer opłaca się sam z portfela przesyłki.
+              PPTT turns neighborhood shops into a flat network of micro-hubs. No expensive warehouses, no
+              printers, and no searching for missing street addresses. Parcels marked with a 4-character code travel in sealed bags
+              powered by independent motorcycle taxis, self-funding every transit hop from their internal balance.
             </p>
-            <div class="hero-actions" aria-label="Główne akcje">
-              <a class="button button-primary magnetic" href="#lead">Pobierz Investor Deck</a>
-              <a class="button button-ghost magnetic" href="#story">Poznaj Model PPTT</a>
+            <div class="hero-actions" aria-label="Key Actions">
+              <a class="button button-primary magnetic" href="#lead">Request Investor Deck</a>
+              <a class="button button-ghost magnetic" href="#story">Explore PPTT Model</a>
             </div>
-            <div class="hero-flow" aria-label="Przepływ operacyjny PPTT">
+            <div class="hero-flow" aria-label="PPTT Operational Flow">
               <span class="hero-flow-step">
                 <Store class="hero-flow-icon" aria-hidden="true" />
-                <span>Hub w sklepie</span>
+                <span>Shop micro-hub</span>
               </span>
               <i aria-hidden="true"></i>
               <span class="hero-flow-step">
                 <ShoppingBag class="hero-flow-icon" aria-hidden="true" />
-                <span>Zapieczętowany worek</span>
+                <span>Sealed transit bag</span>
               </span>
               <i aria-hidden="true"></i>
               <span class="hero-flow-step">
                 <Bike class="hero-flow-icon" aria-hidden="true" />
-                <span>Transfer motocyklem</span>
+                <span>Motorcycle transit</span>
               </span>
             </div>
           </div>
@@ -260,8 +261,8 @@ const pilotMetrics = [
               <span class="hero-route-node is-rider">
                 <Bike class="hero-route-icon" aria-hidden="true" />
               </span>
-              <span class="hero-route-chip is-shop-chip">Hub przyjmuje</span>
-              <span class="hero-route-chip is-bag-chip">Zapieczętowany worek</span>
+              <span class="hero-route-chip is-shop-chip">Hub intake</span>
+              <span class="hero-route-chip is-bag-chip">Sealed bag</span>
               <span class="hero-route-tag">PPTT-042</span>
             </div>
             <img
@@ -276,27 +277,27 @@ const pilotMetrics = [
           </div>
         </div>
 
-        <div class="hero-strip" aria-label="Podsumowanie koncepcji">
-          <div><strong>Zero CAPEX na magazyny</strong><span>Istniejące sklepy partnerskie jako równorzędne huby sieci.</span></div>
-          <div><strong>Marker i 4 znaki</strong><span>Brak etykiet i drukarek – 4-znakowy kod steruje całym routingiem.</span></div>
-          <div><strong>Paczka sama płaci</strong><span>Wirtualna waluta paczki rozlicza huby i motocykle w czasie rzeczywistym.</span></div>
+        <div class="hero-strip" aria-label="Concept Summary">
+          <div><strong>Zero Warehouse CAPEX</strong><span>Existing merchant shops serve as equal network micro-hubs.</span></div>
+          <div><strong>Marker & 4 Characters</strong><span>Zero labels or printers—a 4-character code deterministically powers all routing.</span></div>
+          <div><strong>Self-Funding Parcel</strong><span>Internal digital balance pays hubs and riders hop by hop in real time.</span></div>
         </div>
       </section>
 
       <section class="section concept concept-pin" id="concept" aria-labelledby="concept-title">
         <div class="concept-pin-inner">
           <div class="concept-copy reveal">
-            <p class="eyebrow">Teza operacyjna</p>
-            <h2 id="concept-title">Płaska sieć mikroskopijnych hubów zamiast centralnych sortowni.</h2>
+            <p class="eyebrow">Operational Thesis</p>
+            <h2 id="concept-title">A flat mesh of micro-hubs instead of central sorting warehouses.</h2>
             <p>
-              W miastach rozwijających się brak adresów i korki uniemożliwiają tradycyjną logistykę. W PPTT nie ma
-              centralnego HUB-a – każdy punkt to działający lokalny sklep lub punkt usługowy, zarabiający na obsłudze paczek.
+              In emerging megacities, missing street addresses and traffic gridlock paralyze traditional logistics. In PPTT there is no
+              central warehouse—every node is an active local store or business earning extra revenue on parcel handling.
             </p>
 
             <div class="project-progress" aria-hidden="true">
               <div class="project-progress-head">
                 <span data-project-current>01</span>
-                <strong>Etapy projektu</strong>
+                <strong>Stages</strong>
                 <span>{projectStages.length.toString().padStart(2, "0")}</span>
               </div>
               <div class="project-progress-track">
@@ -361,22 +362,21 @@ const pilotMetrics = [
         <div class="route-system-inner reveal">
           <div class="section-heading route-system-heading">
             <div>
-              <p class="eyebrow">Symulacja na żywo</p>
-              <h2 id="route-system-title">Symulator korytarza PPTT</h2>
+              <p class="eyebrow">Live Simulation</p>
+              <h2 id="route-system-title">PPTT Corridor Simulator</h2>
             </div>
             <p>
-              Zmieniaj liczbę przesyłek, hubów i motocykli, aby zobaczyć jak płaska sieć równoważy przepływ. Brak wąskich
-              gardeł – motocykle podejmują całe zapieczętowane worki w naturalnym ruchu miejskim, a księga bilansuje salda.
+              Adjust parcel intake, active merchant hubs, and motorcycle carriers to observe how a flat peer-to-peer network balances flow. Zero bottlenecks—riders batch sealed bags along existing movement vectors while the ledger balances accounts in real time.
             </p>
           </div>
 
-          <aside class="route-lab is-booting" aria-label="Symulator korytarza PPTT">
+          <aside class="route-lab is-booting" aria-label="PPTT Corridor Simulator">
             <div class="lab-topline">
-              <span>Symulator PPTT</span>
+              <span>PPTT Simulator</span>
               <div class="lab-live-meta">
                 <span class="lab-live-pill"><i aria-hidden="true"></i>Sim</span>
-                <strong><span data-lab-riders>0</span> motocykli</strong>
-                <strong><span data-lab-delivered>0</span> do odbioru</strong>
+                <strong><span data-lab-riders>0</span> riders</strong>
+                <strong><span data-lab-delivered>0</span> outtake ready</strong>
               </div>
             </div>
 
@@ -389,7 +389,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P1" data-kind="shop" data-km-x="7.5" data-km-y="32.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P1</strong>
-                <em>Sklep spożywczy</em>
+                <em>Grocery Store</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -399,7 +399,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P2" data-kind="salon" data-km-x="2.5" data-km-y="12.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P2</strong>
-                <em>Salon fryzjerski</em>
+                <em>Barber / Salon</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -409,7 +409,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P3" data-kind="restaurant" data-km-x="12.5" data-km-y="42.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P3</strong>
-                <em>Gastronomia</em>
+                <em>Local Diner</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -419,7 +419,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P4" data-kind="shop" data-km-x="17.5" data-km-y="7.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P4</strong>
-                <em>Kiosk / Bazar</em>
+                <em>Kiosk / Stand</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -429,7 +429,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P5" data-kind="shop" data-km-x="22.5" data-km-y="22.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P5</strong>
-                <em>Punkt o dużym ruchu</em>
+                <em>High-Traffic Hub</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -439,7 +439,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P6" data-kind="pharmacy" data-km-x="24.5" data-km-y="4.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P6</strong>
-                <em>Apteka</em>
+                <em>Pharmacy</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -449,7 +449,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P9" data-kind="shop" data-km-x="32.5" data-km-y="17.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P9</strong>
-                <em>Punkt północny</em>
+                <em>Northern Hub</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -469,7 +469,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P7" data-kind="shop" data-km-x="42.5" data-km-y="32.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P7</strong>
-                <em>Punkt wschodni</em>
+                <em>Eastern Hub</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -479,7 +479,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P10" data-kind="clinic" data-km-x="7.5" data-km-y="22.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P10</strong>
-                <em>Punkt medyczny</em>
+                <em>Health Clinic</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -489,7 +489,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P11" data-kind="hardware" data-km-x="17.5" data-km-y="32.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P11</strong>
-                <em>Sklep techniczny</em>
+                <em>Hardware Store</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -499,7 +499,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P12" data-kind="bakery" data-km-x="27.5" data-km-y="37.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P12</strong>
-                <em>Piekarnia</em>
+                <em>Bakery</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -509,7 +509,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P13" data-kind="shop" data-km-x="37.5" data-km-y="27.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P13</strong>
-                <em>Księgarnia</em>
+                <em>Bookstore</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -519,7 +519,7 @@ const pilotMetrics = [
               <div class="network-point" data-node="P14" data-kind="cafe" data-km-x="34.8" data-km-y="11.5">
                 <span class="node-icon"><Store class="icon-svg" aria-hidden="true" /></span>
                 <strong>P14</strong>
-                <em>Kawiarnia</em>
+                <em>Café</em>
                 <span class="node-bag" aria-hidden="true">
                   <ShoppingBag class="icon-svg" />
                   <strong data-node-count>0</strong>
@@ -564,8 +564,8 @@ const pilotMetrics = [
 
               <div class="network-ledger" aria-hidden="true">
                 <ReceiptText class="icon-svg" />
-                <span>stan rozliczeń</span>
-                <strong data-lab-ledger>gotowość</strong>
+                <span>ledger state</span>
+                <strong data-lab-ledger>ready</strong>
               </div>
             </div>
 
@@ -574,58 +574,58 @@ const pilotMetrics = [
                 <span class="control-head">
                   <span>
                     <PackageIcon class="mini-icon" aria-hidden="true" />
-                    Paczki
+                    Parcels
                   </span>
                   <strong><span data-lab-demand-count>8</span></strong>
                 </span>
                 <span class="lab-range">
                   <input data-lab-demand type="range" min="2" max="18" value="8" />
                   <span class="lab-range-fill" aria-hidden="true"></span>
-                  <span class="threshold-mark" aria-hidden="true">napływ zleceń</span>
+                  <span class="threshold-mark" aria-hidden="true">intake volume</span>
                 </span>
               </label>
               <label class="demand-control">
                 <span class="control-head">
                   <span>
                     <Store class="mini-icon" aria-hidden="true" />
-                    Huby
+                    Hubs
                   </span>
                   <strong><span data-lab-shop-count>8</span></strong>
                 </span>
                 <span class="lab-range">
                   <input data-lab-shops type="range" min="5" max="14" value="8" />
                   <span class="lab-range-fill shop-fill" aria-hidden="true"></span>
-                  <span class="threshold-mark" aria-hidden="true">aktywne punkty</span>
+                  <span class="threshold-mark" aria-hidden="true">active nodes</span>
                 </span>
               </label>
               <label class="demand-control">
                 <span class="control-head">
                   <span>
                     <Bike class="mini-icon" aria-hidden="true" />
-                    Motocykle
+                    Motorcycles
                   </span>
                   <strong><span data-lab-courier-count>1</span></strong>
                 </span>
                 <span class="lab-range">
                   <input data-lab-couriers type="range" min="1" max="6" value="1" />
                   <span class="lab-range-fill courier-fill" aria-hidden="true"></span>
-                  <span class="threshold-mark" aria-hidden="true">flota w trasie</span>
+                  <span class="threshold-mark" aria-hidden="true">fleet en route</span>
                 </span>
               </label>
-              <button class="lab-run magnetic" type="button" data-lab-run aria-pressed="false">Uruchom</button>
+              <button class="lab-run magnetic" type="button" data-lab-run aria-pressed="false">Run</button>
             </div>
 
             <div class="lab-readout" aria-live="polite">
               <div>
-                <span>Oczekuje w hubach</span>
-                <strong data-lab-route>0 w workach</strong>
+                <span>Queued in hubs</span>
+                <strong data-lab-route>0 in bags</strong>
               </div>
               <div>
-                <span>W trasie motocyklem</span>
-                <strong data-lab-price>0 w workach</strong>
+                <span>In transit by rider</span>
+                <strong data-lab-price>0 in bags</strong>
               </div>
               <div>
-                <span>Gotowe do odbioru</span>
+                <span>Ready for pickup</span>
                 <em data-lab-action>0</em>
               </div>
             </div>
@@ -636,27 +636,27 @@ const pilotMetrics = [
       <section class="story-pin" id="story" aria-labelledby="story-title">
         <div class="story-pin-inner">
           <div class="story-stage">
-            <div class="flow-device" aria-label="Podgląd operacyjnego przepływu przesyłki">
+            <div class="flow-device" aria-label="Operational parcel flow simulation">
               <div class="flow-head">
-                <span data-flow-head-label>4-znakowy kod wpisany markerem</span>
-                <strong data-flow-code>Kod X92K</strong>
+                <span data-flow-head-label>4-character code marked with pen</span>
+                <strong data-flow-code>Code X92K</strong>
               </div>
 
               <div class="flow-board" aria-hidden="true">
                 <div class="flow-manifest">
-                  <span data-flow-kicker>Kod paczki</span>
+                  <span data-flow-kicker>Parcel Code</span>
                   <strong data-flow-main>X92K</strong>
-                  <em data-flow-sub>przypisany do lokalnego sektora</em>
+                  <em data-flow-sub>assigned to local corridor sector</em>
                   <div>
-                    <small data-flow-detail-label>Trasa</small>
-                    <b data-flow-detail>Aplikacja mapuje X92K na sektor 4.4.5 do sortowania</b>
+                    <small data-flow-detail-label>Routing</small>
+                    <b data-flow-detail>App maps X92K to transit sector 4.4.5 for directional sorting</b>
                   </div>
                 </div>
 
                 <div class="flow-transfer" aria-hidden="true">
                   <div class="flow-transfer-head">
-                    <span>Stan paczki</span>
-                    <strong data-flow-visual-title>Wpisz 4 znaki markerem</strong>
+                    <span>Parcel state</span>
+                    <strong data-flow-visual-title>Write 4 characters with marker</strong>
                   </div>
 
                   <div class="flow-fiche-stack">
@@ -664,27 +664,27 @@ const pilotMetrics = [
                     <i class="flow-stack-sheet sheet-two"></i>
                     <i class="flow-stack-sheet sheet-three"></i>
                     <div class="flow-parcel-card">
-                      <span data-flow-visual-kicker>Lada w hubie</span>
-                      <strong data-flow-packet-label>Kod</strong>
-                      <p data-flow-visual-note>Paczka otrzymuje kod zanim motocyklista podejmie worek.</p>
+                      <span data-flow-visual-kicker>Hub counter</span>
+                      <strong data-flow-packet-label>Code</strong>
+                      <p data-flow-visual-note>Parcel receives code before rider picks up transit bag.</p>
                       <div class="flow-card-details">
                         <div>
-                          <span>Kierunek</span>
-                          <b data-flow-card-route>sektor 4.4.5</b>
+                          <span>Corridor</span>
+                          <b data-flow-card-route>sector 4.4.5</b>
                         </div>
                         <div>
-                          <span>Worek</span>
-                          <b data-flow-card-bundle>jeszcze niezapieczętowany</b>
+                          <span>Transit bag</span>
+                          <b data-flow-card-bundle>not yet sealed</b>
                         </div>
                         <div>
-                          <span>Opłata</span>
-                          <b data-flow-card-outcome>cena zablokowana</b>
+                          <span>Quote</span>
+                          <b data-flow-card-outcome>quote locked</b>
                         </div>
                       </div>
                       <div class="flow-seal-strip">
                         <div class="flow-seal-track">
                           <i></i>
-                          <b>marker -> worek -> motocykl -> rejestr</b>
+                          <b>marker -> bag -> motorcycle -> ledger</b>
                         </div>
                         <div class="flow-card-status">
                           <span class="flow-status-icon" aria-hidden="true">
@@ -694,9 +694,9 @@ const pilotMetrics = [
                             <ReceiptText class="flow-status-stage-icon is-audit" />
                           </span>
                           <span class="flow-status-copy">
-                            <small data-flow-status-label>Następny krok</small>
-                            <strong data-flow-status-main>Kod wpisany</strong>
-                            <em data-flow-status-note>gotowe do worka</em>
+                            <small data-flow-status-label>Next step</small>
+                            <strong data-flow-status-main>Code marked</strong>
+                            <em data-flow-status-note>ready for bag</em>
                           </span>
                           <span class="flow-status-steps" aria-hidden="true">
                             <i></i>
@@ -711,30 +711,30 @@ const pilotMetrics = [
                 </div>
 
                 <div class="flow-bid-panel">
-                  <span data-flow-market-title>Rynek motocykli</span>
+                  <span data-flow-market-title>Carrier Exchange</span>
                   <div class="flow-decision-card">
-                    <strong data-flow-decision-title>Oczekiwanie na zapieczętowanie worka</strong>
-                    <em data-flow-decision-note>Po wpisaniu kodu kolejny punkt może przesłać paczkę dalej bez jej otwierania.</em>
+                    <strong data-flow-decision-title>Awaiting bag sealing</strong>
+                    <em data-flow-decision-note>Once marked, subsequent nodes forward the parcel without reopening.</em>
                     <div class="flow-decision-tags">
-                      <span data-flow-tag-0>Zero drukarek</span>
-                      <span data-flow-tag-1>Zero GPS telefonu</span>
+                      <span data-flow-tag-0>Zero printers</span>
+                      <span data-flow-tag-1>Zero smartphone GPS</span>
                       <span data-flow-tag-2>Offline-ready</span>
                     </div>
                   </div>
                   <div class="flow-bid-row is-selected">
-                    <strong data-flow-bid-rider-0>Kod</strong>
-                    <em data-flow-bid-value-0>X92K wpisany markerem</em>
-                    <small data-flow-bid-state-0>gotowe</small>
+                    <strong data-flow-bid-rider-0>Code</strong>
+                    <em data-flow-bid-value-0>X92K marked with pen</em>
+                    <small data-flow-bid-state-0>ready</small>
                   </div>
                   <div class="flow-bid-row">
                     <strong data-flow-bid-rider-1>Sort</strong>
-                    <em data-flow-bid-value-1>kolejny hub czyta sektor</em>
-                    <small data-flow-bid-state-1>w kolejce</small>
+                    <em data-flow-bid-value-1>next hub verifies sector</em>
+                    <small data-flow-bid-state-1>queued</small>
                   </div>
                   <div class="flow-bid-row">
-                    <strong data-flow-bid-rider-2>Opłata</strong>
-                    <em data-flow-bid-value-2>cena nadawcy jest stała</em>
-                    <small data-flow-bid-state-2>zablokowana</small>
+                    <strong data-flow-bid-rider-2>Rate</strong>
+                    <em data-flow-bid-value-2>sender quote is fixed</em>
+                    <small data-flow-bid-state-2>locked</small>
                   </div>
                 </div>
               </div>
@@ -751,28 +751,28 @@ const pilotMetrics = [
 
               <div class="flow-ledger">
                 <div>
-                  <span>Przykładowa opłata</span>
+                  <span>Sample quote</span>
                   <strong>£3.50</strong>
                 </div>
                 <div>
-                  <span>Kierunki w hubie</span>
-                  <strong>Maks. 8 worków</strong>
+                  <span>Hub corridors</span>
+                  <strong>Max 8 bags</strong>
                 </div>
                 <div>
-                  <span>Rynek motocykli</span>
-                  <strong>Kierowca R2</strong>
+                  <span>Carrier match</span>
+                  <strong>Rider R2</strong>
                 </div>
                 <div>
-                  <span>Księga rozliczeń</span>
-                  <strong>Czas rzeczywisty</strong>
+                  <span>Ledger settlement</span>
+                  <strong>Real-time</strong>
                 </div>
               </div>
             </div>
           </div>
 
           <div class="story-copy">
-            <p class="eyebrow">Przepływ paczki</p>
-            <h2 id="story-title">Wpisz 4 znaki. Zapieczętuj worek. Uruchom motocykl.</h2>
+            <p class="eyebrow">Parcel Flow</p>
+            <h2 id="story-title">Mark 4 characters. Seal the bag. Launch the motorcycle.</h2>
           </div>
         </div>
       </section>
@@ -781,114 +781,114 @@ const pilotMetrics = [
 
       <section class="section economics" id="economics">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Architektura waluty & Unit Economics</p>
-          <h2>Stała cena przy nadaniu. Paczka sama finansuje swój transfer w trasie.</h2>
+          <p class="eyebrow">Currency Architecture & Unit Economics</p>
+          <h2>Fixed price at intake. The parcel finances its own transit.</h2>
           <p class="economics-intro">
-            Poniższy schemat ilustruje inżynierską architekturę przepływu kapitału w pojedynczej przesyłce (Unit Economics).
-            Każda paczka posiada wewnętrzny budżet w wirtualnej walucie, z którego automatycznie pobierane są prowizje hubów za sortowanie i wydanie oraz wypłaty motocyklistów. Huby pełnią jednocześnie rolę lokalnych punktów wymiany Cash-In / Cash-Out.
+            The diagram below illustrates the capital flow architecture within an individual shipment (Unit Economics).
+            Each parcel carries an internal digital balance from which hub commissions and rider payouts are automatically disbursed upon verified handover. Hubs simultaneously function as local Cash-In / Cash-Out exchange points.
             <br /><br />
-            <em>Uwaga: Kompleksowy komercyjny model finansowy całej spółki oraz docelowe taryfy rynkowe są w trakcie opracowywania równolegle z formowaniem zespołu biznesowo-operacyjnego.</em>
+            <em>Note: The comprehensive corporate financial model and target commercial tariff sheets are currently being finalized alongside executive team formation.</em>
           </p>
         </div>
 
         <div class="economics-board reveal">
           <div class="quote-lock-panel">
             <div class="economics-panel-head">
-              <span><ReceiptText class="economics-icon" /> Przykładowa opłata nadawcy</span>
-              <strong>Zablokowana</strong>
+              <span><ReceiptText class="economics-icon" /> Sample sender quote</span>
+              <strong>Locked</strong>
             </div>
             <div class="quote-amount">
-              <span>Nadawca płaci</span>
+              <span>Sender pays</span>
               <strong>3.50</strong>
-              <em>£ stała opłata przy nadaniu</em>
+              <em>£ fixed intake quote</em>
             </div>
-            <div class="quote-breakdown" aria-label="Rozbicie kosztów">
+            <div class="quote-breakdown" aria-label="Cost Breakdown">
               <div>
-                <span>Dla klienta</span>
-                <strong>stały rachunek</strong>
+                <span>For customer</span>
+                <strong>fixed quote</strong>
               </div>
               <div>
-                <span>Prowizja huba</span>
-                <strong>£0.50 rezerwa</strong>
+                <span>Hub commission</span>
+                <strong>£0.50 reserve</strong>
               </div>
               <div>
-                <span>Budżet motocykla</span>
-                <strong>£2.80 rozliczane w trasie</strong>
+                <span>Rider budget</span>
+                <strong>£2.80 settled en route</strong>
               </div>
             </div>
             <p>
-              Cena dla klienta jest zablokowana przy przyjęciu. Łączenie paczek w zapieczętowane worki i wybór kierowców będących
-              już w danym korytarzu obniża koszt transferu i generuje nadwyżkę systemową (surplus).
+              Customer rate is locked upon intake. Consolidating parcels into sealed bags and matching riders already
+              traveling along the corridor lowers transfer costs and generates network surplus.
             </p>
             <div class="quote-rules">
-              <span>Zero ukrytych opłat</span>
-              <span>Portfel cyfrowy & gotówka</span>
-              <span>Rozliczenie po zdarzeniu (COMMIT)</span>
+              <span>Zero hidden fees</span>
+              <span>Digital balance & cash</span>
+              <span>COMMIT-driven settlement</span>
             </div>
           </div>
 
           <div class="market-console">
             <div class="economics-panel-head">
-              <span><Bike class="economics-icon" /> Rynek motocykli</span>
-              <strong>Dynamiczny przydział</strong>
+              <span><Bike class="economics-icon" /> Carrier Exchange</span>
+              <strong>Dynamic Matching</strong>
             </div>
             <div class="market-clearing">
               <div>
-                <span>Wybrany kierowca</span>
+                <span>Matched rider</span>
                 <strong>R2</strong>
               </div>
               <div>
-                <span>Kryterium</span>
-                <strong>ten sam sektor</strong>
+                <span>Criterion</span>
+                <strong>same sector</strong>
               </div>
               <div>
-                <span>Stawka za kurs</span>
+                <span>Transit rate</span>
                 <strong>£2.80</strong>
               </div>
             </div>
             <div class="market-riders">
               <div class="market-rider is-selected" style="--bid-level: 92%">
                 <span>R2</span>
-                <p>Porusza się już w sektorze 4</p>
+                <p>Already traversing sector 4</p>
                 <strong>£2.80</strong>
-                <em>przypisany</em>
+                <em>assigned</em>
               </div>
               <div class="market-rider" style="--bid-level: 62%">
                 <span>R5</span>
-                <p>W pobliżu, ale wymaga objazdu</p>
+                <p>Nearby, requires detour</p>
                 <strong>£3.10</strong>
-                <em>rezerwa</em>
+                <em>standby</em>
               </div>
               <div class="market-rider" style="--bid-level: 34%">
                 <span>R1</span>
-                <p>Wymagałby nowego pustego kursu</p>
+                <p>Requires empty return leg</p>
                 <strong>£3.60</strong>
-                <em>odrzucony</em>
+                <em>rejected</em>
               </div>
             </div>
           </div>
 
           <div class="audit-ledger-panel">
             <div class="economics-panel-head">
-              <span><BadgeCheck class="economics-icon" /> Księga rozliczeń (Ledger)</span>
-              <strong>Pełny audyt</strong>
+              <span><BadgeCheck class="economics-icon" /> Financial Ledger</span>
+              <strong>Full Audit</strong>
             </div>
             <div class="audit-ledger-grid">
               <div>
-                <span>Zdarzenie</span>
+                <span>Event</span>
                 <strong>payment_creation</strong>
               </div>
               <div>
-                <span>Obsługa w hubie</span>
-                <strong>£0.50 rezerwa</strong>
+                <span>Hub handling</span>
+                <strong>£0.50 reserve</strong>
               </div>
               <div>
-                <span>Wypłata motocykla</span>
+                <span>Rider payout</span>
                 <strong>R2 / £2.80</strong>
               </div>
               <div>
-                <span>Nadwyżka / marża</span>
-                <strong>£0.20 zysk sieci</strong>
+                <span>Network surplus</span>
+                <strong>£0.20 network margin</strong>
               </div>
             </div>
           </div>
@@ -897,26 +897,26 @@ const pilotMetrics = [
 
       <section class="section pilot" id="pilot">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Status projektu: ~70% gotowości</p>
-          <h2>Technologia działa. Wychodzimy z POC do pierwszego wdrożenia.</h2>
+          <p class="eyebrow">Project Readiness: ~70% Technical Completion</p>
+          <h2>Operational Core Technology. Moving from POC to Commercial Rollout.</h2>
           <p class="pilot-intro">
-            System PPTT posiada gotowy backend sterowany zdarzeniami (zero pollingu), aplikację huba, aplikację klienta,
-            wewnętrzną księgę finansową i algorytmy tras. Zaczynamy od korytarza w Nairobi jako poligonu o idealnych
-            warunkach (brak tradycyjnych adresów, ogromna liczba motocykli miejskich), z gotowością do replikacji w dowolnym
-            mieście Afryki i świata.
+            The PPTT system features an operational event-driven backend (zero polling), merchant hub app, customer client app,
+            internal financial ledger, and dynamic routing engines. We are launching with a pilot corridor in Nairobi as an optimal
+            testbed (zero street addressing, high motorcycle taxi density), engineered for frictionless replication across
+            African metropolises and emerging global markets.
           </p>
         </div>
 
         <div class="pilot-system reveal" data-pilot-system>
           <div class="pilot-console">
             <div class="pilot-console-head">
-              <span><Route class="pilot-icon" /> Pierwszy korytarz</span>
-              <strong data-pilot-window>Etap 01</strong>
+              <span><Route class="pilot-icon" /> Commercial Corridor</span>
+              <strong data-pilot-window>Stage 01</strong>
             </div>
 
-            <div class="pilot-map-panel" aria-label="Podgląd korytarza pilotażowego">
+            <div class="pilot-map-panel" aria-label="Pilot corridor overview">
               <div class="pilot-map-status">
-                <span>Jedna trasa, cztery bramki walidacji</span>
+                <span>Single corridor, four validation gates</span>
                 <strong>P1 -> P4</strong>
               </div>
               <div class="pilot-corridor-rail">
@@ -924,26 +924,26 @@ const pilotMetrics = [
                 <button class="pilot-point is-active" type="button" data-pilot-point="0">
                   <span class="pilot-step-code">01</span>
                   <Store class="pilot-point-icon" />
-                  <strong>Siatka hubów</strong>
-                  <em>klaster sklepów</em>
+                  <strong>Hub Mesh</strong>
+                  <em>merchant cluster</em>
                 </button>
                 <button class="pilot-point" type="button" data-pilot-point="1">
                   <span class="pilot-step-code">02</span>
                   <ShoppingBag class="pilot-point-icon" />
-                  <strong>Sortowanie</strong>
-                  <em>8 kierunków</em>
+                  <strong>Sorting</strong>
+                  <em>8 directions</em>
                 </button>
                 <button class="pilot-point" type="button" data-pilot-point="2">
                   <span class="pilot-step-code">03</span>
                   <Bike class="pilot-point-icon" />
-                  <strong>Motocykle</strong>
-                  <em>przewóz worków</em>
+                  <strong>Motorcycles</strong>
+                  <em>bag transport</em>
                 </button>
                 <button class="pilot-point" type="button" data-pilot-point="3">
                   <span class="pilot-step-code">04</span>
                   <BadgeCheck class="pilot-point-icon" />
-                  <strong>Księga</strong>
-                  <em>audyt finansowy</em>
+                  <strong>Ledger</strong>
+                  <em>financial audit</em>
                 </button>
                 <div class="pilot-rider" aria-hidden="true">
                   <Bike class="pilot-rider-icon" />
@@ -951,54 +951,54 @@ const pilotMetrics = [
                 </div>
               </div>
               <div class="pilot-map-note">
-                <span>Brak ekspansji, dopóki korytarz nie działa w pełni automatycznie bez ręcznej dyspozycji.</span>
+                <span>Zero expansion until the launch corridor runs fully autonomously without manual dispatch.</span>
               </div>
             </div>
 
-            <div class="pilot-console-foot" aria-label="Zasady operacyjne korytarza">
+            <div class="pilot-console-foot" aria-label="Corridor operational rules">
               <div>
-                <span>Zakres</span>
-                <strong>1 korytarz</strong>
+                <span>Scope</span>
+                <strong>1 corridor</strong>
               </div>
               <div>
-                <span>Cykl testu</span>
-                <strong>etap bramek</strong>
+                <span>Test Cycle</span>
+                <strong>staged gates</strong>
               </div>
               <div>
-                <span>Zasada skali</span>
-                <strong>najpierw księga</strong>
+                <span>Scale Rule</span>
+                <strong>ledger-verified first</strong>
               </div>
             </div>
           </div>
 
           <div class="pilot-control-panel">
             <div class="pilot-focus-card">
-              <p class="eyebrow">Faza wdrożenia</p>
-              <h3 data-pilot-title>Uruchomienie pierwszego klastra sklepów</h3>
+              <p class="eyebrow">Deployment Phase</p>
+              <h3 data-pilot-title>Activating the initial merchant cluster</h3>
               <p data-pilot-copy>
-                Rozpoczynamy od zwartego klastra sprawdzonych sklepów, wystarczająco blisko siebie, by worki krążyły z minimalnym ryzykiem przeładunku.
+                Launching across a tightly grouped cluster of vetted corner shops, close enough for transit bags to cycle with minimal handling risk.
               </p>
             </div>
 
-            <div class="pilot-tabs" role="tablist" aria-label="Zakładki pilota">
-              <button class="is-active" type="button" data-pilot-tab="0"><span>01</span><strong>Siatka hubów</strong></button>
-              <button type="button" data-pilot-tab="1"><span>02</span><strong>Sortowanie</strong></button>
-              <button type="button" data-pilot-tab="2"><span>03</span><strong>Motocykle</strong></button>
-              <button type="button" data-pilot-tab="3"><span>04</span><strong>Księga</strong></button>
+            <div class="pilot-tabs" role="tablist" aria-label="Pilot tabs">
+              <button class="is-active" type="button" data-pilot-tab="0"><span>01</span><strong>Hub Mesh</strong></button>
+              <button type="button" data-pilot-tab="1"><span>02</span><strong>Sorting</strong></button>
+              <button type="button" data-pilot-tab="2"><span>03</span><strong>Motorcycles</strong></button>
+              <button type="button" data-pilot-tab="3"><span>04</span><strong>Ledger</strong></button>
             </div>
 
-            <div class="pilot-signal-grid" aria-label="Metryki pilota">
+            <div class="pilot-signal-grid" aria-label="Pilot metrics">
               <div>
-                <span>Cel</span>
-                <strong data-pilot-target>klaster pilotażowy</strong>
+                <span>Target</span>
+                <strong data-pilot-target>pilot cluster</strong>
               </div>
               <div>
-                <span>Metryka</span>
-                <strong data-pilot-measure>czas pierwszego odbioru</strong>
+                <span>Metric</span>
+                <strong data-pilot-measure>first pickup time</strong>
               </div>
               <div>
-                <span>Bramka</span>
-                <strong data-pilot-gate>zero stałych magazynów</strong>
+                <span>Gate</span>
+                <strong data-pilot-gate>zero fixed warehouses</strong>
               </div>
             </div>
           </div>
@@ -1007,12 +1007,12 @@ const pilotMetrics = [
 
       <section class="section sponsor-round" id="sponsor" aria-labelledby="sponsor-title">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Runda wdrożeniowa & Oczekiwania wobec Sponsora</p>
-          <h2 id="sponsor-title">Czego oczekujemy od Inwestora: cel rundy Pre-Seed (£100k – £160k).</h2>
+          <p class="eyebrow">Deployment Round & Investor Expectations</p>
+          <h2 id="sponsor-title">What We Expect from an Investor: Pre-Seed Target (£100k – £160k).</h2>
           <p class="sponsor-intro">
-            Jako główny inżynier doprowadziłem działający kod, aplikacje i architekturę do ~70% gotowości. 
-            Szczegółowy model komercyjny spółki powstaje równolegle z formowaniem zespołu. 
-            Poszukujemy kapitału i partnerstwa strategicznego na uruchomienie pierwszego komercyjnego korytarza wdrożeniowego.
+            As the lead engineer, I have brought the operational codebase, merchant apps, and routing architecture to ~70% technical completion. 
+            The corporate financial model and executive structure are being formalized as our founding team actively forms. 
+            We are seeking pre-seed capital and strategic partnership to launch and scale our first commercial corridor.
           </p>
         </div>
 
@@ -1022,9 +1022,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">01</span>
               <div class="sponsor-card-icon" aria-hidden="true"><BadgeCheck class="icon-svg" /></div>
             </div>
-            <h3>Testy końcowe i rollout produkcyjny</h3>
+            <h3>Final Stress Testing & Production Rollout</h3>
             <p>
-              Sfinalizowanie ostatnich testów obciążeniowych architektury (pozostałe ~30% prac technicznych) oraz uruchomienie bezpiecznego środowiska produkcyjnego dla pierwszego korytarza.
+              Finalizing end-to-end integration stress tests (the remaining ~30% technical workload) and launching the production-grade infrastructure for our initial commercial corridor.
             </p>
           </article>
 
@@ -1033,9 +1033,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">02</span>
               <div class="sponsor-card-icon" aria-hidden="true"><Store class="icon-svg" /></div>
             </div>
-            <h3>Infrastruktura startowa & Onboarding sieci</h3>
+            <h3>Launch Infrastructure & Network Onboarding</h3>
             <p>
-              Lokalne biuro operacyjne i fizyczne wyposażenie: worki tranzytowe, zabezpieczenia, skrzynki transportowe, materiały promocyjne oraz eventy z lokalnymi liderami do rekrutacji pierwszych hubów partnerskich.
+              Establishing a local operational base and physical transit assets: sealed directional bags, security locks, cargo boxes, promotional collateral, and community recruitment events with local leaders to onboard partner hubs.
             </p>
           </article>
 
@@ -1044,9 +1044,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">03</span>
               <div class="sponsor-card-icon" aria-hidden="true"><Waypoints class="icon-svg" /></div>
             </div>
-            <h3>Seed Hubs (Gwarantowany plan awaryjny)</h3>
+            <h3>Seed Hubs (Guaranteed Flow Contingency)</h3>
             <p>
-              Plan awaryjny zabezpieczający płynność: uruchomienie kilku własnych punktów tranzytowych w węzłach trasy, by zagwarantować natychmiastowy ruch paczek w razie wolniejszej adaptacji sklepów na starcie.
+              A strategic liquidity safety net: deploying a handful of company-operated transit points at pivotal nodes to guarantee uninterrupted parcel momentum if merchant adoption ramps up gradually.
             </p>
           </article>
 
@@ -1055,9 +1055,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">04</span>
               <div class="sponsor-card-icon" aria-hidden="true"><Route class="icon-svg" /></div>
             </div>
-            <h3>Bufor innowacyjny & Rezerwa operacyjna</h3>
+            <h3>Innovation Reserve & Operational Buffer</h3>
             <p>
-              Projekt jest wysoce innowacyjny – rezerwa kapitałowa na nieprzewidziane wyzwania terenowe, specyfikę rynków rozwijających się oraz bieżące dostosowywanie parametrów systemu do realiów ulicznych.
+              A breakthrough decentralized model requires agility: capital reserves dedicated to unforeseen street dynamics, emerging-market nuances, and continuous algorithmic optimization on the ground.
             </p>
           </article>
 
@@ -1066,9 +1066,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">05</span>
               <div class="sponsor-card-icon" aria-hidden="true"><ReceiptText class="icon-svg" /></div>
             </div>
-            <h3>Budżet startowy: £100 000 – £160 000</h3>
+            <h3>Initial Pre-Seed Budget: £100,000 – £160,000</h3>
             <p>
-              Realistyczny inżynierski szacunek kosztów uruchomienia pierwszego korytarza. Kod i technologia już działają – kapitał trafia bezpośrednio w twardy rozruch operacyjny, a nie w budowanie od zera.
+              A realistic engineering estimate to bring the first corridor live. Because the core tech stack is already built and working, funding goes straight into hard operational launch rather than speculative software R&D.
             </p>
           </article>
 
@@ -1077,9 +1077,9 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">06</span>
               <div class="sponsor-card-icon" aria-hidden="true"><Network class="icon-svg" /></div>
             </div>
-            <h3>Partner strategiczny i budowa zespołu</h3>
+            <h3>Strategic Partner & Founding Team Formation</h3>
             <p>
-              Zespół zarządzający i komercyjny jest w trakcie tworzenia. Poszukujemy anioła biznesu lub sponsora, który wniesie wsparcie merytoryczne w formalizacji modelu finansowego, operacjach i skalowaniu.
+              The executive and commercial team is actively assembling. We are seeking an angel investor or venture sponsor who brings hands-on mentorship to formalize the financial model, corporate governance, and regional scaling.
             </p>
           </article>
         </div>
@@ -1088,27 +1088,27 @@ const pilotMetrics = [
       <section class="lead-section" id="lead" aria-labelledby="lead-title">
         <div class="lead-panel reveal" data-lead-panel>
           <div class="lead-copy">
-            <p class="eyebrow">Kontakt & Investor Deck</p>
-            <h2 id="lead-title" data-lead-title>Pobierz Investor Deck lub dołącz do projektu PPTT.</h2>
+            <p class="eyebrow">Direct Inquiries & Investor Deck</p>
+            <h2 id="lead-title" data-lead-title>Download the Investor Deck or Join the PPTT Network.</h2>
             <p data-lead-copy>
-              Napisz do nas, jeśli jesteś inwestorem, prowadzisz sklep, jeździsz motocyklem lub chcesz nawiązać współpracę technologiczną. Chętnie przedstawimy założenia wdrożenia korytarza oraz budżet startowy. Możesz też napisać bezpośrednio: osypowicz@gmail.com.
+              Whether you are an angel investor, local merchant, motorcycle carrier, or strategic partner, get in touch below. We are pleased to share our operational rollout plan, unit economics, and launch timeline. You can also reach out directly: osypowicz@gmail.com.
             </p>
 
-            <div class="lead-switch" role="tablist" aria-label="Typ kontaktu">
-              <button class="is-active" type="button" data-lead-choice="investor">Inwestor</button>
-              <button type="button" data-lead-choice="shop">Sklep (Hub)</button>
-              <button type="button" data-lead-choice="rider">Motocykl</button>
+            <div class="lead-switch" role="tablist" aria-label="Contact persona">
+              <button class="is-active" type="button" data-lead-choice="investor">Investor</button>
+              <button type="button" data-lead-choice="shop">Shop (Hub)</button>
+              <button type="button" data-lead-choice="rider">Motorcycle</button>
               <button type="button" data-lead-choice="partner">Partner</button>
             </div>
 
             <div class="lead-summary">
               <div>
-                <span>Ścieżka</span>
+                <span>Track</span>
                 <strong data-lead-lane>Investor Deck</strong>
               </div>
               <div>
-                <span>W odpowiedzi</span>
-                <strong data-lead-reply>deck + założenia wdrożeniowe (runda pre-seed)</strong>
+                <span>Deliverable</span>
+                <strong data-lead-reply>deck + corridor rollout plan (pre-seed round)</strong>
               </div>
             </div>
           </div>
@@ -1117,21 +1117,21 @@ const pilotMetrics = [
             <input name="audience" type="hidden" value="Investor" data-lead-audience />
             <input class="lead-honeypot" name="website" type="text" autocomplete="off" tabindex="-1" aria-hidden="true" />
             <label>
-              Imię i nazwisko
-              <input name="name" type="text" autocomplete="name" placeholder="Twoje imię i nazwisko" required />
+              Full Name
+              <input name="name" type="text" autocomplete="name" placeholder="Your full name" required />
             </label>
             <label>
-              Adres e-mail
-              <input name="email" type="email" autocomplete="email" placeholder="twoj.email@example.com" required />
+              Email Address
+              <input name="email" type="email" autocomplete="email" placeholder="your.email@example.com" required />
             </label>
             <div class="lead-form-field lead-type-field">
-              <span data-lead-type-label>Profil inwestora</span>
+              <span data-lead-type-label>Investor Profile</span>
               <select class="lead-native-select" name="type" data-lead-type aria-hidden="true" tabindex="-1">
-                <option value="">Wybierz jedną opcję</option>
-                <option>Anioł Biznesu</option>
-                <option>Fundusz VC / PE</option>
-                <option>Inwestor Strategiczny</option>
-                <option>Doradca / Operator</option>
+                <option value="">Select an option</option>
+                <option>Angel Investor</option>
+                <option>VC / PE Fund</option>
+                <option>Strategic Corporate Investor</option>
+                <option>Advisor / Operator</option>
               </select>
               <div class="lead-custom-select" data-lead-select>
                 <button
@@ -1141,22 +1141,22 @@ const pilotMetrics = [
                   aria-expanded="false"
                   data-lead-select-trigger
                 >
-                  <span data-lead-select-value>Wybierz jedną opcję</span>
+                  <span data-lead-select-value>Select an option</span>
                   <ChevronDown class="lead-select-icon" aria-hidden="true" />
                 </button>
                 <div class="lead-select-menu" role="listbox" data-lead-select-menu></div>
               </div>
             </div>
             <label>
-              <span data-lead-message-label>Jakie informacje Ci przesłać?</span>
+              <span data-lead-message-label>What information would you like to receive?</span>
               <textarea
                 name="message"
                 rows="4"
-                placeholder="Deck inwestorski, Unit Economics, parametry techniczne..."
+                placeholder="Investor deck, unit economics breakdown, technical parameters..."
                 data-lead-message
               ></textarea>
             </label>
-            <button class="button button-primary magnetic" type="submit" data-lead-submit>Poproś o Investor Deck</button>
+            <button class="button button-primary magnetic" type="submit" data-lead-submit>Request Investor Deck</button>
             <p class="form-status" role="status" aria-live="polite" data-lead-status></p>
             <div class="lead-success" role="status" aria-live="polite" tabindex="-1" hidden data-lead-success>
               <span class="lead-success-check" aria-hidden="true">
@@ -1165,10 +1165,10 @@ const pilotMetrics = [
                   <path d="M24 41.5 34.5 52 57 28"></path>
                 </svg>
               </span>
-              <span data-lead-success-kicker>Zapytanie wysłane</span>
-              <h3 data-lead-success-title>Otrzymaliśmy Twoje zgłoszenie.</h3>
-              <p data-lead-success-copy>Wkrótce prześlemy szczegóły i prezentację projektu.</p>
-              <button class="button button-ghost magnetic" type="button" data-lead-reset>Wyślij kolejne zapytanie</button>
+              <span data-lead-success-kicker>Inquiry Sent</span>
+              <h3 data-lead-success-title>We have received your inquiry.</h3>
+              <p data-lead-success-copy>We will follow up shortly with documentation and the project presentation.</p>
+              <button class="button button-ghost magnetic" type="button" data-lead-reset>Send another inquiry</button>
             </div>
           </form>
         </div>
@@ -1180,85 +1180,85 @@ const pilotMetrics = [
         <div class="footer-main">
           <div class="footer-brand">
             <a class="brand" href="#top" aria-label="PPTT — Package Push Towards Target">
-              <img class="brand-mark" src="/Logo_PPTT.svg" alt="PPTT Logo" width="38" height="36" />
+              <img class="brand-mark" src="/favicon-512.png" alt="PPTT Logo" width="38" height="38" />
               <span class="brand-wordmark">
                 <strong>PPTT</strong>
                 <span class="brand-expansion">— Package Push Towards Target</span>
               </span>
             </a>
             <p>
-              Zdecentralizowana sieć logistyczna hub-to-hub dla miast bez adresów. Brak centralnych magazynów, brak drukarek, optymalizacja ruchu motocykli miejskich i samofinansująca się paczka.
+              Decentralized hub-to-hub logistics mesh for cities without formal addresses. Zero central sorting warehouses, zero thermal printers, optimized motorcycle carrier routes, and a self-funding parcel ledger.
             </p>
             <div class="footer-actions">
               <a class="footer-primary-link" href="#lead">
-                Pobierz Investor Deck
+                Request Investor Deck
                 <Route class="footer-link-icon" aria-hidden="true" />
               </a>
-              <a class="footer-secondary-link" href="#economics">Zobacz Finanse</a>
+              <a class="footer-secondary-link" href="#economics">Explore Economics</a>
             </div>
           </div>
 
-          <div class="footer-signal" aria-label="Wskaźniki operacyjne PPTT">
+          <div class="footer-signal" aria-label="PPTT operational indicators">
             <div>
               <span class="footer-signal-icon"><Store class="footer-icon" aria-hidden="true" /></span>
-              <span>Model punktów</span>
-              <strong>sklepy jako huby</strong>
-              <em>zero magazynów</em>
+              <span>Node Architecture</span>
+              <strong>shops as hubs</strong>
+              <em>zero warehouses</em>
             </div>
             <div>
               <span class="footer-signal-icon"><ShoppingBag class="footer-icon" aria-hidden="true" /></span>
-              <span>Stan paczki</span>
-              <strong>zapieczętowane worki</strong>
-              <em>8 kierunków</em>
+              <span>Parcel State</span>
+              <strong>sealed bags</strong>
+              <em>8 directions</em>
             </div>
             <div>
               <span class="footer-signal-icon"><Bike class="footer-icon" aria-hidden="true" /></span>
-              <span>Rynek kurierski</span>
-              <strong>prywatni przewoźnicy</strong>
-              <em>mniej pustych kursów</em>
+              <span>Carrier Fleet</span>
+              <strong>private operators</strong>
+              <em>minimized deadheads</em>
             </div>
             <div>
               <span class="footer-signal-icon"><ReceiptText class="footer-icon" aria-hidden="true" /></span>
-              <span>Księga waluty</span>
-              <strong>portfel paczki</strong>
-              <em>zapis zdarzeń</em>
+              <span>Ledger Accounting</span>
+              <strong>parcel wallet</strong>
+              <em>immutable audit</em>
             </div>
           </div>
         </div>
 
         <div class="footer-directory">
           <div class="footer-column">
-            <span>Nawigacja</span>
-            <nav class="footer-nav" aria-label="Nawigacja w stopce">
-              <a href="#top">Góra</a>
-              <a href="#concept">Koncepcja Sieci</a>
-              <a href="#story">Przepływ Paczki</a>
-              <a href="#economics">Ekonomia</a>
-              <a href="#pilot">Gotowość ~70%</a>
-              <a href="#sponsor">Runda Pre-Seed (£100k–£160k)</a>
+            <span>Navigation</span>
+            <nav class="footer-nav" aria-label="Footer navigation">
+              <a href="#top">Top</a>
+              <a href="#concept">Network Concept</a>
+              <a href="#story">Parcel Journey</a>
+              <a href="#economics">Unit Economics</a>
+              <a href="#pilot">Readiness ~70%</a>
+              <a href="#sponsor">Pre-Seed Round (£100k–£160k)</a>
             </nav>
           </div>
           <div class="footer-column">
-            <span>Model PPTT</span>
-            <nav class="footer-nav" aria-label="Nawigacja modelu w stopce">
-              <a href="#concept">Siatka hubów</a>
-              <a href="#lab">Symulator trasy</a>
-              <a href="#story">4 znaki markerem</a>
+            <span>PPTT Architecture</span>
+            <nav class="footer-nav" aria-label="Architecture footer navigation">
+              <a href="#concept">Merchant Mesh</a>
+              <a href="#lab">Route Simulator</a>
+              <a href="#story">4-Marker Protocol</a>
               <a href="#lead">Investor Deck</a>
             </nav>
           </div>
           <div class="footer-contact">
-            <span>Kontakt bezpośredni</span>
+            <span>Direct Contact</span>
             <strong>Dariusz Osypowicz</strong>
             <p><a href="mailto:osypowicz@gmail.com" style="color:var(--orange)">osypowicz@gmail.com</a></p>
             <p><a href="https://www.linkedin.com/in/osypowicz" target="_blank" rel="noreferrer" style="color:var(--orange)">LinkedIn: in/osypowicz</a></p>
-            <p>Londyn, UK | Projekt dedykowany rynkom rozwijającym się</p>
+            <p>London, UK | Built for Emerging Markets</p>
           </div>
         </div>
 
         <div class="footer-bottom">
           <span>&copy; 2026 PPTT — Package Push Towards Target</span>
-          <span>Działająca technologia logistyczna bez kosztów stałej infrastruktury magazynowej.</span>
+          <span>Operational logistics technology eliminating fixed warehouse capital expenditure.</span>
         </div>
       </div>
     </footer>
@@ -4305,7 +4305,7 @@ const pilotMetrics = [
 
   .pilot-control-panel {
     display: grid;
-    grid-template-rows: 260px auto auto;
+    grid-template-rows: auto auto auto;
     align-content: start;
     gap: 18px;
     padding: clamp(20px, 2.6vw, 32px);
@@ -4315,8 +4315,7 @@ const pilotMetrics = [
     box-sizing: border-box;
     display: grid;
     gap: 0;
-    height: 260px;
-    min-height: 0;
+    min-height: 180px;
     align-content: start;
     border-bottom: 1px solid rgba(35, 61, 77, 0.08);
     padding-bottom: 20px;
@@ -4324,16 +4323,16 @@ const pilotMetrics = [
 
   .pilot-control-panel h3 {
     margin-top: 14px;
-    font-size: clamp(2rem, 3.4vw, 3.2rem);
-    line-height: 0.94;
+    font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+    line-height: 1.2;
   }
 
   .pilot-control-panel p:not(.eyebrow) {
-    margin-top: 16px;
+    margin-top: 14px;
     color: var(--muted);
-    font-size: 1rem;
-    font-weight: 750;
-    line-height: 1.55;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.5;
   }
 
   .pilot-tabs {
@@ -5411,27 +5410,27 @@ const pilotMetrics = [
 
     .pilot-control-panel {
       align-self: start;
-      grid-template-rows: 238px auto auto;
-      gap: 12px;
+      grid-template-rows: auto auto auto;
+      gap: 14px;
       padding: 18px;
     }
 
     .pilot-focus-card {
-      height: 238px;
+      height: auto;
       min-height: 0;
       padding-bottom: 14px;
     }
 
     .pilot-control-panel h3 {
       margin-top: 10px;
-      font-size: clamp(1.42rem, 3.4vw, 2.2rem);
-      line-height: 0.96;
+      font-size: clamp(1.25rem, 2.8vw, 1.65rem);
+      line-height: 1.2;
     }
 
     .pilot-control-panel p:not(.eyebrow) {
       margin-top: 12px;
       font-size: 0.88rem;
-      line-height: 1.42;
+      line-height: 1.45;
     }
 
     .pilot-tabs button {
@@ -5668,25 +5667,26 @@ const pilotMetrics = [
     }
 
     .pilot-control-panel {
-      grid-template-rows: 198px auto;
+      grid-template-rows: auto auto;
       gap: 12px;
       padding: 16px;
     }
 
     .pilot-focus-card {
-      height: 198px;
+      height: auto;
       min-height: 0;
     }
 
     .pilot-control-panel h3 {
       margin-top: 10px;
-      font-size: clamp(1.65rem, 8vw, 2.35rem);
+      font-size: clamp(1.3rem, 5.5vw, 1.7rem);
+      line-height: 1.22;
     }
 
     .pilot-control-panel p:not(.eyebrow) {
       margin-top: 10px;
       font-size: 0.92rem;
-      line-height: 1.42;
+      line-height: 1.45;
     }
 
     .pilot-signal-grid div + div {
@@ -9499,14 +9499,13 @@ const pilotMetrics = [
   }
 
   .topbar .brand {
-    display: inline-grid;
-    grid-template-columns: 38px auto;
+    display: inline-flex;
     align-items: center;
     justify-self: start;
     height: 48px;
     min-height: 0;
     min-width: 0;
-    gap: 4px;
+    gap: 10px;
     padding: 0;
     color: var(--black);
     text-decoration: none;
@@ -9514,11 +9513,13 @@ const pilotMetrics = [
 
   .topbar .brand-mark {
     display: block;
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
     align-self: center;
-    justify-self: center;
-    transform: translateY(-2px);
+    object-fit: contain;
+    flex-shrink: 0;
+    transform: none;
   }
 
   .topbar .mark-letter {
@@ -9527,9 +9528,12 @@ const pilotMetrics = [
   }
 
   .topbar .brand-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
     align-self: center;
     color: var(--black);
-    font-size: 1.32rem;
+    font-size: 1.28rem;
     font-weight: 950;
     line-height: 1;
     letter-spacing: 0;
