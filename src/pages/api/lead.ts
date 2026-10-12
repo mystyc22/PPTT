@@ -108,7 +108,7 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const apiKey = import.meta.env.RESEND_API_KEY as string | undefined;
-  const fromEmail = import.meta.env.RESEND_FROM_EMAIL as string | undefined;
+  const fromEmail = (import.meta.env.RESEND_FROM_EMAIL as string | undefined) || "PPTT Network <onboarding@resend.dev>";
   const toEmail = (import.meta.env.LEADS_TO_EMAIL as string | undefined) || "osypowicz@gmail.com";
 
   if (!apiKey || !fromEmail || !toEmail) {
