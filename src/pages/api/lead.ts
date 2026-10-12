@@ -177,6 +177,7 @@ export const POST: APIRoute = async ({ request }) => {
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
         "Referer": page || "https://pptt-alpha.vercel.app/",
       },
       body: JSON.stringify({
@@ -193,7 +194,14 @@ export const POST: APIRoute = async ({ request }) => {
       }),
     });
 
-    const fsData = (await fsResponse.json()) as { success?: string | boolean; message?: string };
+    const rawText = await fsResponse.text();
+    let fsData: { success?: string | boolean; message?: string } | null = null;
+    try {
+      fsData = JSON.parse(rawText) as { success?: string | boolean; message?: string };
+    } catch {
+      fsData = null;
+    }
+
     if (fsData && (fsData.success === "true" || fsData.success === true)) {
       return json({ ok: true });
     }
@@ -205,7 +213,11 @@ export const POST: APIRoute = async ({ request }) => {
       });
     }
 
-    return json({ error: fsData?.message || "Could not deliver email through fallback service." }, { status: 502 });
+    if (fsData?.message) {
+      return json({ error: fsData.message }, { status: 502 });
+    }
+
+    return json({ error: "Backend relay blocked by provider. Falling back to direct browser channel." }, { status: 502 });
   } catch (err) {
     const errMsg = err instanceof Error ? err.message : "Service error";
     return json({ error: `Could not send inquiry: ${errMsg}` }, { status: 502 });

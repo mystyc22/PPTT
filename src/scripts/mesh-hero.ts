@@ -2004,7 +2004,38 @@ if (leadForm && status) {
       }
 
       if (!response.ok) {
-        throw new Error(result?.error || result?.message || "Could not send the request.");
+        // Fallback: direct client-side delivery to FormSubmit
+        const directResponse = await fetch("https://formsubmit.co/ajax/pptt_vercel@outlook.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+          },
+          body: JSON.stringify({
+            _subject: `[PPTT] ${audience} inquiry: ${name}`,
+            _replyto: email,
+            _captcha: "false",
+            Audience: audience,
+            Type: type,
+            Name: name,
+            Email: email,
+            SubmittedAt: payload.submittedAt,
+            Page: payload.page,
+            Message: message || "No message provided.",
+          }),
+        });
+
+        const directText = await directResponse.text();
+        let directResult: { success?: string | boolean; message?: string } | null = null;
+        try {
+          directResult = JSON.parse(directText) as { success?: string | boolean; message?: string };
+        } catch {
+          directResult = null;
+        }
+
+        if (!directResponse.ok || (directResult && directResult.success === "false")) {
+          throw new Error(directResult?.message || result?.error || "Could not send the request.");
+        }
       }
 
       setLeadFormBusy(false);
@@ -2017,7 +2048,7 @@ if (leadForm && status) {
       leadSuccess?.focus({ preventScroll: true });
     } catch (error) {
       setLeadFormBusy(false);
-      const fallback = "Could not send yet. Try again after the email endpoint is connected.";
+      const fallback = "Could not send yet. Please email pptt_vercel@outlook.com directly.";
       status.textContent = error instanceof Error ? error.message || fallback : fallback;
     }
   });
