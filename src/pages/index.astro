@@ -206,6 +206,47 @@ const pilotMetrics = [
               <a class="button button-primary magnetic" href="#lead">Request Investor Deck</a>
               <a class="button button-ghost magnetic" href="#story">Explore PPTT Model</a>
             </div>
+            <div class="hero-handoff-map">
+              <svg class="hero-route-svg" viewBox="0 0 1000 140" preserveAspectRatio="none">
+                <path
+                  class="hero-route-base hero-route-desktop"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+                <path
+                  class="hero-route-active hero-route-desktop"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+                <path
+                  class="hero-route-spark hero-route-desktop"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+                <path
+                  class="hero-route-base hero-route-mobile"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+                <path
+                  class="hero-route-active hero-route-mobile"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+                <path
+                  class="hero-route-spark hero-route-mobile"
+                  d="M 10 70 C 260 70 380 40 500 70 C 660 100 840 70 990 70"
+                />
+              </svg>
+              <span class="hero-route-node is-shop">
+                <Store class="hero-route-icon" aria-hidden="true" />
+              </span>
+              <span class="hero-route-node is-bag">
+                <PackageIcon class="hero-route-icon" aria-hidden="true" />
+              </span>
+              <span class="hero-route-node is-rider">
+                <Bike class="hero-route-icon" aria-hidden="true" />
+              </span>
+              <span class="hero-route-chip is-shop-chip">Hub intake</span>
+              <span class="hero-route-chip is-bag-chip">Sealed bag</span>
+              <span class="hero-route-tag">PPTT-042</span>
+            </div>
+
             <div class="hero-flow" aria-label="PPTT Operational Flow">
               <span class="hero-flow-step">
                 <Store class="hero-flow-icon" aria-hidden="true" />
@@ -225,46 +266,6 @@ const pilotMetrics = [
           </div>
 
           <div class="hero-visual" aria-hidden="true">
-            <div class="hero-handoff-map">
-              <svg class="hero-route-svg" viewBox="0 0 866 674" preserveAspectRatio="none">
-                <path
-                  class="hero-route-base hero-route-desktop"
-                  d="M 110 590 C 130 380 210 240 330 200 C 490 150 630 300 780 230"
-                />
-                <path
-                  class="hero-route-active hero-route-desktop"
-                  d="M 110 590 C 130 380 210 240 330 200 C 490 150 630 300 780 230"
-                />
-                <path
-                  class="hero-route-spark hero-route-desktop"
-                  d="M 110 590 C 130 380 210 240 330 200 C 490 150 630 300 780 230"
-                />
-                <path
-                  class="hero-route-base hero-route-mobile"
-                  d="M 100 580 C 130 390 220 250 330 205 C 480 155 620 290 770 235"
-                />
-                <path
-                  class="hero-route-active hero-route-mobile"
-                  d="M 100 580 C 130 390 220 250 330 205 C 480 155 620 290 770 235"
-                />
-                <path
-                  class="hero-route-spark hero-route-mobile"
-                  d="M 100 580 C 130 390 220 250 330 205 C 480 155 620 290 770 235"
-                />
-              </svg>
-              <span class="hero-route-node is-shop">
-                <Store class="hero-route-icon" aria-hidden="true" />
-              </span>
-              <span class="hero-route-node is-bag">
-                <PackageIcon class="hero-route-icon" aria-hidden="true" />
-              </span>
-              <span class="hero-route-node is-rider">
-                <Bike class="hero-route-icon" aria-hidden="true" />
-              </span>
-              <span class="hero-route-chip is-shop-chip">Hub intake</span>
-              <span class="hero-route-chip is-bag-chip">Sealed bag</span>
-              <span class="hero-route-tag">PPTT-042</span>
-            </div>
             <img
               class="hero-people"
               src="/images/delivery_transparent.png"
@@ -12345,8 +12346,11 @@ const pilotMetrics = [
   }
 
   .hero-handoff-map {
-    position: absolute;
-    inset: 2% -2% 0 -4%;
+    position: relative;
+    width: 100%;
+    max-width: 680px;
+    height: 72px;
+    margin: 32px 0 16px;
     z-index: 4;
     pointer-events: none;
   }
@@ -12440,30 +12444,30 @@ const pilotMetrics = [
   }
 
   .hero-route-node.is-shop {
-    top: 34%;
-    left: 90%;
+    top: 50%;
+    left: 4%;
   }
 
   .hero-route-node.is-bag {
-    top: 30%;
-    left: 38%;
+    top: 50%;
+    left: 48%;
   }
 
   .hero-route-node.is-rider {
-    top: 87%;
-    left: 13%;
+    top: 50%;
+    left: 96%;
   }
 
   .hero-route-chip,
   .hero-route-tag {
     position: absolute;
     z-index: 2;
-    display: none;
+    display: inline-block;
     border: 1px solid rgba(35, 61, 77, 0.1);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.72);
     color: rgba(35, 61, 77, 0.72);
-    padding: 7px 9px;
+    padding: 5px 9px;
     box-shadow: 0 10px 26px rgba(35, 61, 77, 0.08);
     font-size: 0.62rem;
     font-weight: 920;
@@ -12471,6 +12475,7 @@ const pilotMetrics = [
     text-transform: uppercase;
     white-space: nowrap;
     backdrop-filter: blur(12px);
+    transform: translateY(-50%);
   }
 
   .hero-route-tag {
@@ -12480,19 +12485,18 @@ const pilotMetrics = [
   }
 
   .hero-route-chip.is-shop-chip {
-    top: 25%;
-    left: 78%;
-    right: auto;
+    top: 15%;
+    left: 9%;
   }
 
   .hero-route-chip.is-bag-chip {
-    top: 20%;
-    left: 36%;
+    top: 15%;
+    left: 54%;
   }
 
   .hero-route-tag {
-    top: 22%;
-    left: 20%;
+    top: 85%;
+    left: 48%;
   }
 
   .hero-people {
@@ -12949,7 +12953,11 @@ const pilotMetrics = [
     }
 
     .hero-handoff-map {
-      inset: 1% -3% 0 -4%;
+      position: relative;
+      width: 100%;
+      height: 64px;
+      margin: 22px auto 12px;
+      inset: auto;
     }
 
     .hero-route-desktop {
@@ -12971,39 +12979,40 @@ const pilotMetrics = [
     }
 
     .hero-route-node.is-shop {
-      top: 35%;
-      left: 89%;
+      top: 50%;
+      left: 6%;
     }
 
     .hero-route-node.is-bag {
-      top: 31%;
-      left: 38%;
+      top: 50%;
+      left: 50%;
     }
 
     .hero-route-node.is-rider {
-      top: 86%;
-      left: 12%;
+      top: 50%;
+      left: 94%;
     }
 
     .hero-route-chip,
     .hero-route-tag {
-      padding: 5px 7px;
+      padding: 4px 6px;
       font-size: 0.5rem;
     }
 
     .hero-route-chip.is-shop-chip {
-      top: 24%;
-      right: 4%;
+      top: 15%;
+      left: 10%;
+      right: auto;
     }
 
     .hero-route-chip.is-bag-chip {
-      top: 21%;
-      left: 36%;
+      top: 15%;
+      left: 54%;
     }
 
     .hero-route-tag {
-      top: 24%;
-      left: 18%;
+      top: 85%;
+      left: 48%;
     }
 
     .hero .hero-strip {
