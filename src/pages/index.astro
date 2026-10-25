@@ -118,7 +118,7 @@ const corridorStages = [
     title: "Preparation & Network Onboarding",
     items: [
       "Partner Hub Recruitment: Selection of 10 high-foot-traffic merchant shops (dukas, pharmacies, kiosks) along a single active transit corridor (e.g. Eastleigh wholesale through CBD to retail nodes).",
-      "Hardware Provisioning: Deployment of 1,500 sealed transit bags (W-class) and 150 stackable crates (S-class) — allocated at 15 crates per hub (one per directional sector + staging/buffer) and 150 bags per hub, with tamper-evident security tags and POS signage.",
+      "Hardware Provisioning: Deployment of 1,500 sealed transit bags (W-class) and 150 stackable crates (S-class) — allocated at 15 crates per hub (directional sectors + staging). The 150 bags/hub allocation reflects network simulation requirements: a baseline of ≥100 bags/hub to ensure closed-loop return redistribution without stockouts, plus a 50-bag buffer for physical wear and peak directional surges.",
       "Merchant & Rider Training: Conduct 2-hour interactive group workshops with onboarding incentives to establish operational protocol.",
       "Corridor Mapping & Sector Codes: Define directional 4-character sector matrices without dependency on formal street names or municipal numbering.",
     ],
@@ -142,7 +142,7 @@ const corridorStages = [
       "Capacity & Batching: Test peak-hour parcel aggregation rates and directional bag utilization thresholds across 50+ corridor route pairs.",
       "Carrier Incentive Testing: Measure motorcycle acceptance rates and route compliance at 500 KES per 10-parcel bag along natural vectors.",
       "Cash Exchange Stress Test: Verify merchant-to-rider cash settlement rules and automated float replenishment mechanisms.",
-      "Edge-Case Scenarios: Drill simulated carrier dropouts, node offline events, and bag rerouting to adjacent hubs within the sector.",
+      "Edge-Case Scenarios: Drill simulated carrier dropouts, temporary shop closures (routing engine automatically bypasses offline hubs to adjacent sector nodes), and dynamic bag rerouting.",
     ],
   },
   {
@@ -154,7 +154,7 @@ const corridorStages = [
       "≥98% on-time transit completion rate along the 10-hub corridor.",
       "0 unexplained ledger discrepancies across all recorded handovers.",
       "Sustainable carrier participation without manual administrative intervention.",
-      "All 10 pilot hubs continuously active and processing commercial parcels for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network).",
+      "Contracted Network Retention: ≥90% merchant partner retention across the 10-node deployment (≥9 of 10 contracted hubs active for ≥8 consecutive weeks, with routing dynamically bypassing temporary merchant downtime).",
     ],
   },
 ];
@@ -294,7 +294,7 @@ const fundingMilestones = [
     num: "03",
     title: "Ten-Hub Corridor Activation",
     timeline: "Months 4–6",
-    deliverables: "1,500 transit bags & 150 crates delivered (15 crates and 150 bags per hub across 10 nodes), 10 vetted hubs onboarded with branding, carrier pool registered.",
+    deliverables: "1,500 transit bags & 150 crates delivered (15 crates and 150 bags per hub; minimum 100 bags/hub validated for return turnaround plus wear buffer), 10 vetted hubs onboarded with branding, carrier pool registered.",
   },
   {
     num: "04",
@@ -312,7 +312,7 @@ const fundingMilestones = [
     num: "06",
     title: "Pilot Performance Review",
     timeline: "Months 11–12",
-    deliverables: "Data-driven expansion review. Success criteria at 10-hub corridor scale: all 10 hubs active and processing parcels for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network), on-time transit rate ≥98%, separate daily reconciliations (physical cash against recorded cash events, and HUB_VKES against the platform ledger) completed with no unexplained gaps for ≥90% of cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements.",
+    deliverables: "Data-driven expansion review. Success criteria at 10-hub corridor scale: ≥90% merchant partner retention (≥9 of 10 contracted hubs active for ≥8 consecutive weeks, resilient to temporary offline intervals), on-time transit rate ≥98%, separate daily reconciliations (physical cash against recorded cash events, and HUB_VKES against the platform ledger) completed with no unexplained gaps for ≥90% of cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements.",
   },
 ];
 
@@ -1149,9 +1149,9 @@ const sourceReferences = [
             <strong>Illustrative Model:</strong> These figures illustrate the proposed pricing and allocation model. Actual costs, carrier compensation, route efficiency, and platform contribution will be validated during the Nairobi pilot.
           </div>
           <p class="economics-intro">
-            Every parcel enters with an illustrative locked intake price of <strong>100 KES</strong> (≈ £0.59). The PPTT ledger allocates this into three operational components:
-            <strong>20 KES platform fee</strong> (gross platform revenue, not net profit), hub commissions for intake (15 KES) and outtake (15 KES), and a transport budget (50 KES) for the boda-boda corridor rider.
-            Because riders carry <em>sealed bags — not single parcels</em> — a single motorcycle hop with a full directional bag (e.g. 10 parcels) yields <strong>500 KES</strong> in gross transport revenue, designed to offer attractive incentives for participating riders along routes they already travel.
+            The figures below illustrate a standard urban parcel (≤500g, 1–2 hops) at an illustrative locked intake price of <strong>100 KES</strong> (≈ £0.59). The PPTT pricing engine calculates dynamic locked quotes at intake based on parcel weight, dimensions, transit hops, and corridor distance. For this baseline scenario, the ledger allocates:
+            <strong>20 KES platform fee</strong> (gross platform revenue, not net profit), hub commissions for intake (15 KES) and outtake (15 KES), and a <strong>50 KES transport budget</strong> for the boda-boda carrier hop.
+            Because riders carry <em>sealed bags — not single parcels</em> — a single motorcycle hop with a full directional bag (e.g. 10 parcels) yields <strong>500 KES</strong> in gross transport revenue along routes riders already travel. Multi-hop shipments accumulate hop-by-hop transit allocations according to routing distance.
           </p>
         </div>
 
@@ -1185,7 +1185,7 @@ const sourceReferences = [
               </div>
             </div>
             <p>
-              The 20 KES platform fee represents gross platform revenue before company operating expenses (server infrastructure, SMS gateway, operational payroll, and regulatory compliance). The 50 KES transport budget depends on route economics and corridor conditions. Route optimization savings (SKIP surplus) and SLA penalties are conditional operational adjustments, not guaranteed revenue.
+              The 100 KES quote and 50 KES carrier allocation represent an illustrative baseline for a typical intra-corridor hop. Live customer pricing and rider payouts scale dynamically by weight, volume, number of intermediary hubs, and kilometer distance. The 20 KES platform fee represents gross platform revenue before company operating expenses (server infrastructure, SMS gateway, operational payroll, and regulatory compliance). Route optimization surplus and SLA penalties are conditional adjustments recorded transparently on the ledger.
             </p>
             <div class="quote-rules">
               <span>Zero hidden fees</span>
@@ -1494,7 +1494,7 @@ const sourceReferences = [
             <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
           </div>
           <p>
-            Zero geographic expansion until the initial corridor demonstrates: (1) all 10 hubs continuously active for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network), (2) on-time transit completion rate ≥98%, (3) separate daily reconciliations completed with no unexplained gaps for ≥90% of daily cycles — reconciling hub-reported physical cash (HUB_KES) against documented cash movements/counts, and electronic settlement balances (HUB_VKES) against the platform ledger, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
+            Zero geographic expansion until the initial corridor demonstrates: (1) ≥90% merchant partner retention across the 10-node deployment (≥9 of 10 contracted hubs active for ≥8 consecutive weeks, with routing dynamically bypassing temporary shop closures), (2) on-time transit completion rate ≥98%, (3) separate daily reconciliations completed with no unexplained gaps for ≥90% of daily cycles — reconciling hub-reported physical cash (HUB_KES) against documented cash movements/counts, and electronic settlement balances (HUB_VKES) against the platform ledger, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
           </p>
         </div>
 
