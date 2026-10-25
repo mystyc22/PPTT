@@ -214,7 +214,7 @@ const technicalModules = [
     status: "Planned",
     statusType: "planned",
     tech: "Independent Third-Party",
-    description: "Comprehensive pre-deployment penetration testing, cryptographic ledger audit, and multi-signature fraud vector simulation.",
+    description: "Comprehensive pre-deployment penetration testing, HMAC message authentication audit, and multi-party handoff fraud vector simulation.",
   },
   {
     name: "Operational Deployment",
@@ -267,7 +267,7 @@ const riskMitigations = [
     tag: "R-06",
     risk: "Parcel Loss, Theft, or Transit Disputes",
     description: "Parcels lost, pilfered, or damaged during multi-hop motorcycle transit across informal urban sectors.",
-    safeguard: "Tamper-evident sealed bags with serialized security tags. Multi-signature HMAC-authenticated handoffs at every physical transfer point create a cryptographically verifiable, append-only audit log of custody events. Physical custody integrity remains dependent on operational controls; HMAC authentication provides event authenticity, not absolute physical tamper-proofing. Bags remain sealed between origin and destination hubs.",
+    safeguard: "Tamper-evident sealed transit bags with serialized security tags. Dual-party HMAC message authentication at physical handoffs provides verifiable message integrity under a shared-secret trust model (note: HMAC does not equal asymmetric digital signatures). Custody records are stored in a database audit log whose immutability relies on database access controls and operational procedures rather than cryptographic storage guarantees. Street-level parcel integrity remains dependent on physical tags and merchant inspections. Bags remain sealed between origin and destination hubs.",
   },
   {
     tag: "R-07",
@@ -319,27 +319,27 @@ const fundingMilestones = [
 const sourceReferences = [
   {
     category: "Demographics & Urban Growth",
-    metric: "Nairobi Metropolitan Population & Growth",
+    metric: "Nairobi Population & Urban Growth",
     source: "Kenya National Bureau of Statistics (KNBS)",
-    scope: "Nairobi Metropolitan Area · 2019 Census & Projections",
-    status: "Verified (Official Statistics)",
-    url: "https://www.knbs.or.ke",
-    detail: "2019 Kenya Population and Housing Census (4.40M county population) and urban metropolitan projections (~5.5M in the wider commuter zone, growing at ~3.8% annually).",
+    scope: "Nairobi County & Metropolitan Area · 2019 Census & Projections",
+    status: "Verified (Official KNBS Census)",
+    url: "https://www.knbs.or.ke/2019-kenya-population-and-housing-census-results/",
+    detail: "KNBS 2019 Kenya Population and Housing Census (Volume 1, Table 2.2: Nairobi City County counted at 4,397,073 residents) and urban projections estimating ~5.5M in the wider contiguous commuter zone.",
   },
   {
     category: "Informal Transit Fleet",
     metric: "Boda-Boda (Motorcycle Taxi) Fleet Density",
     source: "Boda Boda Association of Kenya (BAK) & Ministry of Transport",
-    scope: "Nairobi Metropolitan Zone · 2023–2024 Estimates",
-    status: "Estimated (Industry Registry)",
+    scope: "Nairobi Metropolitan Zone · Industry Estimates",
+    status: "Unverified (Industry Trade Estimate)",
     url: "https://bak.co.ke",
-    detail: "National registry estimates (~1.4M–1.6M commercial motorcycles nationwide, with ~200,000+ active operators estimated in the Nairobi metropolitan area; exact municipal numbers unverified due to informal registration).",
+    detail: "National registry estimates (~1.4M–1.6M commercial motorcycles nationwide, with ~150,000–200,000 active operators estimated across the Nairobi metropolitan area; official municipal counts unavailable due to informal registration).",
   },
   {
     category: "Market Opportunity",
     metric: "East Africa E-Commerce Market Dynamics",
     source: "Statista Digital Market Insights & UNCTAD B2C E-Commerce Index",
-    scope: "East Africa & Kenya · 2024–2025 Market Forecasts",
+    scope: "East Africa & Kenya · Market Forecasts",
     status: "Estimated (Market Forecast)",
     url: "https://unctad.org/topic/ecommerce-and-digital-economy",
     detail: "East African regional e-commerce GMV projected to scale toward $2.9B by 2025 (Kenya domestic e-commerce ~$1B+), with physical logistics and last-mile addressing cited as primary operational constraints.",
@@ -351,7 +351,7 @@ const sourceReferences = [
     scope: "Nairobi County · Published Urban Studies",
     status: "Verified Estimate (Multi-lateral Reports)",
     url: "https://unhabitat.org/nairobi-urban-sector-profile",
-    detail: "Over 60% of Nairobi's urban population resides in informal or unplanned settlements occupying approximately 5–6% of the city's residential land area. Street naming and municipal building numbering are absent across the majority of these dense informal and peri-urban sectors.",
+    detail: "Over 60% of Nairobi's urban population resides in informal or unplanned settlements occupying approximately 5–6% of the city's residential land area. Street naming and municipal building numbering are absent across the vast majority of these dense informal and peri-urban sectors.",
   },
   {
     category: "Digital Financial Rails",
@@ -359,8 +359,8 @@ const sourceReferences = [
     source: "Safaricom PLC FY2024 Annual Report",
     scope: "Kenya (National) · Financial Year Ended March 31, 2024",
     status: "Verified (Audited Corporate Filing)",
-    url: "https://www.safaricom.co.ke/investor-relations/financial-reports",
-    detail: "M-Pesa platform processed 28.33 billion transactions (~77M daily transactions) with KShs 40.24 trillion (~$300 billion equivalent) annual transaction volume in FY2024, demonstrating ubiquitous consumer and merchant adoption of mobile money.",
+    url: "https://www.safaricom.co.ke/investor-relations/financial-reports/annual-reports",
+    detail: "M-Pesa platform processed 28.33 billion transactions (~77.6M daily transactions) with KShs 40.24 trillion (~$300 billion equivalent) annual transaction volume in FY2024, demonstrating ubiquitous consumer and merchant adoption of mobile money.",
   },
   {
     category: "Benchmarking",
@@ -378,7 +378,7 @@ const sourceReferences = [
     scope: "PPTT Core Architecture · Internal Technical Design",
     status: "Internal Specification",
     url: "",
-    detail: "Sections 27–30 specifying double-entry bookkeeping, HMAC cryptographic audit logs, and deterministic 8-directional corridor sector routing.",
+    detail: "Sections 27–30 specifying double-entry bookkeeping, HMAC message authentication logs, and deterministic 8-directional corridor sector routing.",
   },
 ];
 ---
@@ -1081,29 +1081,29 @@ const sourceReferences = [
           <p class="eyebrow">Market Context &amp; Opportunity — Nairobi &amp; Regional Metropolises</p>
           <h2 id="market-title">Millions of parcels moving daily across a city without formal addresses.</h2>
           <p class="market-intro">
-            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~200,000+ active boda-boda operators</strong> in the metropolitan zone (Boda Boda Association of Kenya / Ministry of Transport estimate), and one of Africa's leading mobile-money ecosystems (Safaricom M-Pesa). 
-            Yet affordable last-mile delivery remains structurally challenging: over 60% of residents live in informal settlements without municipal door numbering, and conventional logistics models rely on street addresses and high-rent central sorting warehouses that do not fit local urban geography.
+            Nairobi has a city population of <strong>4.40 million residents</strong> (KNBS 2019 Census, scaling to ~5.5M in the wider metropolitan commuter zone), an estimated <strong>~150,000–200,000 active boda-boda operators</strong> across the metro area (BAK informal industry estimate; official municipal count unavailable), and one of Africa's leading mobile-money ecosystems (Safaricom M-Pesa). 
+            Yet affordable last-mile delivery remains structurally challenging: over 60% of residents live in informal settlements on ~5–6% of land without municipal door numbering (UN-Habitat / World Bank), and conventional logistics models rely on street addresses and high-rent central sorting warehouses that do not fit local urban geography.
           </p>
         </div>
 
         <div class="market-grid reveal">
 
           <div class="market-stat-card">
-            <span class="market-stat-num">5.5M+</span>
-            <span class="market-stat-label">Nairobi residents</span>
-            <span class="market-stat-sub">High urban density without formal municipal street addressing (KNBS metropolitan projection; verified)</span>
+            <span class="market-stat-num">4.4M–5.5M</span>
+            <span class="market-stat-label">Nairobi urban population</span>
+            <span class="market-stat-sub">4.40M in City County (KNBS 2019 Census; verified); ~5.5M metropolitan area projection</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">200K+</span>
-            <span class="market-stat-label">Active boda-boda operators</span>
-            <span class="market-stat-sub">Active operators in Nairobi metro zone (BAK / Ministry of Transport est.; industry estimate)</span>
+            <span class="market-stat-num">~200K</span>
+            <span class="market-stat-label">Active boda-boda fleet</span>
+            <span class="market-stat-sub">Informal trade estimate (BAK / MoT); official municipal counts unavailable (unverified)</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">$2.9B</span>
-            <span class="market-stat-label">East Africa e-commerce (2025)</span>
-            <span class="market-stat-sub">Statista/UNCTAD regional forecast; Kenya domestic market ~$1B+ (market estimate)</span>
+            <span class="market-stat-num">$1B–$2.9B</span>
+            <span class="market-stat-label">E-commerce market sizing</span>
+            <span class="market-stat-sub">Kenya domestic market ~$1B+; East Africa regional GMV scaling to $2.9B by 2025 (Statista/UNCTAD forecast)</span>
           </div>
 
           <div class="market-stat-card">
@@ -1115,7 +1115,7 @@ const sourceReferences = [
           <div class="market-stat-card">
             <span class="market-stat-num">28.3B</span>
             <span class="market-stat-label">M-Pesa annual transactions</span>
-            <span class="market-stat-sub">~77M+ transactions/day; KShs 40.2T ($300B) annual value across Kenya (Safaricom FY2024 Report; verified)</span>
+            <span class="market-stat-sub">~77.6M transactions/day; KShs 40.24T ($300B) annual value across Kenya (Safaricom FY2024 Report; verified)</span>
           </div>
 
           <div class="market-stat-card">
@@ -1758,10 +1758,10 @@ const sourceReferences = [
               <span class="sponsor-card-tag">07</span>
               <div class="sponsor-card-icon" aria-hidden="true"><ReceiptText class="icon-svg" /></div>
             </div>
-            <h3>Strategic Reserve (Operational Contingency) — £35,000</h3>
+            <h3>Strategic Reserve (Company Operating Contingency) — £35,000</h3>
             <p>
-              Operating contingency reserve for unforeseen street-level dynamics, initial operational float adjustments, and runway buffer during the first 6 months of live corridor operation.
-              <strong>Reserve &amp; custody disclosure:</strong> This £35,000 is allocated strictly as general company operating working capital. It does not constitute a segregated reserve for backing outstanding VKES balances or customer redemptions. Cash collected from parcel senders remains under the custody of participating merchant hubs, while centrally controlled investor funds cover operational runway. The permanent institutional structure for VKES reserve custody, third-party backing verification, and platform redemption obligations remains an unresolved design decision to be determined in consultation with Kenyan legal counsel and regulatory guidance prior to commercial scaling.
+              General company operating contingency reserve covering unexpected administrative, technical infrastructure, and local regulatory compliance expenses to ensure runway protection during the first 6 months of corridor operations.
+              <strong>Strict operational separation:</strong> This £35,000 is held exclusively as central company operating capital. It is strictly separated from parcel cash flows, merchant till balances, and electronic settlement credits. It does not provide working float for parcel transit and does not constitute a reserve for backing or redeeming outstanding VKES balances. Cash collected from senders remains under the custody of participating merchant hubs, while the governance structure for VKES reserve backing and redemption obligations represents an unresolved operational and regulatory design decision pending Kenyan legal review.
             </p>
           </article>
 

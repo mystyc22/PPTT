@@ -94,6 +94,9 @@ eq("Scenario B equation syntax", indexContent.includes("60,000 − 170,000 = −
 eq("Scenario C equation syntax", indexContent.includes("120,000 − 170,000 = −50,000 KES"), true);
 eq("Scenario D equation syntax", indexContent.includes("170,400 − 170,000 = +400 KES"), true);
 eq("No direct cash-to-VKES reconciliation match claim", !indexContent.includes("Reconcile declared merchant physical cash (HUB_KES) against the platform-credited electronic settlement balance"), true);
+eq("No reserve-backed redemption claim", !indexContent.includes("reserve-backed redemption mechanism"), true);
+eq("No multi-signature HMAC claim", !indexContent.includes("Multi-signature HMAC-authenticated"), true);
+eq("No corridor liquidity float in £35k card", !indexContent.includes("Corridor liquidity float"), true);
 
 // Print
 console.log("\n=== PPTT Break-Even Regression Tests ===");
