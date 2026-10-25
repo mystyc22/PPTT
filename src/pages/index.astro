@@ -261,7 +261,7 @@ const riskMitigations = [
     tag: "R-05",
     risk: "Financial Regulation & Cash Compliance",
     description: "Operation of closed-loop electronic ledger units (VKES) may face scrutiny under Central Bank of Kenya (CBK) payment intermediary regulations.",
-    safeguard: "VKES operates strictly as an internal closed-loop accounting credit unit representing verified parcel transit obligations, not an open-market circulating currency or public deposit. Fiat conversions interface through licensed payment service providers (e.g. Safaricom M-Pesa).",
+    safeguard: "VKES is designed as an internal closed-loop accounting credit representing verified parcel transit obligations, not an open-market currency or public deposit. Fiat conversions interface through licensed payment providers (e.g. Safaricom M-Pesa). However, the precise legal classification of VKES units, the conditions under which a CBK payment intermediary licence may be required, and any applicable redemption or float-backing obligations under Kenyan law have not yet been confirmed by licensed Kenyan legal counsel. This assessment must be completed before commercial launch.",
   },
   {
     tag: "R-06",
@@ -312,7 +312,7 @@ const fundingMilestones = [
     num: "06",
     title: "Pilot Performance Review",
     timeline: "Months 11–12",
-    deliverables: "Data-driven expansion review evaluating hub retention (>90%), on-time transit (>98%), and readiness for Hub 4+ expansion.",
+    deliverables: "Data-driven expansion review. Success criteria at 3-hub scale: all 3 hubs active and processing parcels for ≥8 consecutive weeks, on-time transit rate ≥98%, HUB_KES/HUB_VKES reconciliation completed with no unexplained gaps for ≥90% of daily cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements. Hub retention as a percentage is not a meaningful metric at a 3-node pilot; binary uptime and processing continuity are reported instead.",
   },
 ];
 
@@ -1255,6 +1255,108 @@ const sourceReferences = [
            SECTION: COMPETITIVE MOAT
            Position: After economics, before pilot readiness
       ════════════════════════════════════════════════════════ -->
+
+      <!-- SECTION: BREAK-EVEN MODEL -->
+      <section class="section breakeven-section" id="breakeven" aria-labelledby="breakeven-title">
+        <div class="section-heading simple-heading reveal">
+          <p class="eyebrow">Financial Scenarios — Illustrative Break-Even Analysis (3-Hub Pilot)</p>
+          <h2 id="breakeven-title">What does the corridor need to cover its own costs?</h2>
+          <div class="economics-disclosure" role="note">
+            <strong>Illustrative model only.</strong> All figures are estimates. Actual costs and volumes will be validated during the Nairobi pilot. Fixed-cost assumptions will be revised once vendor contracts and regulatory obligations are confirmed.
+          </div>
+        </div>
+
+        <div class="breakeven-assumptions reveal" role="note">
+          <div class="breakeven-assumptions-head">
+            <strong>Model Assumptions (Monthly, 3-Hub Corridor)</strong>
+          </div>
+          <div class="breakeven-assumptions-grid">
+            <div><span>Platform fee per parcel</span><strong>20 KES (20% of 100 KES GTV)</strong></div>
+            <div><span>Direct costs per parcel</span><strong>80 KES (hubs 30 KES + courier 50 KES) — paid to partners</strong></div>
+            <div><span>Estimated fixed OPEX</span><strong>~£800–£1,200 / month (est., pre-pilot)</strong></div>
+            <div><span>KES / GBP rate</span><strong>~170 KES per £1 (illustrative)</strong></div>
+          </div>
+        </div>
+
+        <div class="breakeven-scenarios-grid reveal" aria-label="Break-even scenarios">
+          <article class="breakeven-scenario-card">
+            <div class="breakeven-scenario-head">
+              <span class="breakeven-scenario-tag">Scenario A</span>
+              <strong>Conservative</strong>
+            </div>
+            <div class="breakeven-scenario-volume">25 parcels / day · ~750 / month</div>
+            <div class="breakeven-scenario-calc">
+              <div><span>Gross platform revenue</span><strong>15,000 KES (~£88)</strong></div>
+              <div><span>Variable costs (hubs + couriers)</span><strong>60,000 KES (~£353) — paid to partners</strong></div>
+              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
+              <div class="breakeven-outcome is-shortfall"><span>Corridor result</span><strong>Below break-even — pilot validation phase</strong></div>
+            </div>
+            <p class="breakeven-scenario-note">At low volumes the corridor operates at a deficit. Expected during Stage 1–2; not designed to be profitable at 25 parcels/day.</p>
+          </article>
+
+          <article class="breakeven-scenario-card">
+            <div class="breakeven-scenario-head">
+              <span class="breakeven-scenario-tag">Scenario B</span>
+              <strong>Break-Even Target</strong>
+            </div>
+            <div class="breakeven-scenario-volume">~85–100 parcels / day · ~2,550–3,000 / month</div>
+            <div class="breakeven-scenario-calc">
+              <div><span>Gross platform revenue</span><strong>51,000–60,000 KES (~£300–£353)</strong></div>
+              <div><span>Variable costs (hubs + couriers)</span><strong>204,000–240,000 KES — paid to partners</strong></div>
+              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
+              <div class="breakeven-outcome is-neutral"><span>Corridor result</span><strong>Platform contribution margin ≈ fixed OPEX</strong></div>
+            </div>
+            <p class="breakeven-scenario-note">Volume at which the 20 KES fee covers estimated monthly fixed infrastructure costs. Assumes full 10-parcel bags and no route optimization surplus.</p>
+          </article>
+
+          <article class="breakeven-scenario-card">
+            <div class="breakeven-scenario-head">
+              <span class="breakeven-scenario-tag">Scenario C</span>
+              <strong>Growth Target</strong>
+            </div>
+            <div class="breakeven-scenario-volume">200 parcels / day · ~6,000 / month</div>
+            <div class="breakeven-scenario-calc">
+              <div><span>Gross platform revenue</span><strong>120,000 KES (~£706)</strong></div>
+              <div><span>Variable costs (hubs + couriers)</span><strong>480,000 KES — paid to partners</strong></div>
+              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
+              <div class="breakeven-outcome is-positive"><span>Corridor result</span><strong>Positive contribution toward company overhead</strong></div>
+            </div>
+            <p class="breakeven-scenario-note">At 200 parcels/day across 3 hubs (~67/hub/day), the corridor generates meaningful platform revenue. Actual overhead coverage depends on confirmed fixed-cost structure at time of operation.</p>
+          </article>
+        </div>
+
+        <div class="breakeven-remuneration reveal" aria-labelledby="remuneration-title">
+          <div class="breakeven-remuneration-head">
+            <strong id="remuneration-title">Configurable Platform Take Rate — Four Operational Modes</strong>
+          </div>
+          <p>The 20 KES / 20% platform fee used above is one of four configurable operating modes set per corridor in the platform configuration layer:</p>
+          <div class="remuneration-modes-grid">
+            <div class="remuneration-mode-card">
+              <span class="remuneration-mode-tag">Mode 1</span>
+              <strong>Zero take rate (0%)</strong>
+              <p>Platform charges no fee. All 100 KES flows to hubs and couriers. Used for onboarding incentive periods or externally subsidised corridors.</p>
+            </div>
+            <div class="remuneration-mode-card">
+              <span class="remuneration-mode-tag">Mode 2</span>
+              <strong>Cost-recovery rate</strong>
+              <p>Platform charges only enough to cover verifiable infrastructure costs (server, SMS, audit). Estimated ~5–8 KES per parcel at pilot volumes.</p>
+            </div>
+            <div class="remuneration-mode-card is-active">
+              <span class="remuneration-mode-tag">Mode 3 — Illustrative Default</span>
+              <strong>Fixed percentage commission (20%)</strong>
+              <p>Platform retains 20 KES per 100 KES parcel as gross revenue. This is the model used in the economics section and break-even scenarios above. Percentage is configurable per corridor.</p>
+            </div>
+            <div class="remuneration-mode-card">
+              <span class="remuneration-mode-tag">Mode 4</span>
+              <strong>Target revenue per period</strong>
+              <p>Platform fee is adjusted dynamically to reach a defined revenue target (e.g. £5,000/month). Rate floats between a floor and ceiling per parcel. Useful for investor runway planning once pilot volumes are confirmed.</p>
+            </div>
+          </div>
+          <p class="breakeven-remuneration-note" role="note">
+            All four modes are architectural options in the configuration layer. Mode 3 (20%) is the illustrative default for pre-pilot modelling. The rate applied to the live corridor will be confirmed after regulatory assessment and cost structure validation.
+          </p>
+        </div>
+      </section>
       <section class="section moat-section" id="moat" aria-labelledby="moat-title">
         <div class="section-heading simple-heading reveal">
           <p class="eyebrow">Competitive Moat — Potential Structural Advantages</p>
@@ -1361,7 +1463,7 @@ const sourceReferences = [
             <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
           </div>
           <p>
-            Zero geographic expansion until the initial corridor demonstrates: (1) &ge;98% on-time transit completion rate, (2) verified reconciliation between declared merchant physical cash (HUB_KES) and platform electronic settlement balances (HUB_VKES) with no unexplained gaps, (3) organic carrier availability without manual dispatch, and (4) positive merchant partner retention (&gt;90%).
+            Zero geographic expansion until the initial corridor demonstrates: (1) all 3 hubs continuously active for ≥8 consecutive weeks, (2) on-time transit completion rate ≥98%, (3) verified reconciliation between declared merchant physical cash (HUB_KES) and platform electronic settlement balances (HUB_VKES) with no unexplained gaps for ≥90% of daily reconciliation cycles, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
           </p>
         </div>
 
@@ -14915,6 +15017,246 @@ const sourceReferences = [
     font-size: 0.88rem;
     line-height: 1.55;
     color: rgba(255, 255, 255, 0.82);
+  }
+
+  /* ═══════════════════════════════════════════
+     BREAK-EVEN & REMUNERATION SECTION
+  ══════════════════════════════════════════════ */
+  .breakeven-section {
+    padding-block: var(--section-pad-y, 96px);
+  }
+
+  .breakeven-assumptions {
+    margin-top: 40px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+  }
+
+  .breakeven-assumptions-head {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .breakeven-assumptions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px 24px;
+  }
+
+  .breakeven-assumptions-grid > div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .breakeven-assumptions-grid span {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  .breakeven-assumptions-grid strong {
+    font-size: 0.88rem;
+    color: var(--text);
+  }
+
+  .breakeven-scenarios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+  }
+
+  .breakeven-scenario-card {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: color-mix(in srgb, var(--surface) 50%, transparent);
+  }
+
+  .breakeven-scenario-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .breakeven-scenario-tag {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--accent-alpha, rgba(120,120,200,0.12));
+    color: var(--accent, #7878c8);
+  }
+
+  .breakeven-scenario-head strong {
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+
+  .breakeven-scenario-volume {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 6px 10px;
+    background: color-mix(in srgb, var(--surface) 80%, transparent);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .breakeven-scenario-calc {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .breakeven-scenario-calc > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.82rem;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .breakeven-scenario-calc span {
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .breakeven-scenario-calc strong {
+    text-align: right;
+    font-size: 0.82rem;
+  }
+
+  .breakeven-outcome {
+    border-radius: 6px;
+    padding: 8px 10px !important;
+    border: none !important;
+    margin-top: 4px;
+  }
+
+  .breakeven-outcome span {
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .breakeven-outcome strong {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .breakeven-outcome.is-shortfall {
+    background: color-mix(in srgb, #ef4444 10%, transparent);
+    color: #ef4444;
+  }
+
+  .breakeven-outcome.is-neutral {
+    background: color-mix(in srgb, #f59e0b 10%, transparent);
+    color: #d97706;
+  }
+
+  .breakeven-outcome.is-positive {
+    background: color-mix(in srgb, #22c55e 10%, transparent);
+    color: #16a34a;
+  }
+
+  .breakeven-scenario-note {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin-top: auto;
+  }
+
+  /* Remuneration modes */
+  .breakeven-remuneration {
+    margin-top: 56px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px;
+    background: color-mix(in srgb, var(--surface) 60%, transparent);
+  }
+
+  .breakeven-remuneration-head {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+  }
+
+  .breakeven-remuneration > p {
+    font-size: 0.9rem;
+    color: var(--text);
+    margin-bottom: 24px;
+    max-width: 680px;
+    line-height: 1.6;
+  }
+
+  .remuneration-modes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .remuneration-mode-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .remuneration-mode-card.is-active {
+    border-color: var(--accent, #7878c8);
+    background: color-mix(in srgb, var(--accent, #7878c8) 6%, transparent);
+  }
+
+  .remuneration-mode-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .remuneration-mode-card.is-active .remuneration-mode-tag {
+    color: var(--accent, #7878c8);
+  }
+
+  .remuneration-mode-card strong {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  .remuneration-mode-card p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .breakeven-remuneration-note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    padding: 12px 16px;
+    border-left: 2px solid var(--border);
+    margin: 0;
   }
 
   /* ═══════════════════════════════════════════
