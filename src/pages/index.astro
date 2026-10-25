@@ -130,7 +130,7 @@ const threeHubStages = [
     items: [
       "Low-Volume Throttle: Cap initial live flows at 20–50 parcels daily across the 3 nodes to ensure full operational oversight.",
       "End-to-End Tracking: Validate continuous physical custody transfers: intake logging → sealed bag consolidation → carrier hop → hub outtake.",
-      "Daily Reconciliation: Perform daily zero-variance audit comparing merchant physical cash collections (HUB_KES) with ledger balances (HUB_VKES).",
+      "Daily Reconciliation: Reconcile declared merchant physical cash (HUB_KES) against the platform-credited electronic settlement balance (HUB_VKES) for each hub. These are structurally distinct accounts: HUB_KES reflects unverified declared cash; HUB_VKES is the platform-controlled ledger balance funded via the hub_cash_to_vkes conversion event. Reconciliation flags unexplained gaps, not an expected equality.",
       "Float Management: Validate merchant cash liquidity under fluctuating customer pickup and carrier payout cycles.",
     ],
   },
@@ -267,7 +267,7 @@ const riskMitigations = [
     tag: "R-06",
     risk: "Parcel Loss, Theft, or Transit Disputes",
     description: "Parcels lost, pilfered, or damaged during multi-hop motorcycle transit across informal urban sectors.",
-    safeguard: "Tamper-evident sealed bags with serialized security tags. Multi-signature digital handoffs at every physical transfer point create an immutable chain of custody. Bags remain sealed between origin and destination hubs.",
+    safeguard: "Tamper-evident sealed bags with serialized security tags. Multi-signature HMAC-authenticated handoffs at every physical transfer point create a cryptographically verifiable, append-only audit log of custody events. Physical custody integrity remains dependent on operational controls; HMAC authentication provides event authenticity, not absolute physical tamper-proofing. Bags remain sealed between origin and destination hubs.",
   },
   {
     tag: "R-07",
@@ -1023,8 +1023,8 @@ const sourceReferences = [
 
               <div class="flow-ledger">
                 <div>
-                  <span>Sample quote</span>
-                  <strong>£3.50</strong>
+                  <span>Illustrative quote</span>
+                  <strong>100 KES</strong>
                 </div>
                 <div>
                   <span>Hub corridors</span>
@@ -1060,7 +1060,7 @@ const sourceReferences = [
           <p class="eyebrow">Market Context &amp; Opportunity — Nairobi &amp; Regional Metropolises</p>
           <h2 id="market-title">Millions of parcels moving daily across a city without formal addresses.</h2>
           <p class="market-intro">
-            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~400,000 registered boda-boda motorcycle taxis</strong> (industry association estimate), and one of the world's most active mobile-money ecosystems (M-Pesa). 
+            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~200,000+ active boda-boda operators</strong> in the metropolitan zone (Boda Boda Association of Kenya / Ministry of Transport estimate), and one of the world's most active mobile-money ecosystems (M-Pesa). 
             Yet affordable last-mile delivery remains structurally challenging — not due to a lack of commercial demand, but because conventional logistics models were engineered for street addresses and low-cost central warehouse real estate. Nairobi has neither.
           </p>
         </div>
@@ -1074,9 +1074,9 @@ const sourceReferences = [
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">~400K</span>
-            <span class="market-stat-label">Boda-boda riders</span>
-            <span class="market-stat-sub">Active fleet at neighborhood stands; designed to reduce empty mileage (Industry est.)</span>
+            <span class="market-stat-num">200K+</span>
+            <span class="market-stat-label">Active boda-boda operators</span>
+            <span class="market-stat-sub">Active operators in Nairobi metro zone (BAK / Ministry of Transport est.)</span>
           </div>
 
           <div class="market-stat-card">
@@ -1361,7 +1361,7 @@ const sourceReferences = [
             <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
           </div>
           <p>
-            Zero geographic expansion until the initial corridor demonstrates: (1) &ge;98% on-time transit completion rate, (2) zero unexplained ledger variance between physical cash and electronic records, (3) organic carrier availability without manual dispatch, and (4) positive merchant partner retention (&gt;90%).
+            Zero geographic expansion until the initial corridor demonstrates: (1) &ge;98% on-time transit completion rate, (2) verified reconciliation between declared merchant physical cash (HUB_KES) and platform electronic settlement balances (HUB_VKES) with no unexplained gaps, (3) organic carrier availability without manual dispatch, and (4) positive merchant partner retention (&gt;90%).
           </p>
         </div>
 
@@ -1474,7 +1474,7 @@ const sourceReferences = [
           <div class="tech-disclaimer-callout" role="note">
             <ShieldAlert class="tech-disclaimer-icon" aria-hidden="true" />
             <p>
-              The PPTT platform has an implemented technical foundation covering core logistics and settlement workflows. Commercial readiness remains dependent on integration testing, security validation, operational deployment, and regulatory assessment. Do not claim the platform is production-ready based solely on the existence of working code.
+              The PPTT platform has an implemented technical foundation covering core logistics and settlement workflows. Commercial readiness remains dependent on integration testing, security validation, operational deployment, and regulatory assessment. The platform is not production-ready at this stage.
             </p>
           </div>
 
@@ -1573,7 +1573,7 @@ const sourceReferences = [
             <p>
               Two right-hand-drive operational vans sourced in the UK (e.g. Toyota HiAce / Nissan NV200), shipped Ro-Ro to Mombasa, and cleared through KRA customs for heavy intra-corridor trunk movements and hub restocking.
               <strong>Asset note:</strong> The proposed vehicles represent operational assets with potential resale value. Realized recovery would depend on import costs, local market demand, taxes, depreciation, and disposal expenses.
-              <em>*Note for founder review: budget allocation subject to Kenya Revenue Authority (KRA) import duty tariffs, pre-export inspection (QISJ), age limit compliance (&lt;8 years), and local registration fees.*</em>
+              <strong>Import cost note:</strong> This budget allocation is subject to Kenya Revenue Authority (KRA) import duty tariffs, pre-export inspection (KEBS/PVOC), vehicle age limit compliance (must be under 8 years old at time of importation), and local registration fees. These represent material cost variables to be confirmed prior to vehicle procurement.
             </p>
           </article>
 
@@ -1620,7 +1620,7 @@ const sourceReferences = [
             <h3>Strategic Reserve (Operational Contingency) — £35,000</h3>
             <p>
               Corridor liquidity float for early parcel settlements, unforeseen street-level operational dynamics, and capital agility for rapid market adjustments during the first 6 months of live operation.
-              <em>*Explicit Operational Distinction: This £35,000 capital reserve is allocated for general operating contingencies and corridor float adjustments. It is distinct from restricted regulatory or electronic settlement currency (VKES) backing reserves; the same cash reserves cannot simultaneously serve operating cash flows and segregated token backing.*</em>
+              <strong>Reserve disclosure:</strong> This £35,000 is held as general operating working capital. It is structurally separate from any electronic settlement currency (VKES) backing reserves. The same capital cannot simultaneously serve as operational cash flow and segregated settlement token backing; investor funds covering this line are allocated exclusively to operational contingencies.
             </p>
           </article>
 
