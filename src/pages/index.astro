@@ -154,7 +154,7 @@ const threeHubStages = [
       "≥98% on-time transit completion rate along the 3-hub corridor.",
       "0 unexplained ledger discrepancies across all recorded handovers.",
       "Sustainable carrier participation without manual administrative intervention.",
-      "Demonstrated positive merchant unit economics and >90% partner hub retention.",
+      "All 3 pilot hubs continuously active and processing commercial parcels for ≥8 consecutive weeks (binary uptime; percentage-based retention is not a meaningful metric at 3-node scale).",
     ],
   },
 ];
@@ -193,7 +193,7 @@ const technicalModules = [
     status: "Implemented",
     statusType: "implemented",
     tech: "Double-Entry HMAC Ledger",
-    description: "Cryptographically signed double-entry accounting records for all transit commitments, fee splits, and balance histories.",
+    description: "HMAC-authenticated double-entry accounting records for all transit commitments, fee splits, and balance histories. HMAC provides message authentication under a shared-secret trust model; it does not constitute a cryptographic digital signature or guarantee append-only storage independently of the database layer.",
   },
   {
     name: "Settlement Controls",
@@ -1086,9 +1086,9 @@ const sourceReferences = [
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">~70%</span>
+            <span class="market-stat-num">~60%</span>
             <span class="market-stat-label">Unaddressed urban areas</span>
-            <span class="market-stat-sub">GPS coordinates struggle where streets lack official names (UN-Habitat/World Bank)</span>
+            <span class="market-stat-sub">Est. ~60% of Nairobi residents in informally organised areas without municipal door numbering (UN-Habitat / World Bank; unverified direct link)</span>
           </div>
 
           <div class="market-stat-card">
@@ -1271,10 +1271,12 @@ const sourceReferences = [
             <strong>Model Assumptions (Monthly, 3-Hub Corridor)</strong>
           </div>
           <div class="breakeven-assumptions-grid">
-            <div><span>Platform fee per parcel</span><strong>20 KES (20% of 100 KES GTV)</strong></div>
-            <div><span>Direct costs per parcel</span><strong>80 KES (hubs 30 KES + courier 50 KES) — paid to partners</strong></div>
-            <div><span>Estimated fixed OPEX</span><strong>~£800–£1,200 / month (est., pre-pilot)</strong></div>
-            <div><span>KES / GBP rate</span><strong>~170 KES per £1 (illustrative)</strong></div>
+            <div><span>Gross platform allocation per parcel</span><strong>20 KES (20% of 100 KES GTV)</strong></div>
+            <div><span>Variable platform cost per parcel</span><strong>0 KES — hub &amp; courier costs paid directly from sender's 80 KES; platform retains only its 20 KES</strong></div>
+            <div><span>Contribution margin per parcel</span><strong>20 KES (gross allocation minus variable platform cost)</strong></div>
+            <div><span>Illustrative monthly fixed OPEX</span><strong>£1,000 × 170 KES/GBP = 170,000 KES (illustrative; not validated)</strong></div>
+            <div><span>Break-even formula</span><strong>170,000 KES ÷ 20 KES = 8,500 parcels/month ÷ 30 days = 284 parcels/day</strong></div>
+            <div><span>Operating days assumed</span><strong>30 days/month (illustrative)</strong></div>
           </div>
         </div>
 
@@ -1282,46 +1284,61 @@ const sourceReferences = [
           <article class="breakeven-scenario-card">
             <div class="breakeven-scenario-head">
               <span class="breakeven-scenario-tag">Scenario A</span>
-              <strong>Conservative</strong>
+              <strong>Pilot Validation (Stage 1–2)</strong>
             </div>
-            <div class="breakeven-scenario-volume">25 parcels / day · ~750 / month</div>
+            <div class="breakeven-scenario-volume">25 parcels / day · 750 / month</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>15,000 KES (~£88)</strong></div>
-              <div><span>Variable costs (hubs + couriers)</span><strong>60,000 KES (~£353) — paid to partners</strong></div>
-              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
-              <div class="breakeven-outcome is-shortfall"><span>Corridor result</span><strong>Below break-even — pilot validation phase</strong></div>
+              <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
+              <div><span>Monthly operating result</span><strong>−15,000 − 170,000 ≃ −155,000 KES</strong></div>
+              <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — expected at pilot launch volumes</strong></div>
             </div>
-            <p class="breakeven-scenario-note">At low volumes the corridor operates at a deficit. Expected during Stage 1–2; not designed to be profitable at 25 parcels/day.</p>
+            <p class="breakeven-scenario-note">At 25 parcels/day the platform generates 15,000 KES gross revenue against ~170,000 KES illustrative fixed costs. This deficit is expected at Stage 1–2 and is covered by the pre-seed runway, not parcel revenue.</p>
           </article>
 
           <article class="breakeven-scenario-card">
             <div class="breakeven-scenario-head">
               <span class="breakeven-scenario-tag">Scenario B</span>
-              <strong>Break-Even Target</strong>
+              <strong>Early Traction</strong>
             </div>
-            <div class="breakeven-scenario-volume">~85–100 parcels / day · ~2,550–3,000 / month</div>
+            <div class="breakeven-scenario-volume">100 parcels / day · 3,000 / month</div>
             <div class="breakeven-scenario-calc">
-              <div><span>Gross platform revenue</span><strong>51,000–60,000 KES (~£300–£353)</strong></div>
-              <div><span>Variable costs (hubs + couriers)</span><strong>204,000–240,000 KES — paid to partners</strong></div>
-              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
-              <div class="breakeven-outcome is-neutral"><span>Corridor result</span><strong>Platform contribution margin ≈ fixed OPEX</strong></div>
+              <div><span>Gross platform revenue</span><strong>60,000 KES (~£353)</strong></div>
+              <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
+              <div><span>Monthly operating result</span><strong>60,000 − 170,000 = −110,000 KES</strong></div>
+              <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — still 184 parcels/day below break-even</strong></div>
             </div>
-            <p class="breakeven-scenario-note">Volume at which the 20 KES fee covers estimated monthly fixed infrastructure costs. Assumes full 10-parcel bags and no route optimization surplus.</p>
+            <p class="breakeven-scenario-note">100 parcels/day generates 60,000 KES gross revenue but covers only 35% of the illustrative 170,000 KES monthly fixed cost. This is not break-even. Deficit continues to be funded from pre-seed capital.</p>
           </article>
 
           <article class="breakeven-scenario-card">
             <div class="breakeven-scenario-head">
               <span class="breakeven-scenario-tag">Scenario C</span>
-              <strong>Growth Target</strong>
+              <strong>Growing Volume</strong>
             </div>
-            <div class="breakeven-scenario-volume">200 parcels / day · ~6,000 / month</div>
+            <div class="breakeven-scenario-volume">200 parcels / day · 6,000 / month</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>120,000 KES (~£706)</strong></div>
-              <div><span>Variable costs (hubs + couriers)</span><strong>480,000 KES — paid to partners</strong></div>
-              <div><span>Fixed OPEX</span><strong>~£1,000 / month</strong></div>
-              <div class="breakeven-outcome is-positive"><span>Corridor result</span><strong>Positive contribution toward company overhead</strong></div>
+              <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
+              <div><span>Monthly operating result</span><strong>120,000 − 170,000 = −50,000 KES</strong></div>
+              <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — still 84 parcels/day below break-even</strong></div>
             </div>
-            <p class="breakeven-scenario-note">At 200 parcels/day across 3 hubs (~67/hub/day), the corridor generates meaningful platform revenue. Actual overhead coverage depends on confirmed fixed-cost structure at time of operation.</p>
+            <p class="breakeven-scenario-note">200 parcels/day covers 71% of illustrative fixed costs. The corridor is still loss-making under these assumptions. This is a volume milestone on the path to break-even, not a profitability milestone.</p>
+          </article>
+
+          <article class="breakeven-scenario-card is-breakeven-threshold">
+            <div class="breakeven-scenario-head">
+              <span class="breakeven-scenario-tag">Scenario D</span>
+              <strong>Break-Even Threshold</strong>
+            </div>
+            <div class="breakeven-scenario-volume">284 parcels / day · 8,520 / month</div>
+            <div class="breakeven-scenario-calc">
+              <div><span>Gross platform revenue</span><strong>170,400 KES (~£1,002)</strong></div>
+              <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
+              <div><span>Monthly operating result</span><strong>170,400 − 170,000 = +400 KES</strong></div>
+              <div class="breakeven-outcome is-neutral"><span>Status</span><strong>Illustrative break-even — first volume at which revenue covers fixed costs</strong></div>
+            </div>
+            <p class="breakeven-scenario-note">Calculated as: £1,000 × 170 KES/GBP = 170,000 KES ÷ 20 KES/parcel = 8,500 parcels/month ÷ 30 days = 284 parcels/day (rounded up from 283.3). All assumptions are illustrative and subject to revision. This threshold must rise if variable platform costs are introduced or fixed costs increase.</p>
           </article>
         </div>
 
@@ -1339,7 +1356,7 @@ const sourceReferences = [
             <div class="remuneration-mode-card">
               <span class="remuneration-mode-tag">Mode 2</span>
               <strong>Cost-recovery rate</strong>
-              <p>Platform charges only enough to cover verifiable infrastructure costs (server, SMS, audit). Estimated ~5–8 KES per parcel at pilot volumes.</p>
+              <p>Platform charges only enough to cover verifiable infrastructure costs (server, SMS, audit). The specific KES-per-parcel rate depends on actual fixed costs and achieved volumes — it cannot be estimated without a validated cost model. Under these illustrative assumptions (170,000 KES/month fixed, 8,500 parcels/month), the cost-recovery rate would equal the full 20 KES allocation.</p>
             </div>
             <div class="remuneration-mode-card is-active">
               <span class="remuneration-mode-tag">Mode 3 — Illustrative Default</span>
@@ -1349,7 +1366,7 @@ const sourceReferences = [
             <div class="remuneration-mode-card">
               <span class="remuneration-mode-tag">Mode 4</span>
               <strong>Target revenue per period</strong>
-              <p>Platform fee is adjusted dynamically to reach a defined revenue target (e.g. £5,000/month). Rate floats between a floor and ceiling per parcel. Useful for investor runway planning once pilot volumes are confirmed.</p>
+              <p>Platform fee is adjusted dynamically to reach a defined revenue target within a set timeframe. Rate floats between a configurable floor and ceiling per parcel. Any target revenue figure is illustrative for planning purposes and does not represent a guaranteed or contracted outcome.</p>
             </div>
           </div>
           <p class="breakeven-remuneration-note" role="note">
@@ -1688,6 +1705,7 @@ const sourceReferences = [
             <p>
               1,500 sealed directional transit bags (W-class) + 150 stackable cargo boxes (S-class) manufactured in China and shipped by sea to Mombasa, then SGR rail to Nairobi ICD.
               Unit cost: $6–$10 per bag, $8–$12 per box, inclusive of tamper-evident security tags.
+              <strong>Procurement note:</strong> At Stage 1–2 volumes (20–50 parcels/day), a smaller initial batch would be operationally sufficient. The full 1,500-bag order is proposed to benefit from minimum-order pricing and avoid a second sea-freight shipment. This quantity assumption is pending founder confirmation of supplier terms and pilot volume trajectory.
             </p>
           </article>
 
@@ -1932,7 +1950,7 @@ const sourceReferences = [
               <span class="footer-signal-icon"><ReceiptText class="footer-icon" aria-hidden="true" /></span>
               <span>Ledger Accounting</span>
               <strong>parcel wallet</strong>
-              <em>immutable audit</em>
+              <em>HMAC-audited</em>
             </div>
           </div>
         </div>
@@ -15165,6 +15183,11 @@ const sourceReferences = [
   .breakeven-outcome.is-neutral {
     background: color-mix(in srgb, #f59e0b 10%, transparent);
     color: #d97706;
+  }
+
+  .breakeven-scenario-card.is-breakeven-threshold {
+    border-color: #d97706;
+    background: color-mix(in srgb, #f59e0b 5%, var(--surface, #fff));
   }
 
   .breakeven-outcome.is-positive {
