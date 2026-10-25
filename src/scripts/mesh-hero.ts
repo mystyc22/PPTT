@@ -605,7 +605,7 @@ if (routeLab) {
   const BAG_TAKE_MIN = 10;
   const BAG_TAKE_MAX = 18;
   let demandValue = Number(demandInput?.value) || 8;
-  let activeShopCount = Number(shopInput?.value) || 7;
+  let activeShopCount = Math.max(SHOP_MIN, Math.min(SHOP_MAX, Number(shopInput?.value) || 10));
   let activeCourierCount = Number(courierInput?.value) || 1;
   let paused = true;
   let hasStarted = false;
