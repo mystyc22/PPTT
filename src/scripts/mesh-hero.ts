@@ -243,7 +243,7 @@ if (routeLab) {
   });
 
   const shopOrder = ["P1", "P2", "P3", "P4", "P5", "P10", "P11", "P9", "P6", "P12", "P14", "P13", "P7", "P8"];
-  const SHOP_MIN = 3;
+  const SHOP_MIN = 5;
   const SHOP_MAX = shopOrder.length;
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
   const dist = (a: NetNode, b: NetNode) => Math.hypot(a.kmX - b.kmX, a.kmY - b.kmY);
@@ -828,29 +828,6 @@ if (routeLab) {
     } else {
       pushEvent("Live mesh paused - route state held");
     }
-  });
-
-  const presetBtns = Array.from(routeLab.querySelectorAll<HTMLButtonElement>("[data-lab-preset]"));
-  presetBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      presetBtns.forEach((b) => {
-        b.classList.remove("is-active");
-        b.setAttribute("aria-pressed", "false");
-      });
-      btn.classList.add("is-active");
-      btn.setAttribute("aria-pressed", "true");
-      const count = Math.max(SHOP_MIN, Math.min(SHOP_MAX, Number(btn.dataset.labPreset) || SHOP_MIN));
-      if (shopInput) shopInput.value = String(count);
-      activeShopCount = count;
-      if (shopCount) shopCount.textContent = String(count);
-      routeLab.style.setProperty("--shop-level", String((count - SHOP_MIN) / (SHOP_MAX - SHOP_MIN)));
-      updateTopology();
-      pushEvent(count === 3 ? "Preset: 3-Hub Nairobi Pilot (P1, P2, P3)" : `Preset: ${count} simulated hubs online`);
-      if (!paused) {
-        spawnDemand();
-        tryDispatch();
-      }
-    });
   });
 
   // ---- init ----

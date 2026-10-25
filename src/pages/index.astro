@@ -111,14 +111,14 @@ const pilotMetrics = [
   "Corridor contribution margin",
 ];
 
-const threeHubStages = [
+const corridorStages = [
   {
     step: "01",
     phase: "Stage 1",
     title: "Preparation & Network Onboarding",
     items: [
-      "Partner Hub Recruitment: Selection of 3 high-foot-traffic merchant shops (dukas, pharmacies, kiosks) along a single active transit corridor.",
-      "Hardware Provisioning: Deployment of 1,500 sealed transit bags (W-class), 150 stackable crates (S-class), tamper-evident security tags, and POS signage.",
+      "Partner Hub Recruitment: Selection of 10 high-foot-traffic merchant shops (dukas, pharmacies, kiosks) along a single active transit corridor (e.g. Eastleigh wholesale through CBD to retail nodes).",
+      "Hardware Provisioning: Deployment of 1,500 sealed transit bags (W-class) and 150 stackable crates (S-class) — allocated at 15 crates per hub (one per directional sector + staging/buffer) and 150 bags per hub, with tamper-evident security tags and POS signage.",
       "Merchant & Rider Training: Conduct 2-hour interactive group workshops with onboarding incentives to establish operational protocol.",
       "Corridor Mapping & Sector Codes: Define directional 4-character sector matrices without dependency on formal street names or municipal numbering.",
     ],
@@ -128,7 +128,7 @@ const threeHubStages = [
     phase: "Stage 2",
     title: "Controlled Operations (Closed Corridor)",
     items: [
-      "Low-Volume Throttle: Cap initial live flows at 20–50 parcels daily across the 3 nodes to ensure full operational oversight.",
+      "Low-Volume Throttle: Cap initial live flows at 20–50 parcels daily across the 10 nodes (2–5 parcels/hub/day) to ensure full operational oversight during early corridor calibration.",
       "End-to-End Tracking: Validate continuous physical custody transfers: intake logging → sealed bag consolidation → carrier hop → hub outtake.",
       "Daily Separate Reconciliation: Hub cash positions and VKES settlement balances are tracked and reconciled separately. Physical cash (HUB_KES) is reconciled against recorded cash receipts, payments, courier cash-outs, and available cash-count evidence (unverified merchant-reported balance until counted). Electronic balances (HUB_VKES) are reconciled against the append-only settlement ledger. The two balances serve different purposes and are not expected to be equal; discrepancies are measured against the expected balance derived from the corresponding transaction history.",
       "Float Management: Validate merchant cash liquidity under fluctuating customer pickup and carrier payout cycles.",
@@ -139,7 +139,7 @@ const threeHubStages = [
     phase: "Stage 3",
     title: "Operational Validation & Stress Testing",
     items: [
-      "Capacity & Batching: Test peak-hour parcel aggregation rates and directional bag utilization thresholds.",
+      "Capacity & Batching: Test peak-hour parcel aggregation rates and directional bag utilization thresholds across 50+ corridor route pairs.",
       "Carrier Incentive Testing: Measure motorcycle acceptance rates and route compliance at 500 KES per 10-parcel bag along natural vectors.",
       "Cash Exchange Stress Test: Verify merchant-to-rider cash settlement rules and automated float replenishment mechanisms.",
       "Edge-Case Scenarios: Drill simulated carrier dropouts, node offline events, and bag rerouting to adjacent hubs within the sector.",
@@ -150,11 +150,11 @@ const threeHubStages = [
     phase: "Stage 4",
     title: "Expansion Decision Gate",
     items: [
-      "Strict Go/No-Go Thresholds required before onboarding Hub 4 or extending beyond the initial corridor:",
-      "≥98% on-time transit completion rate along the 3-hub corridor.",
+      "Strict Go/No-Go Thresholds required before extending beyond the initial 10-hub corridor:",
+      "≥98% on-time transit completion rate along the 10-hub corridor.",
       "0 unexplained ledger discrepancies across all recorded handovers.",
       "Sustainable carrier participation without manual administrative intervention.",
-      "All 3 pilot hubs continuously active and processing commercial parcels for ≥8 consecutive weeks (binary uptime; percentage-based retention is not a meaningful metric at 3-node scale).",
+      "All 10 pilot hubs continuously active and processing commercial parcels for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network).",
     ],
   },
 ];
@@ -272,7 +272,7 @@ const riskMitigations = [
   {
     tag: "R-07",
     risk: "Limited Early Pilot Coverage",
-    description: "An initial 3-hub network cannot offer citywide coverage, limiting initial consumer and merchant network utility.",
+    description: "An initial 10-hub corridor cannot offer citywide coverage, limiting initial consumer and merchant network utility.",
     safeguard: "Intentional corridor concentration. PPTT focuses exclusively on a high-density commercial corridor (e.g. wholesale distribution point to residential retail cluster) where concentrated parcel flow ensures sustainable bag fill rates before geographic expansion.",
   },
 ];
@@ -292,9 +292,9 @@ const fundingMilestones = [
   },
   {
     num: "03",
-    title: "Three-Hub Pilot Activation",
+    title: "Ten-Hub Corridor Activation",
     timeline: "Months 4–6",
-    deliverables: "1,500 transit bags & 150 crates delivered, 3 vetted hubs onboarded with branding, carrier pool registered.",
+    deliverables: "1,500 transit bags & 150 crates delivered (15 crates and 150 bags per hub across 10 nodes), 10 vetted hubs onboarded with branding, carrier pool registered.",
   },
   {
     num: "04",
@@ -312,7 +312,7 @@ const fundingMilestones = [
     num: "06",
     title: "Pilot Performance Review",
     timeline: "Months 11–12",
-    deliverables: "Data-driven expansion review. Success criteria at 3-hub scale: all 3 hubs active and processing parcels for ≥8 consecutive weeks, on-time transit rate ≥98%, separate daily reconciliations (physical cash against recorded cash events, and HUB_VKES against the platform ledger) completed with no unexplained gaps for ≥90% of cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements. Hub retention as a percentage is not a meaningful metric at a 3-node pilot; binary uptime and processing continuity are reported instead.",
+    deliverables: "Data-driven expansion review. Success criteria at 10-hub corridor scale: all 10 hubs active and processing parcels for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network), on-time transit rate ≥98%, separate daily reconciliations (physical cash against recorded cash events, and HUB_VKES against the platform ledger) completed with no unexplained gaps for ≥90% of cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements.",
   },
 ];
 
@@ -447,7 +447,7 @@ const sourceReferences = [
               </a>
               <a class="magnetic" href="#pilot">
                 <Route class="nav-link-icon" aria-hidden="true" />
-                <span>3-Hub Pilot</span>
+                <span>10-Hub Corridor</span>
               </a>
               <a class="magnetic" href="#risks">
                 <ClipboardCheck class="nav-link-icon" aria-hidden="true" />
@@ -658,14 +658,7 @@ const sourceReferences = [
               <span>Interactive network simulation — illustrative model, not a representation of live commercial operations.</span>
             </div>
             <div class="lab-topline">
-              <div class="lab-title-wrap">
-                <span>PPTT Simulator</span>
-                <div class="lab-presets" aria-label="Simulator Presets">
-                  <span class="lab-preset-label">Preset:</span>
-                  <button class="lab-preset-btn is-active" type="button" data-lab-preset="3" aria-pressed="true">3-Hub Pilot (Nairobi)</button>
-                  <button class="lab-preset-btn" type="button" data-lab-preset="8" aria-pressed="false">Full Mesh (8 Hubs)</button>
-                </div>
-              </div>
+              <span>PPTT Simulator</span>
               <div class="lab-live-meta">
                 <span class="lab-live-pill"><i aria-hidden="true"></i>Sim</span>
                 <strong><span data-lab-riders>0</span> riders</strong>
@@ -1280,7 +1273,7 @@ const sourceReferences = [
       <!-- SECTION: BREAK-EVEN MODEL -->
       <section class="section breakeven-section" id="breakeven" aria-labelledby="breakeven-title">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Financial Scenarios — Illustrative Break-Even Analysis (3-Hub Pilot)</p>
+          <p class="eyebrow">Financial Scenarios — Illustrative Break-Even Analysis (10-Hub Corridor)</p>
           <h2 id="breakeven-title">What does the corridor need to cover its own costs?</h2>
           <div class="economics-disclosure" role="note">
             <strong>Illustrative model only.</strong> All figures are estimates. Actual costs and volumes will be validated during the Nairobi pilot. Fixed-cost assumptions will be revised once vendor contracts and regulatory obligations are confirmed.
@@ -1289,14 +1282,14 @@ const sourceReferences = [
 
         <div class="breakeven-assumptions reveal" role="note">
           <div class="breakeven-assumptions-head">
-            <strong>Model Assumptions (Monthly, 3-Hub Corridor)</strong>
+            <strong>Model Assumptions (Monthly, 10-Hub Corridor)</strong>
           </div>
           <div class="breakeven-assumptions-grid">
             <div><span>Gross platform allocation per parcel</span><strong>20 KES (20% of 100 KES GTV)</strong></div>
             <div><span>Variable platform cost per parcel</span><strong>0 KES — hub &amp; courier costs paid directly from sender's 80 KES; platform retains only its 20 KES</strong></div>
             <div><span>Contribution margin per parcel</span><strong>20 KES (gross allocation minus variable platform cost)</strong></div>
             <div><span>Illustrative monthly fixed OPEX</span><strong>£1,000 × 170 KES/GBP = 170,000 KES (illustrative; not validated)</strong></div>
-            <div><span>Break-even formula</span><strong>170,000 KES ÷ 20 KES = 8,500 parcels/month ÷ 30 days = 284 parcels/day</strong></div>
+            <div><span>Break-even formula</span><strong>170,000 KES ÷ 20 KES = 8,500 parcels/month ÷ 30 days = 284 parcels/day (~28.4 parcels/hub/day across 10 hubs)</strong></div>
             <div><span>Operating days assumed</span><strong>30 days/month (illustrative)</strong></div>
           </div>
         </div>
@@ -1307,14 +1300,14 @@ const sourceReferences = [
               <span class="breakeven-scenario-tag">Scenario A</span>
               <strong>Pilot Validation (Stage 1–2)</strong>
             </div>
-            <div class="breakeven-scenario-volume">25 parcels / day · 750 / month</div>
+            <div class="breakeven-scenario-volume">25 parcels / day · 750 / month (~2.5 parcels/hub/day)</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>15,000 KES (~£88)</strong></div>
               <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
               <div><span>Monthly operating result</span><strong>15,000 − 170,000 = −155,000 KES</strong></div>
               <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — expected at pilot launch volumes</strong></div>
             </div>
-            <p class="breakeven-scenario-note">At 25 parcels/day the platform generates 15,000 KES gross revenue against ~170,000 KES illustrative fixed costs. This deficit is expected at Stage 1–2 and is covered by the pre-seed runway, not parcel revenue.</p>
+            <p class="breakeven-scenario-note">At 25 parcels/day across the 10-hub corridor (~2.5 parcels/hub/day), the platform generates 15,000 KES gross revenue against ~170,000 KES illustrative fixed costs. This deficit is expected at Stage 1–2 and is covered by the pre-seed runway, not parcel revenue.</p>
           </article>
 
           <article class="breakeven-scenario-card">
@@ -1322,14 +1315,14 @@ const sourceReferences = [
               <span class="breakeven-scenario-tag">Scenario B</span>
               <strong>Early Traction</strong>
             </div>
-            <div class="breakeven-scenario-volume">100 parcels / day · 3,000 / month</div>
+            <div class="breakeven-scenario-volume">100 parcels / day · 3,000 / month (10 parcels/hub/day)</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>60,000 KES (~£353)</strong></div>
               <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
               <div><span>Monthly operating result</span><strong>60,000 − 170,000 = −110,000 KES</strong></div>
               <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — still 184 parcels/day below break-even</strong></div>
             </div>
-            <p class="breakeven-scenario-note">100 parcels/day generates 60,000 KES gross revenue but covers only 35% of the illustrative 170,000 KES monthly fixed cost. This is not break-even. Deficit continues to be funded from pre-seed capital.</p>
+            <p class="breakeven-scenario-note">100 parcels/day (10 parcels/hub/day across 10 hubs) generates 60,000 KES gross revenue but covers only 35% of the illustrative 170,000 KES monthly fixed cost. This is not break-even. Deficit continues to be funded from pre-seed capital.</p>
           </article>
 
           <article class="breakeven-scenario-card">
@@ -1337,14 +1330,14 @@ const sourceReferences = [
               <span class="breakeven-scenario-tag">Scenario C</span>
               <strong>Growing Volume</strong>
             </div>
-            <div class="breakeven-scenario-volume">200 parcels / day · 6,000 / month</div>
+            <div class="breakeven-scenario-volume">200 parcels / day · 6,000 / month (20 parcels/hub/day)</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>120,000 KES (~£706)</strong></div>
               <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
               <div><span>Monthly operating result</span><strong>120,000 − 170,000 = −50,000 KES</strong></div>
               <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — still 84 parcels/day below break-even</strong></div>
             </div>
-            <p class="breakeven-scenario-note">200 parcels/day covers 71% of illustrative fixed costs. The corridor is still loss-making under these assumptions. This is a volume milestone on the path to break-even, not a profitability milestone.</p>
+            <p class="breakeven-scenario-note">200 parcels/day (20 parcels/hub/day across 10 hubs) covers 71% of illustrative fixed costs. The corridor is still loss-making under these assumptions. This is a volume milestone on the path to break-even, not a profitability milestone.</p>
           </article>
 
           <article class="breakeven-scenario-card is-breakeven-threshold">
@@ -1352,14 +1345,14 @@ const sourceReferences = [
               <span class="breakeven-scenario-tag">Scenario D</span>
               <strong>Break-Even Threshold</strong>
             </div>
-            <div class="breakeven-scenario-volume">284 parcels / day · 8,520 / month</div>
+            <div class="breakeven-scenario-volume">284 parcels / day · 8,520 / month (~28.4 parcels/hub/day)</div>
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>170,400 KES (~£1,002)</strong></div>
               <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
               <div><span>Monthly operating result</span><strong>170,400 − 170,000 = +400 KES</strong></div>
               <div class="breakeven-outcome is-neutral"><span>Status</span><strong>Illustrative break-even — first volume at which revenue covers fixed costs</strong></div>
             </div>
-            <p class="breakeven-scenario-note">Calculated as: £1,000 × 170 KES/GBP = 170,000 KES ÷ 20 KES/parcel = 8,500 parcels/month ÷ 30 days = 284 parcels/day (rounded up from 283.3). All assumptions are illustrative and subject to revision. This threshold must rise if variable platform costs are introduced or fixed costs increase.</p>
+            <p class="breakeven-scenario-note">Calculated as: £1,000 × 170 KES/GBP = 170,000 KES ÷ 20 KES/parcel = 8,500 parcels/month ÷ 30 days = 284 parcels/day (~28.4 parcels/hub/day across 10 hubs; rounded up from 283.3). All assumptions are illustrative and subject to revision. This threshold must rise if variable platform costs are introduced or fixed costs increase.</p>
           </article>
         </div>
 
@@ -1472,14 +1465,14 @@ const sourceReferences = [
       <section class="section pilot" id="pilot">
         <div class="section-heading simple-heading reveal">
           <p class="eyebrow">First Deployment Corridor</p>
-          <h2>First Deployment — Three-Hub Nairobi Pilot</h2>
+          <h2>First Deployment — 10-Hub Nairobi Corridor</h2>
           <p class="pilot-intro">
-            The pilot tests the core hypothesis: can 3 commercial merchant hubs exchange batched parcel bags along a single high-density Nairobi corridor using independent boda-boda carriers and a cryptographic ledger without central warehouses? By constraining the initial deployment to three physical nodes along an active movement axis, PPTT validates custody handoffs, merchant float liquidity, and batch economics under real street conditions before scaling.
+            The pilot tests the core hypothesis: can 10 commercial merchant hubs exchange batched parcel bags along a single high-density Nairobi corridor using independent boda-boda carriers and a cryptographic ledger without central warehouses? By constraining the initial deployment to 10 physical nodes along an active movement axis, PPTT validates custody handoffs, merchant float liquidity, and batch economics under real street conditions before scaling.
           </p>
         </div>
 
-        <div class="three-hub-pilot-grid reveal" aria-label="Four stages of the Three-Hub Pilot">
-          {threeHubStages.map((stage) => (
+        <div class="three-hub-pilot-grid reveal" aria-label="Four stages of the 10-Hub Pilot Corridor">
+          {corridorStages.map((stage) => (
             <article class="three-hub-stage-card">
               <div class="three-hub-stage-head">
                 <span class="three-hub-step-code">{stage.step}</span>
@@ -1501,7 +1494,7 @@ const sourceReferences = [
             <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
           </div>
           <p>
-            Zero geographic expansion until the initial corridor demonstrates: (1) all 3 hubs continuously active for ≥8 consecutive weeks, (2) on-time transit completion rate ≥98%, (3) separate daily reconciliations completed with no unexplained gaps for ≥90% of daily cycles — reconciling hub-reported physical cash (HUB_KES) against documented cash movements/counts, and electronic settlement balances (HUB_VKES) against the platform ledger, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
+            Zero geographic expansion until the initial corridor demonstrates: (1) all 10 hubs continuously active for ≥8 consecutive weeks (≥90% active hub retention across the 10-node network), (2) on-time transit completion rate ≥98%, (3) separate daily reconciliations completed with no unexplained gaps for ≥90% of daily cycles — reconciling hub-reported physical cash (HUB_KES) against documented cash movements/counts, and electronic settlement balances (HUB_VKES) against the platform ledger, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
           </p>
         </div>
 
@@ -1515,7 +1508,7 @@ const sourceReferences = [
             <div class="pilot-map-panel" aria-label="Pilot corridor overview">
               <div class="pilot-map-status">
                 <span>Single corridor, four validation gates</span>
-                <strong>P1 -> P4</strong>
+                <strong>P1 -> P10</strong>
               </div>
               <div class="pilot-corridor-rail">
                 <div class="pilot-rail-line" aria-hidden="true"><span></span></div>
@@ -1556,7 +1549,7 @@ const sourceReferences = [
             <div class="pilot-console-foot" aria-label="Corridor operational rules">
               <div>
                 <span>Scope</span>
-                <strong>3-hub corridor</strong>
+                <strong>10-hub corridor</strong>
               </div>
               <div>
                 <span>Test Cycle</span>
@@ -1997,7 +1990,7 @@ const sourceReferences = [
               <a href="#story">Parcel Journey</a>
               <a href="#economics">Unit Economics</a>
               <a href="#moat">Competitive Moat</a>
-              <a href="#pilot">3-Hub Pilot</a>
+              <a href="#pilot">10-Hub Corridor</a>
               <a href="#risks">Risks &amp; Safeguards</a>
               <a href="#sponsor">Pre-Seed — £175,000</a>
               <a href="#sources">Sources &amp; Methodology</a>
@@ -15625,52 +15618,7 @@ const sourceReferences = [
     letter-spacing: 0.02em;
   }
 
-  .lab-title-wrap {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    flex-wrap: wrap;
-  }
 
-  .lab-presets {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(35, 61, 77, 0.08);
-    padding: 3px 6px;
-    border-radius: 6px;
-  }
-
-  .lab-preset-label {
-    font-size: 0.72rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    padding-left: 4px;
-  }
-
-  .lab-preset-btn {
-    border: none;
-    background: transparent;
-    font-size: 0.74rem;
-    font-weight: 700;
-    color: var(--navy);
-    padding: 4px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 160ms ease, color 160ms ease;
-  }
-
-  .lab-preset-btn:hover {
-    background: rgba(254, 127, 45, 0.12);
-    color: var(--orange);
-  }
-
-  .lab-preset-btn.is-active {
-    background: var(--navy);
-    color: var(--white);
-  }
 
   /* Economics Disclosure & Footnote */
   .economics-disclosure {
