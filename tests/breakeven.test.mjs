@@ -83,6 +83,18 @@ eq("B negative",               monthlyResult(100, G, V, FIXED, DAYS)  < 0,  true
 eq("C negative",               monthlyResult(200, G, V, FIXED, DAYS)  < 0,  true);
 eq("D positive",               monthlyResult(284, G, V, FIXED, DAYS)  > 0,  true);
 
+// Verify index.astro equations and wording
+import fs from "node:fs";
+import path from "node:path";
+const indexContent = fs.readFileSync(path.resolve("src/pages/index.astro"), "utf-8");
+
+eq("Scenario A equation syntax", indexContent.includes("15,000 − 170,000 = −155,000 KES"), true);
+eq("Scenario A has no wrong sign", !indexContent.includes("−15,000 − 170,000"), true);
+eq("Scenario B equation syntax", indexContent.includes("60,000 − 170,000 = −110,000 KES"), true);
+eq("Scenario C equation syntax", indexContent.includes("120,000 − 170,000 = −50,000 KES"), true);
+eq("Scenario D equation syntax", indexContent.includes("170,400 − 170,000 = +400 KES"), true);
+eq("No direct cash-to-VKES reconciliation match claim", !indexContent.includes("Reconcile declared merchant physical cash (HUB_KES) against the platform-credited electronic settlement balance"), true);
+
 // Print
 console.log("\n=== PPTT Break-Even Regression Tests ===");
 log.forEach(l => console.log(l));

@@ -52,8 +52,8 @@ const projectStages = [
     tag: "04",
     label: "Finance",
     title: "Controlled Settlement, Local Cash",
-    body: "Customers pay participating hubs in cash. Each hub funds parcel operations using its existing VKES settlement balance, initially backed by verified KES funding. As verified parcel events occur, the system records the allocation of earnings to eligible hubs and carriers. Physical cash remains with participating hubs, while PPTT maintains the electronic settlement ledger and reserve-backed redemption mechanism.",
-    secondary: "Hub cash balances are operational records, not independently verified bank balances. Cash availability is confirmed during withdrawal, while VKES transfers are recorded and controlled electronically.",
+    body: "Customers pay participating hubs in cash. Each hub funds parcel operations using an internal VKES settlement balance funded via initial KES deposits. As verified parcel events occur, the system records the allocation of earnings to eligible hubs and carriers. Physical cash remains with participating hubs, while PPTT maintains the electronic settlement ledger. The proposed VKES settlement model includes initial KES deposits and mechanisms for cash redemption through participating hubs. The final structure for reserve custody, backing verification, liquidity management, and platform-level redemption obligations remains subject to operational validation and Kenyan legal review.",
+    secondary: "Hub cash positions and VKES settlement balances are tracked and reconciled separately. Physical cash is reconciled against recorded cash movements and available cash-count evidence, while VKES balances are reconciled against the electronic settlement ledger. The two balances serve different purposes and are not expected to be equal.",
     metric: "controlled VKES ledger",
     visual: "ledger",
   },
@@ -130,7 +130,7 @@ const threeHubStages = [
     items: [
       "Low-Volume Throttle: Cap initial live flows at 20–50 parcels daily across the 3 nodes to ensure full operational oversight.",
       "End-to-End Tracking: Validate continuous physical custody transfers: intake logging → sealed bag consolidation → carrier hop → hub outtake.",
-      "Daily Reconciliation: Reconcile declared merchant physical cash (HUB_KES) against the platform-credited electronic settlement balance (HUB_VKES) for each hub. These are structurally distinct accounts: HUB_KES reflects unverified declared cash; HUB_VKES is the platform-controlled ledger balance funded via the hub_cash_to_vkes conversion event. Reconciliation flags unexplained gaps, not an expected equality.",
+      "Daily Separate Reconciliation: Hub cash positions and VKES settlement balances are tracked and reconciled separately. Physical cash (HUB_KES) is reconciled against recorded cash receipts, payments, courier cash-outs, and available cash-count evidence (unverified merchant-reported balance until counted). Electronic balances (HUB_VKES) are reconciled against the append-only settlement ledger. The two balances serve different purposes and are not expected to be equal; discrepancies are measured against the expected balance derived from the corresponding transaction history.",
       "Float Management: Validate merchant cash liquidity under fluctuating customer pickup and carrier payout cycles.",
     ],
   },
@@ -207,7 +207,7 @@ const technicalModules = [
     status: "Partially Implemented",
     statusType: "partial",
     tech: "Ledger Rule Protocol",
-    description: "Separation between physical merchant cash (HUB_KES) and verified digital settlement (HUB_VKES). Inter-hub float balancing in specification.",
+    description: "Architectural separation: physical merchant cash (HUB_KES) tracked separately from platform electronic settlement (HUB_VKES), each reconciled against its own transaction history.",
   },
   {
     name: "Security Testing & Audit",
@@ -243,7 +243,7 @@ const riskMitigations = [
     tag: "R-02",
     risk: "Hub Cash Misappropriation",
     description: "A merchant partner attempts to withhold cash collected from customers or claims unreceived parcel bags.",
-    safeguard: "Strict architectural separation between unverified physical cash (HUB_KES) and verified digital settlement (HUB_VKES). Parcels require cryptographic counterparty confirmation before ledger balances release. Physical cash liability is capped per hub tier.",
+    safeguard: "Strict architectural separation: hub-held cash (HUB_KES) is unverified merchant custody reconciled against recorded cash movements, whereas electronic balances (HUB_VKES) settle on the platform ledger. Parcels require cryptographic counterparty confirmation before ledger balances release. Physical cash exposure is capped per hub tier with separate reconciliation streams.",
   },
   {
     tag: "R-03",
@@ -312,7 +312,7 @@ const fundingMilestones = [
     num: "06",
     title: "Pilot Performance Review",
     timeline: "Months 11–12",
-    deliverables: "Data-driven expansion review. Success criteria at 3-hub scale: all 3 hubs active and processing parcels for ≥8 consecutive weeks, on-time transit rate ≥98%, HUB_KES/HUB_VKES reconciliation completed with no unexplained gaps for ≥90% of daily cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements. Hub retention as a percentage is not a meaningful metric at a 3-node pilot; binary uptime and processing continuity are reported instead.",
+    deliverables: "Data-driven expansion review. Success criteria at 3-hub scale: all 3 hubs active and processing parcels for ≥8 consecutive weeks, on-time transit rate ≥98%, separate daily reconciliations (physical cash against recorded cash events, and HUB_VKES against the platform ledger) completed with no unexplained gaps for ≥90% of cycles, and carrier assignment achieved without manual dispatch for ≥95% of bag movements. Hub retention as a percentage is not a meaningful metric at a 3-node pilot; binary uptime and processing continuity are reported instead.",
   },
 ];
 
@@ -321,42 +321,63 @@ const sourceReferences = [
     category: "Demographics & Urban Growth",
     metric: "Nairobi Metropolitan Population & Growth",
     source: "Kenya National Bureau of Statistics (KNBS)",
-    detail: "2019 Kenya Population and Housing Census & 2024–2030 Urban Projections (~5.5M metropolitan area population, growing at ~3.8% annually).",
+    scope: "Nairobi Metropolitan Area · 2019 Census & Projections",
+    status: "Verified (Official Statistics)",
+    url: "https://www.knbs.or.ke",
+    detail: "2019 Kenya Population and Housing Census (4.40M county population) and urban metropolitan projections (~5.5M in the wider commuter zone, growing at ~3.8% annually).",
   },
   {
     category: "Informal Transit Fleet",
     metric: "Boda-Boda (Motorcycle Taxi) Fleet Density",
     source: "Boda Boda Association of Kenya (BAK) & Ministry of Transport",
-    detail: "National registry estimates (~1.5M registered motorcycles in Kenya, with ~200,000+ active operators in the Nairobi metropolitan zone).",
+    scope: "Nairobi Metropolitan Zone · 2023–2024 Estimates",
+    status: "Estimated (Industry Registry)",
+    url: "https://bak.co.ke",
+    detail: "National registry estimates (~1.4M–1.6M commercial motorcycles nationwide, with ~200,000+ active operators estimated in the Nairobi metropolitan area; exact municipal numbers unverified due to informal registration).",
   },
   {
     category: "Market Opportunity",
     metric: "East Africa E-Commerce Market Dynamics",
-    source: "Statista Digital Market Insights & UNCTAD E-Commerce Report",
-    detail: "East African e-commerce projected CAGR >20%, with logistics and last-mile addressing cited as primary structural bottlenecks.",
+    source: "Statista Digital Market Insights & UNCTAD B2C E-Commerce Index",
+    scope: "East Africa & Kenya · 2024–2025 Market Forecasts",
+    status: "Estimated (Market Forecast)",
+    url: "https://unctad.org/topic/ecommerce-and-digital-economy",
+    detail: "East African regional e-commerce GMV projected to scale toward $2.9B by 2025 (Kenya domestic e-commerce ~$1B+), with physical logistics and last-mile addressing cited as primary operational constraints.",
   },
   {
     category: "Urban Infrastructure",
-    metric: "Unaddressed Urban Settlements",
-    source: "UN-Habitat & World Bank Urban Development Assessments",
-    detail: "Estimated ~60% of Nairobi's urban population resides in informally organized or non-gazetted street layouts without municipal door numbering.",
+    metric: "Informal Settlements & Street Addressing",
+    source: "UN-Habitat (Nairobi Urban Profile) & World Bank (KISIP)",
+    scope: "Nairobi County · Published Urban Studies",
+    status: "Verified Estimate (Multi-lateral Reports)",
+    url: "https://unhabitat.org/nairobi-urban-sector-profile",
+    detail: "Over 60% of Nairobi's urban population resides in informal or unplanned settlements occupying approximately 5–6% of the city's residential land area. Street naming and municipal building numbering are absent across the majority of these dense informal and peri-urban sectors.",
   },
   {
     category: "Digital Financial Rails",
     metric: "Mobile Financial Services Transaction Scale",
     source: "Safaricom PLC FY2024 Annual Report",
-    detail: "M-Pesa platform processed >42 billion transactions and >$300 billion equivalent annual transaction volume, establishing ubiquitous local payment familiarity.",
+    scope: "Kenya (National) · Financial Year Ended March 31, 2024",
+    status: "Verified (Audited Corporate Filing)",
+    url: "https://www.safaricom.co.ke/investor-relations/financial-reports",
+    detail: "M-Pesa platform processed 28.33 billion transactions (~77M daily transactions) with KShs 40.24 trillion (~$300 billion equivalent) annual transaction volume in FY2024, demonstrating ubiquitous consumer and merchant adoption of mobile money.",
   },
   {
     category: "Benchmarking",
     metric: "Competitor Courier Tariffs & Operational Models",
-    source: "Publicly Observable Rate Sheets & Courier Service Schedules",
-    detail: "Standard intra-city courier tariffs in Nairobi range from 300 to 800 KES for next-day dispatch, driven by central sorting facility and dedicated fleet overhead.",
+    source: "Publicly Observable Rate Cards & Courier Schedules",
+    scope: "Nairobi Intra-City · Published Rate Cards",
+    status: "Observable Market Benchmarks",
+    url: "https://pickupmtaani.com",
+    detail: "Published point-to-point and counter tariffs: Posta Kenya counter collection (~100 KES between post offices), Pickup Mtaani agent-to-agent (100 KES CBD-to-Mtaani, 180 KES Mtaani-to-Mtaani via central CBD sorting), and express couriers (300–800 KES door-to-door with dedicated vehicle fleets).",
   },
   {
     category: "Architecture & Specifications",
     metric: "PPTT System Architecture & Ledger Specifications",
     source: "PPTT Product Requirements Document (PRD v1.0)",
+    scope: "PPTT Core Architecture · Internal Technical Design",
+    status: "Internal Specification",
+    url: "",
     detail: "Sections 27–30 specifying double-entry bookkeeping, HMAC cryptographic audit logs, and deterministic 8-directional corridor sector routing.",
   },
 ];
@@ -1060,8 +1081,8 @@ const sourceReferences = [
           <p class="eyebrow">Market Context &amp; Opportunity — Nairobi &amp; Regional Metropolises</p>
           <h2 id="market-title">Millions of parcels moving daily across a city without formal addresses.</h2>
           <p class="market-intro">
-            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~200,000+ active boda-boda operators</strong> in the metropolitan zone (Boda Boda Association of Kenya / Ministry of Transport estimate), and one of the world's most active mobile-money ecosystems (M-Pesa). 
-            Yet affordable last-mile delivery remains structurally challenging — not due to a lack of commercial demand, but because conventional logistics models were engineered for street addresses and low-cost central warehouse real estate. Nairobi has neither.
+            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~200,000+ active boda-boda operators</strong> in the metropolitan zone (Boda Boda Association of Kenya / Ministry of Transport estimate), and one of Africa's leading mobile-money ecosystems (Safaricom M-Pesa). 
+            Yet affordable last-mile delivery remains structurally challenging: over 60% of residents live in informal settlements without municipal door numbering, and conventional logistics models rely on street addresses and high-rent central sorting warehouses that do not fit local urban geography.
           </p>
         </div>
 
@@ -1070,37 +1091,37 @@ const sourceReferences = [
           <div class="market-stat-card">
             <span class="market-stat-num">5.5M+</span>
             <span class="market-stat-label">Nairobi residents</span>
-            <span class="market-stat-sub">High urban density without formal street addressing (KNBS projection)</span>
+            <span class="market-stat-sub">High urban density without formal municipal street addressing (KNBS metropolitan projection; verified)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">200K+</span>
             <span class="market-stat-label">Active boda-boda operators</span>
-            <span class="market-stat-sub">Active operators in Nairobi metro zone (BAK / Ministry of Transport est.)</span>
+            <span class="market-stat-sub">Active operators in Nairobi metro zone (BAK / Ministry of Transport est.; industry estimate)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">$2.9B</span>
             <span class="market-stat-label">East Africa e-commerce (2025)</span>
-            <span class="market-stat-sub">Projected 20%+ annual growth; physical fulfillment lags digital payments (Statista/UNCTAD)</span>
+            <span class="market-stat-sub">Statista/UNCTAD regional forecast; Kenya domestic market ~$1B+ (market estimate)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">~60%</span>
-            <span class="market-stat-label">Unaddressed urban areas</span>
-            <span class="market-stat-sub">Est. ~60% of Nairobi residents in informally organised areas without municipal door numbering (UN-Habitat / World Bank; unverified direct link)</span>
+            <span class="market-stat-label">Informal settlement population</span>
+            <span class="market-stat-sub">Over 60% of Nairobi residents live in informal settlements on ~5–6% of residential land, lacking municipal door numbers (UN-Habitat / World Bank KISIP; verified estimate)</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">45M+</span>
-            <span class="market-stat-label">M-Pesa transactions / day</span>
-            <span class="market-stat-sub">Proof of digital payment ubiquity in Kenya (Safaricom FY2024 Report)</span>
+            <span class="market-stat-num">28.3B</span>
+            <span class="market-stat-label">M-Pesa annual transactions</span>
+            <span class="market-stat-sub">~77M+ transactions/day; KShs 40.2T ($300B) annual value across Kenya (Safaricom FY2024 Report; verified)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">20+</span>
-            <span class="market-stat-label">African megacities</span>
-            <span class="market-stat-sub">Lagos, Kampala, Dar es Salaam — similar addressing and traffic challenges (Regional benchmark)</span>
+            <span class="market-stat-label">Regional urban metropolises</span>
+            <span class="market-stat-sub">Kampala, Dar es Salaam, Lagos — similar addressing and traffic dynamics (Illustrative regional comparison)</span>
           </div>
 
         </div>
@@ -1290,7 +1311,7 @@ const sourceReferences = [
             <div class="breakeven-scenario-calc">
               <div><span>Gross platform revenue</span><strong>15,000 KES (~£88)</strong></div>
               <div><span>Monthly fixed OPEX (illustrative)</span><strong>170,000 KES (~£1,000)</strong></div>
-              <div><span>Monthly operating result</span><strong>−15,000 − 170,000 ≃ −155,000 KES</strong></div>
+              <div><span>Monthly operating result</span><strong>15,000 − 170,000 = −155,000 KES</strong></div>
               <div class="breakeven-outcome is-shortfall"><span>Status</span><strong>Operating deficit — expected at pilot launch volumes</strong></div>
             </div>
             <p class="breakeven-scenario-note">At 25 parcels/day the platform generates 15,000 KES gross revenue against ~170,000 KES illustrative fixed costs. This deficit is expected at Stage 1–2 and is covered by the pre-seed runway, not parcel revenue.</p>
@@ -1480,7 +1501,7 @@ const sourceReferences = [
             <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
           </div>
           <p>
-            Zero geographic expansion until the initial corridor demonstrates: (1) all 3 hubs continuously active for ≥8 consecutive weeks, (2) on-time transit completion rate ≥98%, (3) verified reconciliation between declared merchant physical cash (HUB_KES) and platform electronic settlement balances (HUB_VKES) with no unexplained gaps for ≥90% of daily reconciliation cycles, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
+            Zero geographic expansion until the initial corridor demonstrates: (1) all 3 hubs continuously active for ≥8 consecutive weeks, (2) on-time transit completion rate ≥98%, (3) separate daily reconciliations completed with no unexplained gaps for ≥90% of daily cycles — reconciling hub-reported physical cash (HUB_KES) against documented cash movements/counts, and electronic settlement balances (HUB_VKES) against the platform ledger, (4) carrier bag assignment achieved without manual dispatch for ≥95% of movements, and (5) no unresolved ledger disputes outstanding.
           </p>
         </div>
 
@@ -1739,8 +1760,8 @@ const sourceReferences = [
             </div>
             <h3>Strategic Reserve (Operational Contingency) — £35,000</h3>
             <p>
-              Corridor liquidity float for early parcel settlements, unforeseen street-level operational dynamics, and capital agility for rapid market adjustments during the first 6 months of live operation.
-              <strong>Reserve disclosure:</strong> This £35,000 is held as general operating working capital. It is structurally separate from any electronic settlement currency (VKES) backing reserves. The same capital cannot simultaneously serve as operational cash flow and segregated settlement token backing; investor funds covering this line are allocated exclusively to operational contingencies.
+              Operating contingency reserve for unforeseen street-level dynamics, initial operational float adjustments, and runway buffer during the first 6 months of live corridor operation.
+              <strong>Reserve &amp; custody disclosure:</strong> This £35,000 is allocated strictly as general company operating working capital. It does not constitute a segregated reserve for backing outstanding VKES balances or customer redemptions. Cash collected from parcel senders remains under the custody of participating merchant hubs, while centrally controlled investor funds cover operational runway. The permanent institutional structure for VKES reserve custody, third-party backing verification, and platform redemption obligations remains an unresolved design decision to be determined in consultation with Kenyan legal counsel and regulatory guidance prior to commercial scaling.
             </p>
           </article>
 
@@ -1894,10 +1915,21 @@ const sourceReferences = [
             <article class="source-card">
               <div class="source-card-top">
                 <span class="source-category-tag">{ref.category}</span>
-                <span class="source-org">{ref.source}</span>
+                <span class="source-status-badge">{ref.status}</span>
               </div>
               <h3>{ref.metric}</h3>
+              <div class="source-meta">
+                <span class="source-org">{ref.source}</span>
+                {ref.scope && <span class="source-scope">· {ref.scope}</span>}
+              </div>
               <p>{ref.detail}</p>
+              {ref.url && (
+                <div class="source-card-link">
+                  <a href={ref.url} target="_blank" rel="noopener noreferrer" class="source-link" aria-label={`View external source for ${ref.metric}`}>
+                    Source reference ↗
+                  </a>
+                </div>
+              )}
             </article>
           ))}
         </div>
@@ -16191,6 +16223,48 @@ const sourceReferences = [
     line-height: 1.55;
     color: var(--muted);
     margin: 0;
+  }
+
+  .source-status-badge {
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: rgba(35, 61, 77, 0.08);
+    color: var(--navy);
+  }
+
+  .source-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.74rem;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+
+  .source-scope {
+    color: var(--muted);
+    font-weight: 500;
+  }
+
+  .source-card-link {
+    margin-top: 4px;
+  }
+
+  .source-link {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--orange);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.2s ease;
+  }
+
+  .source-link:hover {
+    opacity: 0.8;
   }
 
   /* Accessibility: Prefers Reduced Motion */
