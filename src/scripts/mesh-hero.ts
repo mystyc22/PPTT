@@ -243,7 +243,7 @@ if (routeLab) {
   });
 
   const shopOrder = ["P1", "P2", "P3", "P4", "P5", "P10", "P11", "P9", "P6", "P12", "P14", "P13", "P7", "P8"];
-  const SHOP_MIN = 5;
+  const SHOP_MIN = 3;
   const SHOP_MAX = shopOrder.length;
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
   const dist = (a: NetNode, b: NetNode) => Math.hypot(a.kmX - b.kmX, a.kmY - b.kmY);
@@ -828,6 +828,29 @@ if (routeLab) {
     } else {
       pushEvent("Live mesh paused - route state held");
     }
+  });
+
+  const presetBtns = Array.from(routeLab.querySelectorAll<HTMLButtonElement>("[data-lab-preset]"));
+  presetBtns.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      presetBtns.forEach((b) => {
+        b.classList.remove("is-active");
+        b.setAttribute("aria-pressed", "false");
+      });
+      btn.classList.add("is-active");
+      btn.setAttribute("aria-pressed", "true");
+      const count = Math.max(SHOP_MIN, Math.min(SHOP_MAX, Number(btn.dataset.labPreset) || SHOP_MIN));
+      if (shopInput) shopInput.value = String(count);
+      activeShopCount = count;
+      if (shopCount) shopCount.textContent = String(count);
+      routeLab.style.setProperty("--shop-level", String((count - SHOP_MIN) / (SHOP_MAX - SHOP_MIN)));
+      updateTopology();
+      pushEvent(count === 3 ? "Preset: 3-Hub Nairobi Pilot (P1, P2, P3)" : `Preset: ${count} simulated hubs online`);
+      if (!paused) {
+        spawnDemand();
+        tryDispatch();
+      }
+    });
   });
 
   // ---- init ----
@@ -1419,9 +1442,9 @@ if (!reduceMotion) {
         main: "R2",
         sub: "already traveling across sector 4",
         detailLabel: "Why R2",
-        detail: "System prioritizes riders already on this corridor, eliminating deadhead return trips.",
+        detail: "System matches riders already traversing this corridor, designed to reduce empty return trips.",
         marketTitle: "Transit Dispatch",
-        decisionTitle: "Assign R2 to eliminate empty miles",
+        decisionTitle: "Assign R2 to reduce empty miles",
         decisionNote: "R2 is already traversing sector 4, utilizing existing urban movement vectors.",
         visualTitle: "Match rider's natural path",
         visualKicker: "Carrier Exchange",
@@ -1452,7 +1475,7 @@ if (!reduceMotion) {
         detail: "Tracking events, hub commissions, rider payout, and network margin settle hop by hop.",
         marketTitle: "Settlement",
         decisionTitle: "Commit to internal ledger",
-        decisionNote: "The parcel finances its own transit in real time. Hubs and riders receive instant payouts upon verified handover.",
+        decisionNote: "The hub uses its VKES balance to fund transit. Hubs and riders receive verified ledger allocations upon handover.",
         visualTitle: "Handover audit",
         visualKicker: "Financial Ledger",
         visualNote: "Rate, hub commission, rider payout, and surplus are verified on COMMIT.",
@@ -1681,7 +1704,7 @@ if (pilotSystem) {
     },
     {
       title: "Freight Exchange for Private Carriers",
-      copy: "Private motorcycle taxi operators waiting at stands pick up ready bags along their natural route, eliminating empty runs.",
+      copy: "Private motorcycle taxi operators waiting at stands pick up ready bags along their natural route, designed to reduce empty return trips.",
       window: "Gate 03",
       target: "sealed bags",
       measure: "transit speed",
@@ -1743,7 +1766,7 @@ const leadConfigs = {
   investor: {
     audience: "Investor",
     title: "Request the PPTT Investor Deck & Corridor Plan.",
-    copy: "Contact us to receive the pilot corridor rollout strategy, Unit Economics, and Pre-Seed parameters (£100k–£160k).",
+    copy: "Contact us to receive the pilot corridor rollout strategy, Unit Economics, and Pre-Seed parameters (£175k).",
     lane: "Investor Deck",
     reply: "deck + pre-seed terms",
     typeLabel: "Investor Profile",
@@ -1769,7 +1792,7 @@ const leadConfigs = {
   rider: {
     audience: "Rider",
     title: "Join the PPTT Carrier Network.",
-    copy: "Earn steady income transporting sealed bags along your existing daily urban travel routes with zero deadheading.",
+    copy: "Earn steady income transporting sealed bags along your existing daily urban travel routes, designed to reduce empty mileage.",
     lane: "Carrier Network",
     reply: "carrier registration",
     typeLabel: "Vehicle / Profile",

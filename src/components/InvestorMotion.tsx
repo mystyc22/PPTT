@@ -16,9 +16,9 @@ const scaleSteps = [
   },
   {
     code: "03",
-    title: "Eliminate Fixed Warehouse Leases",
-    body: "Central warehouses are obsolete—a distributed mesh of local shops and motorcycles is cheaper, more agile, and immune to urban traffic gridlock.",
-    metric: "zero fixed rent",
+    title: "Lower Fixed-Asset Overhead",
+    body: "An alternative to centralized sorting infrastructure—a distributed mesh of local shops and motorcycles is designed to reduce fixed overhead and avoid congested central sorting routes.",
+    metric: "lower fixed rent",
   },
 ];
 
@@ -31,7 +31,7 @@ const scaleSignals = [
 
 const scaleChecks = [
   ["Open a Hub", "Only where it shortens distance and establishes reliable node-to-node connectivity."],
-  ["Asset-Light Nodes", "Zero printers, zero warehouse payroll; a single counter shelf is all it takes."],
+  ["Asset-Light Nodes", "Zero printers; a single counter shelf in an existing shop is all it takes."],
   ["Data-Driven Mesh", "Network density grows organically based on verified parcel bag velocities."],
 ];
 
@@ -58,7 +58,7 @@ const cycleNodes = [
     key: "rider",
     label: "Rider",
     title: "Private Carriers (Moto-Taxi)",
-    body: "Boda-boda riders waiting at stands pick up sealed bags along their natural route, minimizing empty return trips.",
+    body: "Boda-boda riders waiting at stands pick up sealed bags along their natural route, designed to reduce empty return trips.",
     stat: "freight exchange",
     x: "71.9%",
     y: "80%",
@@ -67,7 +67,7 @@ const cycleNodes = [
     key: "ledger",
     label: "Ledger",
     title: "Ledger Clears Hop by Hop",
-    body: "The parcel pays for its own transit in digital balance. Hubs and riders receive payments instantly upon handover.",
+    body: "Electronic settlement ledger records earnings for hubs and riders upon verified transit events.",
     stat: "balance audit",
     x: "28.1%",
     y: "80%",
@@ -212,7 +212,7 @@ export default function InvestorMotion() {
           >
             <div className="scale-panel-head">
               <span>Micro-Hub Network Expansion</span>
-              <strong>Zero Fixed Warehouses</strong>
+              <strong>Lower Fixed-Asset Overhead</strong>
             </div>
             <div className="scale-cycle-layout" aria-label="Hub network expansion cycle">
               <div className="scale-cycle-orbit">
@@ -249,7 +249,7 @@ export default function InvestorMotion() {
                 <div className="scale-cycle-core">
                   <span>PPTT Mesh</span>
                   <strong>hub-to-hub</strong>
-                  <small>{activeCycle.label}{" -> "}{nextCycle.label}</small>
+                  <small>{activeCycle.label} &rarr; {nextCycle.label}</small>
                 </div>
                 {cycleNodes.map((node, nodeIndex) => (
                   <button
@@ -318,11 +318,11 @@ export default function InvestorMotion() {
               <span>Infrastructure Strategy</span>
               <div>
                 <strong>Onboard Local Shops</strong>
-                <p>Zero lease overhead, local merchant engagement, instant zero-risk scale.</p>
+                <p>Lower lease overhead, local merchant engagement, and reduced fixed-asset expansion costs.</p>
               </div>
               <div>
                 <strong>Avoid Central Sorting Depots</strong>
-                <p>Central sorting hubs introduce single points of failure and crushing fixed costs in address-less cities.</p>
+                <p>Central sorting hubs introduce single points of failure and high fixed overhead in unaddressed urban terrain.</p>
               </div>
             </div>
           </div>

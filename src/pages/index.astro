@@ -4,8 +4,10 @@ import {
   ArrowRightLeft,
   BadgeCheck,
   Bike,
-  ClipboardCheck,
+  CheckCircle2,
   ChevronDown,
+  ClipboardCheck,
+  FileText,
   ListTree,
   MapPinned,
   Menu,
@@ -14,6 +16,7 @@ import {
   ReceiptText,
   Route,
   ScanLine,
+  ShieldAlert,
   ShoppingBag,
   Store,
   Waypoints,
@@ -41,23 +44,24 @@ const projectStages = [
     tag: "03",
     label: "Transport",
     title: "Private Carriers & Freight Exchange",
-    body: "These riders are independent boda-boda taxi operators waiting at stands. PPTT’s freight exchange batches full sealed bags along their natural route, minimizing empty return miles and maximizing driver earnings.",
-    metric: "zero empty miles",
+    body: "These riders are independent boda-boda taxi operators waiting at stands. PPTT’s freight exchange batches full sealed bags along their natural route, designed to reduce empty return mileage and offer attractive incentives for participating riders.",
+    metric: "reduced empty mileage",
     visual: "riders",
   },
   {
     tag: "04",
     label: "Finance",
-    title: "The Self-Funding Parcel",
-    body: "Senders pay cash at the intake hub, converted into internal digital balance. As the parcel travels toward its target, it pays every hub and courier hop by hop upon verified handover.",
-    metric: "parcel balance",
+    title: "Controlled Settlement, Local Cash",
+    body: "Customers pay participating hubs in cash. Each hub funds parcel operations using its existing VKES settlement balance, initially backed by verified KES funding. As verified parcel events occur, the system records the allocation of earnings to eligible hubs and carriers. Physical cash remains with participating hubs, while PPTT maintains the electronic settlement ledger and reserve-backed redemption mechanism.",
+    secondary: "Hub cash balances are operational records, not independently verified bank balances. Cash availability is confirmed during withdrawal, while VKES transfers are recorded and controlled electronically.",
+    metric: "controlled VKES ledger",
     visual: "ledger",
   },
   {
     tag: "05",
     label: "Scale",
     title: "Organic Mesh Expansion",
-    body: "A flat network without central sorting bottlenecks. When a node nears capacity, the network onboards an adjacent shop, tightening network density and shortening transit legs.",
+    body: "A flat network designed to reduce reliance on central sorting bottlenecks. When a node nears capacity, the network onboards an adjacent shop, tightening network density and shortening transit legs.",
     metric: "flat mesh",
     visual: "mesh",
   },
@@ -91,20 +95,270 @@ const storySteps = [
 ];
 
 const modelRows = [
-  ["Zero Central Sorting Warehouses", "Flat peer-to-peer mesh of equal neighborhood nodes; zero warehouse bottlenecks"],
+  ["Alternative to Central Warehouses", "Flat peer-to-peer mesh of equal neighborhood nodes; reduced sorting bottlenecks"],
   ["4-Character Pen Code Only", "Zero printers or paper labels; functions seamlessly even with weak connectivity"],
   ["Sealed Transit Bags", "Opened strictly when switching directional corridor sectors"],
-  ["Private Motorcycle Carriers", "Freight exchange batches sealed cargo along natural travel routes, eliminating empty return miles"],
+  ["Private Motorcycle Carriers", "Freight exchange batches sealed cargo along natural travel routes, designed to reduce empty return trips"],
   ["Neighborhood Hub Pickup", "Hub-to-hub delivery model avoids wandering through unmapped, address-less streets"],
 ];
 
 const pilotMetrics = [
-  "Cost per parcel",
-  "Time to first transfer",
+  "Cost per parcel (pilot target)",
+  "Time to first transfer (hours)",
   "Directional bag fill rate",
   "Number of handoffs",
-  "Loss rate (0%)",
-  "Corridor unit profitability",
+  "Verification & handover rate",
+  "Corridor contribution margin",
+];
+
+const threeHubStages = [
+  {
+    step: "01",
+    phase: "Stage 1",
+    title: "Preparation & Network Onboarding",
+    items: [
+      "Partner Hub Recruitment: Selection of 3 high-foot-traffic merchant shops (dukas, pharmacies, kiosks) along a single active transit corridor.",
+      "Hardware Provisioning: Deployment of 1,500 sealed transit bags (W-class), 150 stackable crates (S-class), tamper-evident security tags, and POS signage.",
+      "Merchant & Rider Training: Conduct 2-hour interactive group workshops with onboarding incentives to establish operational protocol.",
+      "Corridor Mapping & Sector Codes: Define directional 4-character sector matrices without dependency on formal street names or municipal numbering.",
+    ],
+  },
+  {
+    step: "02",
+    phase: "Stage 2",
+    title: "Controlled Operations (Closed Corridor)",
+    items: [
+      "Low-Volume Throttle: Cap initial live flows at 20–50 parcels daily across the 3 nodes to ensure full operational oversight.",
+      "End-to-End Tracking: Validate continuous physical custody transfers: intake logging → sealed bag consolidation → carrier hop → hub outtake.",
+      "Daily Reconciliation: Perform daily zero-variance audit comparing merchant physical cash collections (HUB_KES) with ledger balances (HUB_VKES).",
+      "Float Management: Validate merchant cash liquidity under fluctuating customer pickup and carrier payout cycles.",
+    ],
+  },
+  {
+    step: "03",
+    phase: "Stage 3",
+    title: "Operational Validation & Stress Testing",
+    items: [
+      "Capacity & Batching: Test peak-hour parcel aggregation rates and directional bag utilization thresholds.",
+      "Carrier Incentive Testing: Measure motorcycle acceptance rates and route compliance at 500 KES per 10-parcel bag along natural vectors.",
+      "Cash Exchange Stress Test: Verify merchant-to-rider cash settlement rules and automated float replenishment mechanisms.",
+      "Edge-Case Scenarios: Drill simulated carrier dropouts, node offline events, and bag rerouting to adjacent hubs within the sector.",
+    ],
+  },
+  {
+    step: "04",
+    phase: "Stage 4",
+    title: "Expansion Decision Gate",
+    items: [
+      "Strict Go/No-Go Thresholds required before onboarding Hub 4 or extending beyond the initial corridor:",
+      "≥98% on-time transit completion rate along the 3-hub corridor.",
+      "0 unexplained ledger discrepancies across all recorded handovers.",
+      "Sustainable carrier participation without manual administrative intervention.",
+      "Demonstrated positive merchant unit economics and >90% partner hub retention.",
+    ],
+  },
+];
+
+const technicalModules = [
+  {
+    name: "Merchant Hub App",
+    status: "Implemented",
+    statusType: "implemented",
+    tech: "TypeScript / Web PWA",
+    description: "Parcel intake, marker code registration, 8-directional bag manifests, custody handoff, and merchant balance overview.",
+  },
+  {
+    name: "Customer Client App",
+    status: "Partially Implemented",
+    statusType: "partial",
+    tech: "Responsive Web / Mobile Wrapper",
+    description: "Parcel tracking by 4-character code, corridor delivery quote calculator, and nearest hub finder. Native mobile wrapper planned.",
+  },
+  {
+    name: "Dynamic Routing Engine",
+    status: "Implemented",
+    statusType: "implemented",
+    tech: "Node.js / Sector Vector Math",
+    description: "Deterministic 4-character sector routing, corridor direction assignment (max 8 vectors), and transit path generation.",
+  },
+  {
+    name: "Parcel Event Processing",
+    status: "Implemented",
+    statusType: "implemented",
+    tech: "Event-Driven State Engine",
+    description: "Finite state machine with zero polling; processes intake, bag seal, carrier assignment, transfer, and outtake events.",
+  },
+  {
+    name: "Financial Ledger",
+    status: "Implemented",
+    statusType: "implemented",
+    tech: "Double-Entry HMAC Ledger",
+    description: "Cryptographically signed double-entry accounting records for all transit commitments, fee splits, and balance histories.",
+  },
+  {
+    name: "Settlement Controls",
+    status: "Partially Implemented",
+    statusType: "partial",
+    tech: "Automated Payout Engine",
+    description: "Real-time fee allocation (15 KES intake, 15 KES outtake, 50 KES carrier, 20 KES platform). Batch payout reconciliation in development.",
+  },
+  {
+    name: "Cash Exchange Workflow",
+    status: "Partially Implemented",
+    statusType: "partial",
+    tech: "Ledger Rule Protocol",
+    description: "Separation between physical merchant cash (HUB_KES) and verified digital settlement (HUB_VKES). Inter-hub float balancing in specification.",
+  },
+  {
+    name: "Security Testing & Audit",
+    status: "Planned",
+    statusType: "planned",
+    tech: "Independent Third-Party",
+    description: "Comprehensive pre-deployment penetration testing, cryptographic ledger audit, and multi-signature fraud vector simulation.",
+  },
+  {
+    name: "Operational Deployment",
+    status: "Planned",
+    statusType: "planned",
+    tech: "Nairobi Corridor Staging",
+    description: "Physical corridor rollout across 3 initial merchant hubs, equipment distribution, carrier staging, and field ops monitoring.",
+  },
+  {
+    name: "External Integrations",
+    status: "Partially Implemented",
+    statusType: "partial",
+    tech: "M-Pesa Daraja & Africa's Talking",
+    description: "M-Pesa B2C/C2B APIs integrated in sandbox environment. SMS gateway and carrier notification pipeline fully scoped.",
+  },
+];
+
+const riskMitigations = [
+  {
+    tag: "R-01",
+    risk: "Hub Cash Shortages",
+    description: "A merchant hub may face temporary physical cash shortages (HUB_KES) preventing immediate rider payout or customer change distribution.",
+    safeguard: "Dynamic routing monitors merchant float status and automatically routes parcel payouts to adjacent nodes when float drops below safety thresholds. Hubs maintain pre-funded electronic balances (HUB_VKES).",
+  },
+  {
+    tag: "R-02",
+    risk: "Hub Cash Misappropriation",
+    description: "A merchant partner attempts to withhold cash collected from customers or claims unreceived parcel bags.",
+    safeguard: "Strict architectural separation between unverified physical cash (HUB_KES) and verified digital settlement (HUB_VKES). Parcels require cryptographic counterparty confirmation before ledger balances release. Physical cash liability is capped per hub tier.",
+  },
+  {
+    tag: "R-03",
+    risk: "Hub Failure or Abrupt Dropout",
+    description: "A partner shop closes unexpectedly, experiences a power outage, or ceases commercial participation.",
+    safeguard: "Parcels are consolidated inside tamper-evident sealed transit bags (W-class/S-class). If a node becomes unreachable, the corridor routing protocol diverts the bag to an adjacent fallback hub within the same sector without opening parcel contents.",
+  },
+  {
+    tag: "R-04",
+    risk: "Rider Availability & Retention",
+    description: "Independent motorcycle (boda-boda) operators may choose passenger fares over cargo during peak commuter surges or rainy conditions.",
+    safeguard: "PPTT offers attractive batch earnings (500 KES per 10-parcel bag) along routes riders already travel, transforming idle stand waiting time into profitable transport without requiring exclusive shift commitments.",
+  },
+  {
+    tag: "R-05",
+    risk: "Financial Regulation & Cash Compliance",
+    description: "Operation of closed-loop electronic ledger units (VKES) may face scrutiny under Central Bank of Kenya (CBK) payment intermediary regulations.",
+    safeguard: "VKES operates strictly as an internal closed-loop accounting credit unit representing verified parcel transit obligations, not an open-market circulating currency or public deposit. Fiat conversions interface through licensed payment service providers (e.g. Safaricom M-Pesa).",
+  },
+  {
+    tag: "R-06",
+    risk: "Parcel Loss, Theft, or Transit Disputes",
+    description: "Parcels lost, pilfered, or damaged during multi-hop motorcycle transit across informal urban sectors.",
+    safeguard: "Tamper-evident sealed bags with serialized security tags. Multi-signature digital handoffs at every physical transfer point create an immutable chain of custody. Bags remain sealed between origin and destination hubs.",
+  },
+  {
+    tag: "R-07",
+    risk: "Limited Early Pilot Coverage",
+    description: "An initial 3-hub network cannot offer citywide coverage, limiting initial consumer and merchant network utility.",
+    safeguard: "Intentional corridor concentration. PPTT focuses exclusively on a high-density commercial corridor (e.g. wholesale distribution point to residential retail cluster) where concentrated parcel flow ensures sustainable bag fill rates before geographic expansion.",
+  },
+];
+
+const fundingMilestones = [
+  {
+    num: "01",
+    title: "Technical Completion & Audit",
+    timeline: "Months 1–3",
+    deliverables: "M-Pesa Daraja live API integration, Africa's Talking SMS pipeline, and external security audit of HMAC ledger.",
+  },
+  {
+    num: "02",
+    title: "Legal & Regulatory Readiness",
+    timeline: "Months 2–4",
+    deliverables: "Kenyan corporate entity incorporation, merchant hub partner agreements, and regulatory compliance assessment.",
+  },
+  {
+    num: "03",
+    title: "Three-Hub Pilot Activation",
+    timeline: "Months 4–6",
+    deliverables: "1,500 transit bags & 150 crates delivered, 3 vetted hubs onboarded with branding, carrier pool registered.",
+  },
+  {
+    num: "04",
+    title: "Controlled Commercial Operations",
+    timeline: "Months 6–9",
+    deliverables: "First 1,000 live commercial parcels processed along the pilot corridor with zero manual dispatch interventions.",
+  },
+  {
+    num: "05",
+    title: "Financial & Ledger Reconciliation",
+    timeline: "Months 9–10",
+    deliverables: "Complete audit of cash collection, automated fee distribution, and electronic balance settlement with zero ledger variance.",
+  },
+  {
+    num: "06",
+    title: "Pilot Performance Review",
+    timeline: "Months 11–12",
+    deliverables: "Data-driven expansion review evaluating hub retention (>90%), on-time transit (>98%), and readiness for Hub 4+ expansion.",
+  },
+];
+
+const sourceReferences = [
+  {
+    category: "Demographics & Urban Growth",
+    metric: "Nairobi Metropolitan Population & Growth",
+    source: "Kenya National Bureau of Statistics (KNBS)",
+    detail: "2019 Kenya Population and Housing Census & 2024–2030 Urban Projections (~5.5M metropolitan area population, growing at ~3.8% annually).",
+  },
+  {
+    category: "Informal Transit Fleet",
+    metric: "Boda-Boda (Motorcycle Taxi) Fleet Density",
+    source: "Boda Boda Association of Kenya (BAK) & Ministry of Transport",
+    detail: "National registry estimates (~1.5M registered motorcycles in Kenya, with ~200,000+ active operators in the Nairobi metropolitan zone).",
+  },
+  {
+    category: "Market Opportunity",
+    metric: "East Africa E-Commerce Market Dynamics",
+    source: "Statista Digital Market Insights & UNCTAD E-Commerce Report",
+    detail: "East African e-commerce projected CAGR >20%, with logistics and last-mile addressing cited as primary structural bottlenecks.",
+  },
+  {
+    category: "Urban Infrastructure",
+    metric: "Unaddressed Urban Settlements",
+    source: "UN-Habitat & World Bank Urban Development Assessments",
+    detail: "Estimated ~60% of Nairobi's urban population resides in informally organized or non-gazetted street layouts without municipal door numbering.",
+  },
+  {
+    category: "Digital Financial Rails",
+    metric: "Mobile Financial Services Transaction Scale",
+    source: "Safaricom PLC FY2024 Annual Report",
+    detail: "M-Pesa platform processed >42 billion transactions and >$300 billion equivalent annual transaction volume, establishing ubiquitous local payment familiarity.",
+  },
+  {
+    category: "Benchmarking",
+    metric: "Competitor Courier Tariffs & Operational Models",
+    source: "Publicly Observable Rate Sheets & Courier Service Schedules",
+    detail: "Standard intra-city courier tariffs in Nairobi range from 300 to 800 KES for next-day dispatch, driven by central sorting facility and dedicated fleet overhead.",
+  },
+  {
+    category: "Architecture & Specifications",
+    metric: "PPTT System Architecture & Ledger Specifications",
+    source: "PPTT Product Requirements Document (PRD v1.0)",
+    detail: "Sections 27–30 specifying double-entry bookkeeping, HMAC cryptographic audit logs, and deterministic 8-directional corridor sector routing.",
+  },
 ];
 ---
 
@@ -156,7 +410,7 @@ const pilotMetrics = [
             <div class="nav-links">
               <a class="magnetic" href="#concept">
                 <Network class="nav-link-icon" aria-hidden="true" />
-                <span>Network Concept</span>
+                <span>Concept</span>
               </a>
               <a class="magnetic" href="#market">
                 <MapPinned class="nav-link-icon" aria-hidden="true" />
@@ -164,11 +418,19 @@ const pilotMetrics = [
               </a>
               <a class="magnetic" href="#economics">
                 <ReceiptText class="nav-link-icon" aria-hidden="true" />
-                <span>Unit Economics</span>
+                <span>Economics</span>
               </a>
               <a class="magnetic" href="#moat">
                 <Waypoints class="nav-link-icon" aria-hidden="true" />
-                <span>Competitive Moat</span>
+                <span>Moat</span>
+              </a>
+              <a class="magnetic" href="#pilot">
+                <Route class="nav-link-icon" aria-hidden="true" />
+                <span>3-Hub Pilot</span>
+              </a>
+              <a class="magnetic" href="#risks">
+                <ClipboardCheck class="nav-link-icon" aria-hidden="true" />
+                <span>Risks</span>
               </a>
               <a class="magnetic" href="#sponsor">
                 <BadgeCheck class="nav-link-icon" aria-hidden="true" />
@@ -176,7 +438,7 @@ const pilotMetrics = [
               </a>
             </div>
             <a class="topbar-cta magnetic" href="#lead">
-              <span class="topbar-cta-full">Investor Deck</span>
+              <span class="topbar-cta-full">Request Deck</span>
               <span class="topbar-cta-short">Deck</span>
             </a>
           </div>
@@ -187,20 +449,18 @@ const pilotMetrics = [
             <p class="eyebrow">Decentralized logistics infrastructure with zero central sorting warehouses</p>
             <h1 id="hero-title">
               <span class="hero-title-line">
-                <span class="hero-title-word" data-hero-word>Shops</span>
-                {" "}
+                <span class="hero-title-word" data-hero-word>Shops</span>{" "}
                 <span class="hero-title-word" data-hero-word>connect.</span>
-              </span>
+              </span>{" "}
               <span class="hero-title-line">
-                <span class="hero-title-word hero-title-accent" data-hero-word>Motorcycles</span>
-                {" "}
+                <span class="hero-title-word hero-title-accent" data-hero-word>Motorcycles</span>{" "}
                 <span class="hero-title-word" data-hero-word>move.</span>
               </span>
             </h1>
             <p class="hero-lede">
               PPTT turns neighborhood shops into a flat network of micro-hubs. No expensive warehouses, no
-              printers, and no searching for missing street addresses. Parcels marked with a 4-character code travel in sealed bags
-              powered by independent motorcycle taxis, self-funding every transit hop from their internal balance.
+              printers, and no searching for missing street addresses. Parcels marked with a 4-character code travel in sealed directional bags
+              carried by independent motorcycle taxis, with electronic ledger settlement allocating value hop by hop.
             </p>
             <div class="hero-actions" aria-label="Key Actions">
               <a class="button button-primary magnetic" href="#lead">Request Investor Deck</a>
@@ -279,9 +539,9 @@ const pilotMetrics = [
         </div>
 
         <div class="hero-strip" aria-label="Concept Summary">
-          <div><strong>Zero Warehouse CAPEX</strong><span>Existing merchant shops serve as equal network micro-hubs.</span></div>
+          <div><strong>Lower Infrastructure CAPEX</strong><span>Existing merchant shops serve as equal network micro-hubs.</span></div>
           <div><strong>Marker & 4 Characters</strong><span>Zero labels or printers—a 4-character code deterministically powers all routing.</span></div>
-          <div><strong>Self-Funding Parcel</strong><span>Internal digital balance pays hubs and riders hop by hop in real time.</span></div>
+          <div><strong>Controlled Settlement</strong><span>VKES electronic settlement allocates value to hubs and riders upon verified events.</span></div>
         </div>
       </section>
 
@@ -350,6 +610,7 @@ const pilotMetrics = [
                     <h3>{stage.title}</h3>
                     <div class="project-stage-line" aria-hidden="true"></div>
                     <p>{stage.body}</p>
+                    {stage.secondary && <p class="project-stage-secondary">{stage.secondary}</p>}
                     <strong>{stage.metric}</strong>
                   </div>
                 </article>
@@ -363,17 +624,27 @@ const pilotMetrics = [
         <div class="route-system-inner reveal">
           <div class="section-heading route-system-heading">
             <div>
-              <p class="eyebrow">Live Simulation</p>
+              <p class="eyebrow">Corridor Simulator</p>
               <h2 id="route-system-title">PPTT Corridor Simulator</h2>
             </div>
             <p>
-              Adjust parcel intake, active merchant hubs, and motorcycle carriers to observe how a flat peer-to-peer network balances flow. Zero bottlenecks—riders batch sealed bags along existing movement vectors while the ledger balances accounts in real time.
+              Adjust parcel intake, active merchant hubs, and motorcycle carriers to observe how a flat peer-to-peer network balances flow. Designed to reduce reliance on central sorting bottlenecks—riders batch sealed bags along existing movement vectors while the ledger balances accounts in real time.
             </p>
           </div>
 
           <aside class="route-lab is-booting" aria-label="PPTT Corridor Simulator">
+            <div class="lab-disclaimer-banner" role="note">
+              <span>Interactive network simulation — illustrative model, not a representation of live commercial operations.</span>
+            </div>
             <div class="lab-topline">
-              <span>PPTT Simulator</span>
+              <div class="lab-title-wrap">
+                <span>PPTT Simulator</span>
+                <div class="lab-presets" aria-label="Simulator Presets">
+                  <span class="lab-preset-label">Preset:</span>
+                  <button class="lab-preset-btn is-active" type="button" data-lab-preset="3" aria-pressed="true">3-Hub Pilot (Nairobi)</button>
+                  <button class="lab-preset-btn" type="button" data-lab-preset="8" aria-pressed="false">Full Mesh (8 Hubs)</button>
+                </div>
+              </div>
               <div class="lab-live-meta">
                 <span class="lab-live-pill"><i aria-hidden="true"></i>Sim</span>
                 <strong><span data-lab-riders>0</span> riders</strong>
@@ -591,10 +862,10 @@ const pilotMetrics = [
                     <Store class="mini-icon" aria-hidden="true" />
                     Hubs
                   </span>
-                  <strong><span data-lab-shop-count>8</span></strong>
+                  <strong><span data-lab-shop-count>3</span></strong>
                 </span>
                 <span class="lab-range">
-                  <input data-lab-shops type="range" min="5" max="14" value="8" />
+                  <input data-lab-shops type="range" min="3" max="14" value="3" />
                   <span class="lab-range-fill shop-fill" aria-hidden="true"></span>
                   <span class="threshold-mark" aria-hidden="true">active nodes</span>
                 </span>
@@ -786,11 +1057,11 @@ const pilotMetrics = [
       ════════════════════════════════════════════════════════ -->
       <section class="section market-section" id="market" aria-labelledby="market-title">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Market Opportunity — Nairobi, East Africa &amp; Beyond</p>
-          <h2 id="market-title">Millions of parcels moving daily across a city without addresses.</h2>
+          <p class="eyebrow">Market Context &amp; Opportunity — Nairobi &amp; Regional Metropolises</p>
+          <h2 id="market-title">Millions of parcels moving daily across a city without formal addresses.</h2>
           <p class="market-intro">
-            Nairobi is a city of <strong>5.5 million people</strong>, <strong>~400,000 registered boda-boda motorcycle taxis</strong>, and one of the world's most active mobile-money ecosystems (M-Pesa). 
-            Yet formal, affordable last-mile delivery remains almost entirely unsolved — not because of a lack of technology, but because every existing solution was engineered for cities that <em>have</em> street addresses and <em>have</em> cheap warehouse land. Nairobi has neither.
+            Nairobi is an economic hub of <strong>5.5 million residents</strong> (KNBS census projection), <strong>~400,000 registered boda-boda motorcycle taxis</strong> (industry association estimate), and one of the world's most active mobile-money ecosystems (M-Pesa). 
+            Yet affordable last-mile delivery remains structurally challenging — not due to a lack of commercial demand, but because conventional logistics models were engineered for street addresses and low-cost central warehouse real estate. Nairobi has neither.
           </p>
         </div>
 
@@ -799,58 +1070,58 @@ const pilotMetrics = [
           <div class="market-stat-card">
             <span class="market-stat-num">5.5M+</span>
             <span class="market-stat-label">Nairobi residents</span>
-            <span class="market-stat-sub">Urban density without formal addressing</span>
+            <span class="market-stat-sub">High urban density without formal street addressing (KNBS projection)</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">400K</span>
+            <span class="market-stat-num">~400K</span>
             <span class="market-stat-label">Boda-boda riders</span>
-            <span class="market-stat-sub">Existing fleet waiting at stands — no deadheading</span>
+            <span class="market-stat-sub">Active fleet at neighborhood stands; designed to reduce empty mileage (Industry est.)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">$2.9B</span>
             <span class="market-stat-label">East Africa e-commerce (2025)</span>
-            <span class="market-stat-sub">Growing 25%+ YoY, delivery infrastructure lags demand</span>
+            <span class="market-stat-sub">Projected 20%+ annual growth; physical fulfillment lags digital payments (Statista/UNCTAD)</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">70%</span>
+            <span class="market-stat-num">~70%</span>
             <span class="market-stat-label">Unaddressed urban areas</span>
-            <span class="market-stat-sub">GPS fails where streets have no names</span>
+            <span class="market-stat-sub">GPS coordinates struggle where streets lack official names (UN-Habitat/World Bank)</span>
           </div>
 
           <div class="market-stat-card">
-            <span class="market-stat-num">45M</span>
+            <span class="market-stat-num">45M+</span>
             <span class="market-stat-label">M-Pesa transactions / day</span>
-            <span class="market-stat-sub">Proof Kenya runs on mobile — cash is already digital</span>
+            <span class="market-stat-sub">Proof of digital payment ubiquity in Kenya (Safaricom FY2024 Report)</span>
           </div>
 
           <div class="market-stat-card">
             <span class="market-stat-num">20+</span>
             <span class="market-stat-label">African megacities</span>
-            <span class="market-stat-sub">Lagos, Kampala, Dar es Salaam — same problem, same model</span>
+            <span class="market-stat-sub">Lagos, Kampala, Dar es Salaam — similar addressing and traffic challenges (Regional benchmark)</span>
           </div>
 
         </div>
 
         <div class="market-problem-bar reveal" aria-label="Why existing players fail">
           <div class="market-problem-head">
-            <p class="eyebrow">Why the incumbents fail</p>
-            <h3>Every current player routes through a central warehouse and relies on GPS addresses that don't exist.</h3>
+            <p class="eyebrow">Market Observations (Illustrative Benchmarks)</p>
+            <h3>Conventional logistics operators route through central depots and rely on addresses that rarely exist.</h3>
           </div>
           <div class="market-problem-cards">
             <div class="market-problem-card">
               <strong>Posta Kenya</strong>
-              <p>100 KES just to collect. Operates between post offices only. Calls the recipient — because without an address, there is no other way to deliver.</p>
+              <p>100 KES counter collection tariff. Operates between post offices only. Requires phone coordination with recipient in the absence of street-level addresses.</p>
             </div>
             <div class="market-problem-card">
               <strong>Pickup Mtaani</strong>
-              <p>100–180 KES per parcel, Mtaani-to-Mtaani. All parcels routed through a CBD central warehouse. Delivery cut-off 13:00 — miss it and wait until tomorrow.</p>
+              <p>100–180 KES published per-parcel tariff (Mtaani-to-Mtaani). Relies on central CBD sorting facilities with fixed daily intake cut-off schedules.</p>
             </div>
             <div class="market-problem-card">
-              <strong>DHL / DPD / Sendy</strong>
-              <p>300–600+ KES per parcel. Sendy burned through millions in VC funding on vehicles &amp; warehouses, then closed its B2C service. High CAPEX killed unit economics.</p>
+              <strong>Express Couriers (DHL / DPD)</strong>
+              <p>300–600+ KES published door-to-door express tariffs. High vehicle capital expenditure and dedicated fleet payroll make low-cost micro-deliveries challenging.</p>
             </div>
           </div>
         </div>
@@ -858,12 +1129,15 @@ const pilotMetrics = [
 
       <section class="section economics" id="economics">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Unit Economics — Real Market Tariffs, Nairobi</p>
+          <p class="eyebrow">Unit Economics — Illustrative Model (Nairobi)</p>
           <h2>Fixed price at intake. The parcel pays its own way — hop by hop.</h2>
+          <div class="economics-disclosure" role="note">
+            <strong>Illustrative Model:</strong> These figures illustrate the proposed pricing and allocation model. Actual costs, carrier compensation, route efficiency, and platform contribution will be validated during the Nairobi pilot.
+          </div>
           <p class="economics-intro">
-            Every parcel enters with a <strong>locked intake price of 100 KES</strong> (≈ £0.59). The PPTT ledger immediately splits this into three guaranteed streams:
-            <strong>20% platform Take Rate</strong> (booked at COMMIT), hub commissions for intake and outtake, and a transport budget for the boda-boda corridor rider.
-            Because riders carry <em>sealed bags — not single parcels</em> — a single motorcycle hop generates <strong>500 KES</strong> from one bag of 10 parcels, matching a rider's average half-day earnings. That is why adoption is instant.
+            Every parcel enters with an illustrative locked intake price of <strong>100 KES</strong> (≈ £0.59). The PPTT ledger allocates this into three operational components:
+            <strong>20 KES platform fee</strong> (gross platform revenue, not net profit), hub commissions for intake (15 KES) and outtake (15 KES), and a transport budget (50 KES) for the boda-boda corridor rider.
+            Because riders carry <em>sealed bags — not single parcels</em> — a single motorcycle hop with a full directional bag (e.g. 10 parcels) yields <strong>500 KES</strong> in gross transport revenue, designed to offer attractive incentives for participating riders along routes they already travel.
           </p>
         </div>
 
@@ -876,34 +1150,32 @@ const pilotMetrics = [
             <div class="quote-amount">
               <span>Sender pays</span>
               <strong>100</strong>
-              <em>KES — fixed intake price (≈ £0.59)</em>
+              <em>KES — illustrative intake price (≈ £0.59)</em>
             </div>
             <div class="quote-breakdown" aria-label="Cost Breakdown">
               <div>
                 <span>PPTT Platform (Take Rate)</span>
-                <strong>20 KES · 20%</strong>
+                <strong>20 KES · 20% (Gross Platform Revenue)</strong>
               </div>
               <div>
                 <span>Intake hub commission</span>
-                <strong>15 KES · 15%</strong>
+                <strong>15 KES · 15% (Direct Transaction Cost)</strong>
               </div>
               <div>
                 <span>Outtake hub commission</span>
-                <strong>15 KES · 15%</strong>
+                <strong>15 KES · 15% (Direct Transaction Cost)</strong>
               </div>
               <div>
                 <span>Boda-boda corridor budget</span>
-                <strong>50 KES · 50%</strong>
+                <strong>50 KES · 50% (Direct Transport Budget)</strong>
               </div>
             </div>
             <p>
-              Rate locked at intake. SKIP algorithm surplus (route optimisation savings) flows back
-              to the platform as additional margin. Hubs with poor throughput ratios
-              incur automatic SLA penalty deductions from their commission reserve.
+              The 20 KES platform fee represents gross platform revenue before company operating expenses (server infrastructure, SMS gateway, operational payroll, and regulatory compliance). The 50 KES transport budget depends on route economics and corridor conditions. Route optimization savings (SKIP surplus) and SLA penalties are conditional operational adjustments, not guaranteed revenue.
             </p>
             <div class="quote-rules">
               <span>Zero hidden fees</span>
-              <span>KES digital balance &amp; cash</span>
+              <span>Controlled VKES &amp; local cash</span>
               <span>COMMIT-driven settlement</span>
             </div>
           </div>
@@ -911,7 +1183,7 @@ const pilotMetrics = [
           <div class="market-console">
             <div class="economics-panel-head">
               <span><Bike class="economics-icon" /> Bag Economics — 1 Transit Bag</span>
-              <strong>10 Parcels Batched</strong>
+              <strong>10 Parcels Batched (Illustrative)</strong>
             </div>
             <div class="market-clearing">
               <div>
@@ -923,8 +1195,8 @@ const pilotMetrics = [
                 <strong>natural corridor route</strong>
               </div>
               <div>
-                <span>Empty return miles</span>
-                <strong>zero</strong>
+                <span>Empty return trips</span>
+                <strong>designed to reduce</strong>
               </div>
             </div>
             <div class="market-riders">
@@ -951,27 +1223,30 @@ const pilotMetrics = [
 
           <div class="audit-ledger-panel">
             <div class="economics-panel-head">
-              <span><BadgeCheck class="economics-icon" /> 3 Revenue Streams</span>
-              <strong>Full Audit Trail</strong>
+              <span><BadgeCheck class="economics-icon" /> Financial Breakdown</span>
+              <strong>Per Parcel &amp; Bag</strong>
             </div>
             <div class="audit-ledger-grid">
               <div>
-                <span>Stream 1 — Take Rate</span>
-                <strong>20 KES per parcel at COMMIT</strong>
+                <span>Gross Transaction Value</span>
+                <strong>100 KES per parcel (100%)</strong>
               </div>
               <div>
-                <span>Stream 2 — SKIP Surplus</span>
-                <strong>4–8 KES route optimisation margin</strong>
+                <span>Direct Transaction Costs</span>
+                <strong>80 KES (Hubs 30 KES + Courier 50 KES)</strong>
               </div>
               <div>
-                <span>Stream 3 — Hub SLA Penalty</span>
-                <strong>5–10 KES poor-ratio deduction</strong>
+                <span>Platform Contribution Margin</span>
+                <strong>20 KES per parcel (20% of GTV)</strong>
               </div>
               <div>
-                <span>Network margin per bag</span>
-                <strong>200–280 KES · ~24–28%</strong>
+                <span>Illustrative Margin per 10-Parcel Bag</span>
+                <strong>200–280 KES (20%–28% of 1,000 KES GTV)</strong>
               </div>
             </div>
+            <p class="audit-ledger-footnote">
+              Denominators: Bag GTV = 1,000 KES (10 &times; 100 KES). Base platform fee = 200 KES (20.0%). With realized route optimization surplus (40–80 KES), gross platform margin is 24%–28%. Company net profit will be evaluated after deduction of operational overhead.
+            </p>
           </div>
         </div>
       </section>
@@ -982,7 +1257,7 @@ const pilotMetrics = [
       ════════════════════════════════════════════════════════ -->
       <section class="section moat-section" id="moat" aria-labelledby="moat-title">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Competitive Moat — Why PPTT Cannot Be Replicated Cheaply</p>
+          <p class="eyebrow">Competitive Moat — Potential Structural Advantages</p>
           <h2 id="moat-title">Incumbents solve the wrong problem. PPTT solves the city.</h2>
         </div>
 
@@ -996,17 +1271,17 @@ const pilotMetrics = [
           <div class="moat-row" role="row">
             <span role="cell">Delivery price (≤500g)</span>
             <span role="cell">150–600 KES · CBD warehouse required</span>
-            <span role="cell" class="moat-pptt-col moat-win">100 KES · no warehouse ever</span>
+            <span role="cell" class="moat-pptt-col moat-win">100 KES target · no central warehouse required</span>
           </div>
           <div class="moat-row" role="row">
             <span role="cell">Delivery speed</span>
             <span role="cell">Next day (13:00 cut-off) or 2–4 days (Posta)</span>
-            <span role="cell" class="moat-pptt-col moat-win">Same corridor · hours, not days</span>
+            <span role="cell" class="moat-pptt-col moat-win">Target: same corridor within hours (illustrative pilot objective, not guaranteed SLA)</span>
           </div>
           <div class="moat-row" role="row">
             <span role="cell">Address requirement</span>
             <span role="cell">GPS coordinates or phone call to recipient</span>
-            <span role="cell" class="moat-pptt-col moat-win">4-character marker code · zero GPS</span>
+            <span role="cell" class="moat-pptt-col moat-win">4-character marker code · offline-capable</span>
           </div>
           <div class="moat-row" role="row">
             <span role="cell">Capital expenditure (CAPEX)</span>
@@ -1016,7 +1291,7 @@ const pilotMetrics = [
           <div class="moat-row" role="row">
             <span role="cell">Courier model</span>
             <span role="cell">Employee fleet or dedicated contractors</span>
-            <span role="cell" class="moat-pptt-col moat-win">400K boda-boda riders · freight exchange</span>
+            <span role="cell" class="moat-pptt-col moat-win">Independent boda-boda network · designed for attractive marginal incentives</span>
           </div>
           <div class="moat-row" role="row">
             <span role="cell">Financial settlement</span>
@@ -1026,7 +1301,7 @@ const pilotMetrics = [
           <div class="moat-row" role="row">
             <span role="cell">Scale mechanism</span>
             <span role="cell">Build more warehouses (linear CAPEX)</span>
-            <span role="cell" class="moat-pptt-col moat-win">Onboard next shop · zero incremental CAPEX</span>
+            <span role="cell" class="moat-pptt-col moat-win">Onboard next partner shop · lower incremental infrastructure CAPEX</span>
           </div>
           <div class="moat-row" role="row">
             <span role="cell">Hub revenue share</span>
@@ -1036,19 +1311,19 @@ const pilotMetrics = [
         </div>
 
         <div class="moat-barriers reveal" aria-label="Structural barriers to entry">
-          <p class="eyebrow">Structural Barriers to Entry</p>
+          <p class="eyebrow">Potential Structural Moats</p>
           <div class="moat-barrier-cards">
             <div class="moat-barrier-card">
-              <strong>Network Effect</strong>
-              <p>Each new hub shortens every other hub's average transfer distance. The denser the mesh, the faster and cheaper delivery becomes — a self-reinforcing advantage that grows with every onboarding event.</p>
+              <strong>Network Effect Density</strong>
+              <p>Each new partner hub shortens neighboring transfer distances. As density increases, bag fill rates improve and marginal courier transfer costs decrease, reinforcing operational resilience.</p>
             </div>
             <div class="moat-barrier-card">
-              <strong>Zero-Address Routing IP</strong>
-              <p>The 4-character directional coding system and SKIP optimisation algorithm are purpose-built for unmapped urban terrain. Competitors relying on Google Maps APIs have no equivalent path.</p>
+              <strong>Zero-Address Routing Logic</strong>
+              <p>The 4-character directional coding system and corridor sector mapping are purpose-built for unmapped urban terrain, operating effectively without dependency on commercial mapping APIs.</p>
             </div>
             <div class="moat-barrier-card">
-              <strong>Boda-Boda Supply Lock-In</strong>
-              <p>PPTT's freight exchange offers riders 500 KES per bag along routes they already travel — matching half a day's average earnings in under 15 minutes. Once riders depend on this income, replication by any new entrant requires matching this economic incentive.</p>
+              <strong>Boda-Boda Supply Incentives</strong>
+              <p>PPTT's freight exchange is designed to offer attractive marginal earnings (e.g. 500 KES per full 10-parcel bag) along routes riders already travel. Because it converts idle stand waiting time into income without requiring dedicated fleet overhead, it creates strong driver participation incentives.</p>
             </div>
           </div>
         </div>
@@ -1056,20 +1331,44 @@ const pilotMetrics = [
 
       <section class="section pilot" id="pilot">
         <div class="section-heading simple-heading reveal">
-          <p class="eyebrow">Project Readiness: ~70% Technical Completion</p>
-          <h2>Operational Core Technology. Moving from POC to Commercial Rollout.</h2>
+          <p class="eyebrow">First Deployment Corridor</p>
+          <h2>First Deployment — Three-Hub Nairobi Pilot</h2>
           <p class="pilot-intro">
-            The PPTT system features an operational event-driven backend (zero polling), merchant hub app, customer client app,
-            internal financial ledger, and dynamic routing engines. We are launching with a pilot corridor in Nairobi as an optimal
-            testbed (zero street addressing, high motorcycle taxi density), engineered for frictionless replication across
-            African metropolises and emerging global markets.
+            The pilot tests the core hypothesis: can 3 commercial merchant hubs exchange batched parcel bags along a single high-density Nairobi corridor using independent boda-boda carriers and a cryptographic ledger without central warehouses? By constraining the initial deployment to three physical nodes along an active movement axis, PPTT validates custody handoffs, merchant float liquidity, and batch economics under real street conditions before scaling.
+          </p>
+        </div>
+
+        <div class="three-hub-pilot-grid reveal" aria-label="Four stages of the Three-Hub Pilot">
+          {threeHubStages.map((stage) => (
+            <article class="three-hub-stage-card">
+              <div class="three-hub-stage-head">
+                <span class="three-hub-step-code">{stage.step}</span>
+                <span class="three-hub-phase-tag">{stage.phase}</span>
+              </div>
+              <h3>{stage.title}</h3>
+              <ul class="three-hub-stage-list">
+                {stage.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+
+        <div class="pilot-thresholds-banner reveal" role="note">
+          <div class="pilot-thresholds-head">
+            <BadgeCheck class="pilot-thresholds-icon" aria-hidden="true" />
+            <strong>Target Thresholds for Corridor Expansion (Stage 4 Decision Gate)</strong>
+          </div>
+          <p>
+            Zero geographic expansion until the initial corridor demonstrates: (1) &ge;98% on-time transit completion rate, (2) zero unexplained ledger variance between physical cash and electronic records, (3) organic carrier availability without manual dispatch, and (4) positive merchant partner retention (&gt;90%).
           </p>
         </div>
 
         <div class="pilot-system reveal" data-pilot-system>
           <div class="pilot-console">
             <div class="pilot-console-head">
-              <span><Route class="pilot-icon" /> Commercial Corridor</span>
+              <span><Route class="pilot-icon" /> Commercial Corridor Preview</span>
               <strong data-pilot-window>Stage 01</strong>
             </div>
 
@@ -1110,14 +1409,14 @@ const pilotMetrics = [
                 </div>
               </div>
               <div class="pilot-map-note">
-                <span>Zero expansion until the launch corridor runs fully autonomously without manual dispatch.</span>
+                <span>Corridor expansion gate: strictly after autonomous verification without manual administrative dispatch.</span>
               </div>
             </div>
 
             <div class="pilot-console-foot" aria-label="Corridor operational rules">
               <div>
                 <span>Scope</span>
-                <strong>1 corridor</strong>
+                <strong>3-hub corridor</strong>
               </div>
               <div>
                 <span>Test Cycle</span>
@@ -1162,6 +1461,72 @@ const pilotMetrics = [
             </div>
           </div>
         </div>
+
+        <div class="tech-readiness-panel reveal" id="readiness" aria-labelledby="readiness-title">
+          <div class="tech-readiness-header">
+            <p class="eyebrow">System Status &amp; Code Audit</p>
+            <h3 id="readiness-title">Technical Readiness: ~70% Technical Completion (Founder Estimate)</h3>
+            <p>
+              The platform core is built and operating in simulation and staging. The remaining ~30% consists of physical merchant onboarding workflows, live third-party integrations (M-Pesa Daraja and Africa's Talking SMS), edge-case stress testing, and an independent security audit.
+            </p>
+          </div>
+
+          <div class="tech-disclaimer-callout" role="note">
+            <ShieldAlert class="tech-disclaimer-icon" aria-hidden="true" />
+            <p>
+              The PPTT platform has an implemented technical foundation covering core logistics and settlement workflows. Commercial readiness remains dependent on integration testing, security validation, operational deployment, and regulatory assessment. Do not claim the platform is production-ready based solely on the existence of working code.
+            </p>
+          </div>
+
+          <div class="tech-modules-grid">
+            {technicalModules.map((mod) => (
+              <div class:list={["tech-module-card", `is-${mod.statusType}`]}>
+                <div class="tech-module-top">
+                  <span class:list={["tech-status-badge", `badge-${mod.statusType}`]}>{mod.status}</span>
+                  <span class="tech-module-stack">{mod.tech}</span>
+                </div>
+                <h4>{mod.name}</h4>
+                <p>{mod.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section class="section risks-section" id="risks" aria-labelledby="risks-title">
+        <div class="section-heading simple-heading reveal">
+          <p class="eyebrow">Operational Governance &amp; Risk Management</p>
+          <h2 id="risks-title">Risks &amp; Proposed Safeguards</h2>
+          <p class="risks-intro">
+            Decentralized physical logistics in informal emerging markets present real operational and regulatory complexities. PPTT applies deliberate architectural safeguards designed to mitigate systemic failure points:
+          </p>
+        </div>
+
+        <div class="risks-disclaimer-callout reveal" role="note">
+          <ShieldAlert class="tech-disclaimer-icon" aria-hidden="true" />
+          <p>
+            These safeguards represent proposed operational and technical controls. They mitigate, but do not eliminate, operational, market, and regulatory risks.
+          </p>
+        </div>
+
+        <div class="risks-grid reveal">
+          {riskMitigations.map((item) => (
+            <article class="risk-card">
+              <div class="risk-card-head">
+                <span class="risk-tag">{item.tag}</span>
+                <h3>{item.risk}</h3>
+              </div>
+              <div class="risk-problem">
+                <span class="risk-sublabel">Operational Challenge</span>
+                <p>{item.description}</p>
+              </div>
+              <div class="risk-safeguard">
+                <span class="risk-sublabel">Proposed Safeguard</span>
+                <p>{item.safeguard}</p>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section class="section sponsor-round" id="sponsor" aria-labelledby="sponsor-title">
@@ -1171,12 +1536,11 @@ const pilotMetrics = [
           <p class="sponsor-intro">
             As lead engineer, I have built the operational codebase, hub apps, routing engine, and HMAC financial ledger to ~70% technical completion.
             This round funds the remaining 30% of code, the physical deployment in Nairobi, and puts me on the ground full-time for 12 months to ensure the corridor runs autonomously before any expansion.
-            <strong>£22,000 of the budget is allocated to two operational vans purchased in the UK</strong> — assets that can be liquidated at a profit on the Nairobi market, providing investors with a hard capital backstop.
+            The proposed vehicles represent operational assets with potential resale value. Realized recovery would depend on import costs, local market demand, taxes, depreciation, and disposal expenses.
           </p>
         </div>
 
         <div class="sponsor-grid reveal">
-
           <article class="sponsor-card is-highlight">
             <div class="sponsor-card-top">
               <span class="sponsor-card-tag">01</span>
@@ -1185,7 +1549,7 @@ const pilotMetrics = [
             <h3>Founder On-Site Leadership — £40,000</h3>
             <p>
               12-month full-time founder presence in Nairobi. Covers accommodation, flights from London, health insurance, local transport, and UK financial obligations.
-              No investor capital is deployed without the architect of the system on the ground to oversee it.
+              No investor capital is deployed without the architect of the system on the ground to oversee operations.
             </p>
           </article>
 
@@ -1196,7 +1560,7 @@ const pilotMetrics = [
             </div>
             <h3>Nairobi Operations (12 months OPEX) — £40,000</h3>
             <p>
-              Office/base (£5k), 4-person local team — operations lead, 2 hub onboarding agents, logistics driver (£18k), fuel &amp; vehicle maintenance for 2 vans (£7k), local legal/accountancy (£5k), operational contingency (£5k).
+              Office/base facility (£5k), 4-person local operational team — operations lead, 2 hub onboarding agents, and logistics driver (£18k), fuel &amp; vehicle maintenance for 2 vans (£7k), local legal &amp; accountancy compliance (£5k), and operational buffer (£5k).
             </p>
           </article>
 
@@ -1207,8 +1571,9 @@ const pilotMetrics = [
             </div>
             <h3>Fleet: 2 Operational Vans (UK → Kenya) — £22,000</h3>
             <p>
-              Two right-hand-drive vans sourced in the UK (e.g. Toyota HiAce / Nissan NV200), shipped Ro-Ro to Mombasa, cleared through KRA customs.
-              <strong>Asset-backed capital protection:</strong> imported vans sell in Nairobi at a premium — investor capital here is recoverable at full value.
+              Two right-hand-drive operational vans sourced in the UK (e.g. Toyota HiAce / Nissan NV200), shipped Ro-Ro to Mombasa, and cleared through KRA customs for heavy intra-corridor trunk movements and hub restocking.
+              <strong>Asset note:</strong> The proposed vehicles represent operational assets with potential resale value. Realized recovery would depend on import costs, local market demand, taxes, depreciation, and disposal expenses.
+              <em>*Note for founder review: budget allocation subject to Kenya Revenue Authority (KRA) import duty tariffs, pre-export inspection (QISJ), age limit compliance (&lt;8 years), and local registration fees.*</em>
             </p>
           </article>
 
@@ -1220,7 +1585,7 @@ const pilotMetrics = [
             <h3>Hub Equipment from China — £12,000</h3>
             <p>
               1,500 sealed directional transit bags (W-class) + 150 stackable cargo boxes (S-class) manufactured in China and shipped by sea to Mombasa, then SGR rail to Nairobi ICD.
-              Unit cost: $6–$10 per bag, $8–$12 per box.
+              Unit cost: $6–$10 per bag, $8–$12 per box, inclusive of tamper-evident security tags.
             </p>
           </article>
 
@@ -1229,10 +1594,10 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">05</span>
               <div class="sponsor-card-icon" aria-hidden="true"><Store class="icon-svg" /></div>
             </div>
-            <h3>Grassroots GTM &amp; Hub Branding — £4,000</h3>
+            <h3>Grassroots GTM &amp; Merchant Onboarding — £4,000</h3>
             <p>
               Community recruitment: 2-hour merchant workshops across the pilot corridor with gift incentives sourced from China (£1k) — proven to outperform radio advertising in Nairobi's duka culture.
-              Metal PPTT Partner Point signage, window stickers, POS standees per hub (£3k).
+              Metal PPTT Partner Point signage, window stickers, and POS standees per hub (£3k).
             </p>
           </article>
 
@@ -1243,7 +1608,7 @@ const pilotMetrics = [
             </div>
             <h3>IT Infrastructure &amp; Code Completion — £22,000</h3>
             <p>
-              Cloud servers, Africa's Talking SMS gateway, M-Pesa B2C/C2B API integration, security audit of the HMAC ledger, and the remaining ~30% of integration stress-testing to reach production readiness.
+              Cloud servers, Africa's Talking SMS gateway, M-Pesa B2C/C2B API integration, third-party security audit of the HMAC ledger, and the remaining ~30% of integration stress-testing to reach production readiness.
             </p>
           </article>
 
@@ -1252,32 +1617,65 @@ const pilotMetrics = [
               <span class="sponsor-card-tag">07</span>
               <div class="sponsor-card-icon" aria-hidden="true"><ReceiptText class="icon-svg" /></div>
             </div>
-            <h3>Strategic Reserve (Contingency) — £35,000</h3>
+            <h3>Strategic Reserve (Operational Contingency) — £35,000</h3>
             <p>
               Corridor liquidity float for early parcel settlements, unforeseen street-level operational dynamics, and capital agility for rapid market adjustments during the first 6 months of live operation.
+              <em>*Explicit Operational Distinction: This £35,000 capital reserve is allocated for general operating contingencies and corridor float adjustments. It is distinct from restricted regulatory or electronic settlement currency (VKES) backing reserves; the same cash reserves cannot simultaneously serve operating cash flows and segregated token backing.*</em>
             </p>
           </article>
 
           <article class="sponsor-card is-total">
             <div class="sponsor-card-top">
-              <span class="sponsor-card-tag">∑</span>
+              <span class="sponsor-card-tag">&sum;</span>
               <div class="sponsor-card-icon" aria-hidden="true"><BadgeCheck class="icon-svg" /></div>
             </div>
             <h3>Total Pre-Seed Round: £175,000</h3>
             <p>
-              12-month funded runway. First commercial corridor live and autonomously verified before any geographic expansion.
+              12-month fully funded runway. First commercial corridor live and autonomously verified before any geographic expansion.
               Seeking one lead angel investor or a small syndicate. Equity structure and SAFE terms available on request.
             </p>
           </article>
+        </div>
 
+        <div class="sponsor-milestones-panel reveal" aria-labelledby="milestones-title">
+          <div class="sponsor-milestones-head">
+            <p class="eyebrow">Execution Roadmap</p>
+            <h3 id="milestones-title">6 Structured Funding Milestones</h3>
+            <p>
+              Capital deployment is tethered to sequential operational checkpoints. Each milestone must be verified before unlocking subsequent scale expenditures:
+            </p>
+          </div>
+
+          <div class="sponsor-milestones-grid">
+            {fundingMilestones.map((m) => (
+              <div class="milestone-card">
+                <div class="milestone-card-top">
+                  <span class="milestone-num">{m.num}</span>
+                  <span class="milestone-time">{m.timeline}</span>
+                </div>
+                <h4>{m.title}</h4>
+                <p>{m.deliverables}</p>
+              </div>
+            ))}
+          </div>
+
+          <div class="investment-terms-card" role="note">
+            <div class="terms-card-head">
+              <CheckCircle2 class="terms-icon" aria-hidden="true" />
+              <strong>Investment Structure &amp; Conditional Terms</strong>
+            </div>
+            <p>
+              Pre-seed investment structured via standard Simple Agreement for Future Equity (SAFE) or direct equity priced round. Investment terms, valuation cap, discount rate, and investor information rights are subject to final negotiation and execution of definitive investment agreements.
+            </p>
+          </div>
         </div>
       </section>
 
       <section class="lead-section" id="lead" aria-labelledby="lead-title">
         <div class="lead-panel reveal" data-lead-panel>
           <div class="lead-copy">
-            <p class="eyebrow">Direct Inquiries & Investor Deck</p>
-            <h2 id="lead-title" data-lead-title>Download the Investor Deck or Join the PPTT Network.</h2>
+            <p class="eyebrow">Direct Inquiries &amp; Investor Deck</p>
+            <h2 id="lead-title" data-lead-title>Request the Investor Deck or Join the PPTT Network.</h2>
             <p data-lead-copy>
               Whether you are an angel investor, local merchant, motorcycle carrier, or strategic partner, get in touch below. We are pleased to share our operational rollout plan, unit economics, and launch timeline. You can also reach out directly: pptt_vercel@outlook.com.
             </p>
@@ -1361,6 +1759,29 @@ const pilotMetrics = [
           </form>
         </div>
       </section>
+
+      <section class="section sources-section" id="sources" aria-labelledby="sources-title">
+        <div class="section-heading simple-heading reveal">
+          <p class="eyebrow">Data Integrity &amp; Verified References</p>
+          <h2 id="sources-title">Source Transparency &amp; Market Methodology</h2>
+          <p class="sources-intro">
+            PPTT grounds its operational projections and market opportunity sizing in verifiable public datasets, regulatory filings, and primary technical specifications:
+          </p>
+        </div>
+
+        <div class="sources-grid reveal">
+          {sourceReferences.map((ref) => (
+            <article class="source-card">
+              <div class="source-card-top">
+                <span class="source-category-tag">{ref.category}</span>
+                <span class="source-org">{ref.source}</span>
+              </div>
+              <h3>{ref.metric}</h3>
+              <p>{ref.detail}</p>
+            </article>
+          ))}
+        </div>
+      </section>
     </main>
 
     <footer class="site-footer">
@@ -1375,7 +1796,7 @@ const pilotMetrics = [
               </span>
             </a>
             <p>
-              Decentralized hub-to-hub logistics mesh for cities without formal addresses. Zero central sorting warehouses, zero thermal printers, optimized motorcycle carrier routes, and a self-funding parcel ledger.
+              Decentralized hub-to-hub logistics mesh for cities without formal addresses. Designed to reduce fixed warehouse overhead, zero thermal printers, optimized motorcycle carrier routes, and an auditable parcel ledger.
             </p>
             <div class="footer-actions">
               <a class="footer-primary-link" href="#lead">
@@ -1403,7 +1824,7 @@ const pilotMetrics = [
               <span class="footer-signal-icon"><Bike class="footer-icon" aria-hidden="true" /></span>
               <span>Carrier Fleet</span>
               <strong>private operators</strong>
-              <em>minimized deadheads</em>
+              <em>reduced deadheads</em>
             </div>
             <div>
               <span class="footer-signal-icon"><ReceiptText class="footer-icon" aria-hidden="true" /></span>
@@ -1424,8 +1845,10 @@ const pilotMetrics = [
               <a href="#story">Parcel Journey</a>
               <a href="#economics">Unit Economics</a>
               <a href="#moat">Competitive Moat</a>
-              <a href="#pilot">Readiness ~70%</a>
-              <a href="#sponsor">Pre-Seed Round — £175,000</a>
+              <a href="#pilot">3-Hub Pilot</a>
+              <a href="#risks">Risks &amp; Safeguards</a>
+              <a href="#sponsor">Pre-Seed — £175,000</a>
+              <a href="#sources">Sources &amp; Methodology</a>
             </nav>
           </div>
           <div class="footer-column">
@@ -1434,6 +1857,7 @@ const pilotMetrics = [
               <a href="#concept">Merchant Mesh</a>
               <a href="#lab">Route Simulator</a>
               <a href="#story">4-Marker Protocol</a>
+              <a href="#readiness">Technical Readiness</a>
               <a href="#lead">Investor Deck</a>
             </nav>
           </div>
@@ -1448,7 +1872,7 @@ const pilotMetrics = [
 
         <div class="footer-bottom">
           <span>&copy; 2026 PPTT — Package Push Towards Target</span>
-          <span>Operational logistics technology eliminating fixed warehouse capital expenditure.</span>
+          <span>Operational logistics technology designed to lower fixed warehouse capital expenditure.</span>
         </div>
       </div>
     </footer>
@@ -14791,5 +15215,628 @@ const pilotMetrics = [
 
   .sponsor-round {
     padding-block: var(--section-pad-y, 96px);
+  }
+
+  /* Simulator Disclaimer & Presets */
+  .lab-disclaimer-banner {
+    padding: 10px 18px;
+    background: rgba(35, 61, 77, 0.06);
+    border-bottom: 1px solid var(--line);
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-align: center;
+    letter-spacing: 0.02em;
+  }
+
+  .lab-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .lab-presets {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(35, 61, 77, 0.08);
+    padding: 3px 6px;
+    border-radius: 6px;
+  }
+
+  .lab-preset-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding-left: 4px;
+  }
+
+  .lab-preset-btn {
+    border: none;
+    background: transparent;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--navy);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+
+  .lab-preset-btn:hover {
+    background: rgba(254, 127, 45, 0.12);
+    color: var(--orange);
+  }
+
+  .lab-preset-btn.is-active {
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  /* Economics Disclosure & Footnote */
+  .economics-disclosure {
+    padding: 12px 18px;
+    background: rgba(254, 127, 45, 0.06);
+    border: 1px solid rgba(254, 127, 45, 0.25);
+    border-radius: 8px;
+    margin-bottom: 24px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--navy);
+  }
+
+  .audit-ledger-footnote {
+    margin-top: 16px;
+    padding: 10px 14px;
+    background: rgba(35, 61, 77, 0.04);
+    border-left: 3px solid var(--orange);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.78rem;
+    line-height: 1.55;
+    color: var(--muted);
+  }
+
+  /* Three-Hub Pilot Grid */
+  .three-hub-pilot-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 1024px) {
+    .three-hub-pilot-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .three-hub-pilot-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .three-hub-stage-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .three-hub-stage-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .three-hub-step-code {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: rgba(254, 127, 45, 0.12);
+    color: var(--orange);
+    font-weight: 800;
+    font-size: 0.75rem;
+  }
+
+  .three-hub-phase-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+
+  .three-hub-stage-card h3 {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+
+  .three-hub-stage-list {
+    margin: 0;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--muted);
+  }
+
+  /* Pilot Thresholds Banner */
+  .pilot-thresholds-banner {
+    background: linear-gradient(135deg, rgba(35, 61, 77, 0.05), rgba(254, 127, 45, 0.08));
+    border: 1px solid rgba(254, 127, 45, 0.3);
+    border-radius: 12px;
+    padding: 18px 24px;
+    margin-bottom: 40px;
+  }
+
+  .pilot-thresholds-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .pilot-thresholds-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .pilot-thresholds-head strong {
+    font-size: 0.95rem;
+    color: var(--navy);
+  }
+
+  .pilot-thresholds-banner p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* Technical Readiness Panel */
+  .tech-readiness-panel {
+    margin-top: 56px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .tech-readiness-header h3 {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--navy);
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  .tech-readiness-header p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 800px;
+  }
+
+  .tech-disclaimer-callout,
+  .risks-disclaimer-callout {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(254, 127, 45, 0.08);
+    border: 1px solid rgba(254, 127, 45, 0.28);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    margin-bottom: 28px;
+  }
+
+  .tech-disclaimer-icon {
+    width: 22px;
+    height: 22px;
+    color: var(--orange);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .tech-disclaimer-callout p,
+  .risks-disclaimer-callout p {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--navy);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .tech-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  @media (max-width: 760px) {
+    .tech-modules-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .tech-module-card {
+    background: rgba(35, 61, 77, 0.03);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tech-module-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .tech-status-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-implemented {
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+  }
+
+  .badge-partial {
+    background: rgba(254, 127, 45, 0.15);
+    color: #c2410c;
+  }
+
+  .badge-planned {
+    background: rgba(35, 61, 77, 0.12);
+    color: var(--navy);
+  }
+
+  .tech-module-stack {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: monospace;
+  }
+
+  .tech-module-card h4 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .tech-module-card p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Risks & Safeguards Section */
+  .risks-section {
+    padding-block: var(--section-pad-y, 96px);
+  }
+
+  .risks-intro {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 820px;
+  }
+
+  .risks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  @media (max-width: 860px) {
+    .risks-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .risk-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px 22px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .risk-card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .risk-tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2px 8px;
+    background: rgba(35, 61, 77, 0.08);
+    color: var(--navy);
+    font-size: 0.72rem;
+    font-weight: 800;
+    border-radius: 4px;
+  }
+
+  .risk-card-head h3 {
+    margin: 0;
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--navy);
+  }
+
+  .risk-sublabel {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .risk-problem p {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .risk-safeguard {
+    background: rgba(35, 61, 77, 0.04);
+    border-left: 3px solid var(--orange);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+  }
+
+  .risk-safeguard p {
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: var(--navy);
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Sponsor Milestones & Investment Terms */
+  .sponsor-milestones-panel {
+    margin-top: 56px;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+  }
+
+  .sponsor-milestones-head h3 {
+    font-size: clamp(1.2rem, 2vw, 1.5rem);
+    color: var(--navy);
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+
+  .sponsor-milestones-head p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 800px;
+  }
+
+  .sponsor-milestones-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 28px;
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: 900px) {
+    .sponsor-milestones-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .sponsor-milestones-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .milestone-card {
+    background: rgba(35, 61, 77, 0.03);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .milestone-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .milestone-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .milestone-time {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--orange);
+  }
+
+  .milestone-card h4 {
+    margin: 0;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.3;
+  }
+
+  .milestone-card p {
+    font-size: 0.8rem;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  .investment-terms-card {
+    background: linear-gradient(135deg, rgba(35, 61, 77, 0.05), rgba(254, 127, 45, 0.06));
+    border: 1px solid rgba(35, 61, 77, 0.18);
+    border-radius: 10px;
+    padding: 18px 22px;
+  }
+
+  .terms-card-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .terms-icon {
+    width: 20px;
+    height: 20px;
+    color: var(--orange);
+    flex-shrink: 0;
+  }
+
+  .terms-card-head strong {
+    font-size: 0.95rem;
+    color: var(--navy);
+  }
+
+  .investment-terms-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Sources & Methodology Section */
+  .sources-section {
+    padding-block: var(--section-pad-y, 96px);
+  }
+
+  .sources-intro {
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 820px;
+  }
+
+  .sources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 36px;
+  }
+
+  @media (max-width: 860px) {
+    .sources-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .source-card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .source-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .source-category-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--orange);
+  }
+
+  .source-org {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--muted);
+  }
+
+  .source-card h3 {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+
+  .source-card p {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: var(--muted);
+    margin: 0;
+  }
+
+  /* Accessibility: Prefers Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 </style>
