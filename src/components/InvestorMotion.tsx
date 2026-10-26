@@ -1,5 +1,5 @@
 /** @jsxRuntime classic */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const scaleSteps = [
   {
@@ -148,17 +148,50 @@ function CycleIcon({ type }: { type: string }) {
 
 export default function InvestorMotion() {
   const [flowStep, setFlowStep] = useState(0);
+  const sectionRef = useRef<HTMLElement>(null);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const visibleRef = useRef(false);
+
   const activeIndex = flowStep % cycleNodes.length;
   const nextIndex = (activeIndex + 1) % cycleNodes.length;
   const activeCycle = cycleNodes[activeIndex];
   const nextCycle = cycleNodes[nextIndex];
 
   useEffect(() => {
-    const timer = window.setInterval(() => {
-      setFlowStep((step) => step + 1);
-    }, 2200);
+    const startTimer = () => {
+      if (timerRef.current) return;
+      timerRef.current = window.setInterval(() => {
+        setFlowStep((step) => step + 1);
+      }, 2200);
+    };
 
-    return () => window.clearInterval(timer);
+    const stopTimer = () => {
+      if (timerRef.current) {
+        window.clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        visibleRef.current = entry.isIntersecting;
+        if (entry.isIntersecting) {
+          startTimer();
+        } else {
+          stopTimer();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+      stopTimer();
+    };
   }, []);
 
   const activateCycle = (key: string) => {
@@ -174,6 +207,7 @@ export default function InvestorMotion() {
 
   return (
     <section
+      ref={sectionRef}
       className="motion-island scale-section"
       aria-labelledby="proof-title"
     >
